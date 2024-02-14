@@ -1,6 +1,6 @@
 ﻿namespace DrivePal.Models
 {
-    public class Staff : User
+    public class Staff :User
     {
     }
 }
