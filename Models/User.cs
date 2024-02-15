@@ -23,5 +23,6 @@ namespace DrivePal.Models
         [Display(Name = "Joined")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime RegisteredAt { get; set; }
+
     }
 }
