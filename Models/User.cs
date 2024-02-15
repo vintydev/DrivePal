@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DrivePal.Models
 {
-    public class User:IdentityUser
+    public class User: IdentityUser
     {
         [Required]
         [Display(Name = "First Name")]
