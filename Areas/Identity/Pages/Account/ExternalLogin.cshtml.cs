@@ -17,23 +17,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using DrivePal.Models;
 
 namespace DrivePal.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<User> _userManager;
+        private readonly IUserStore<User> _userStore;
+        private readonly IUserEmailStore<User> _emailStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
-            SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
+            SignInManager<User> signInManager,
+            UserManager<User> userManager,
+            IUserStore<User> userStore,
             ILogger<ExternalLoginModel> logger,
             IEmailSender emailSender)
         {
@@ -153,19 +154,19 @@ namespace DrivePal.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserNameAsync((User)user, Input.Email, CancellationToken.None);
+                await _emailStore.SetEmailAsync((User)user, Input.Email, CancellationToken.None);
 
-                var result = await _userManager.CreateAsync(user);
+                var result = await _userManager.CreateAsync((User)user);
                 if (result.Succeeded)
                 {
-                    result = await _userManager.AddLoginAsync(user, info);
+                    result = await _userManager.AddLoginAsync((User)user, info);
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
-                        var userId = await _userManager.GetUserIdAsync(user);
-                        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        var userId = await _userManager.GetUserIdAsync((User)user);
+                        var code = await _userManager.GenerateEmailConfirmationTokenAsync((User)user);
                         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                         var callbackUrl = Url.Page(
                             "/Account/ConfirmEmail",
@@ -182,7 +183,7 @@ namespace DrivePal.Areas.Identity.Pages.Account
                             return RedirectToPage("./RegisterConfirmation", new { Email = Input.Email });
                         }
 
-                        await _signInManager.SignInAsync(user, isPersistent: false, info.LoginProvider);
+                        await _signInManager.SignInAsync((User)user, isPersistent: false, info.LoginProvider);
                         return LocalRedirect(returnUrl);
                     }
                 }
@@ -201,23 +202,23 @@ namespace DrivePal.Areas.Identity.Pages.Account
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<User>();
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(User)}'. " +
                     $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the external login page in /Areas/Identity/Pages/Account/ExternalLogin.cshtml");
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<User> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return (IUserEmailStore<User>)_userStore;
         }
     }
 }
