@@ -20,6 +20,7 @@ namespace DrivePal.Controllers
 
         public IActionResult Privacy()
         {
+            //fdcfcd
             return View();
         }
 
