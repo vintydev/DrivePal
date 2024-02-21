@@ -105,8 +105,6 @@ namespace DrivePal.Models.ServiceClasses
                 await userManager.AddToRoleAsync(adminUser, "Learner");
             }
 
-
-
         }
     }
 
