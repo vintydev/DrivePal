@@ -27,6 +27,46 @@
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (User.IsInRole("Learner"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="AccountData" asp-action="CustomerOwnDetails">See your details</a>
+                            </li>
+                            <li class="nav-item">_</li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Card" asp-action="CustomerSeeOwnCards">See your debit/credit cards</a>
+                            </li>
+                            <li class="nav-item">_</li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="ShowOwnBookings">See your booked classes</a>
+                            </li>
+                            <li class="nav-item">_</li>
+                        }
+                        if (User.IsInRole("Instructor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="AccountData" asp-action="CustomersList">See your details Learners</a>
+                            </li>
+                            <li class="nav-item">_</li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="StaffSeeAllBookings">Manage your classes</a>
+                            </li>
+                            <li class="nav-item">_</li>
+                        }
+                        if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link text-dark">Manage:</span>
+                            </li>
+                            <li class="nav-item"> _ </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="AccountData" asp-action="StaffsList">Staff</a>
+                            </li>                        
+                        }
+                    }
                 </div>
             </div>
         </nav>

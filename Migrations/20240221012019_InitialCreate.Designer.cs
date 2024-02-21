@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DrivePal.Data.Migrations
+namespace DrivePal.Migrations
 {
     [DbContext(typeof(DrivePalDbContext))]
-    [Migration("20240219174623_InitialCreate")]
+    [Migration("20240221012019_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -42,6 +42,57 @@ namespace DrivePal.Data.Migrations
                     b.HasKey("BookingId");
 
                     b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("DrivePal.Models.Card", b =>
+                {
+                    b.Property<int>("CardId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CardId"));
+
+                    b.Property<string>("CardHolderAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CardHolderName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CardNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpireDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SecurityCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CardId");
+
+                    b.ToTable("Cards");
+                });
+
+            modelBuilder.Entity("DrivePal.Models.Payment", b =>
+                {
+                    b.Property<int>("PaymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentId"));
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("PaymentId");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("DrivePal.Models.Review", b =>
@@ -315,7 +366,7 @@ namespace DrivePal.Data.Migrations
                 {
                     b.HasBaseType("DrivePal.Models.User");
 
-                    b.Property<int>("Gender")
+                    b.Property<int?>("Gender")
                         .HasColumnType("int");
 
                     b.Property<string>("LicenceNumber")
@@ -323,10 +374,10 @@ namespace DrivePal.Data.Migrations
                         .HasMaxLength(16)
                         .HasColumnType("nvarchar(16)");
 
-                    b.Property<bool>("isApproved")
+                    b.Property<bool?>("isApproved")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("isBlocked")
+                    b.Property<bool?>("isBlocked")
                         .HasColumnType("bit");
 
                     b.ToTable("AspNetUsers", t =>
@@ -348,20 +399,19 @@ namespace DrivePal.Data.Migrations
                 {
                     b.HasBaseType("DrivePal.Models.User");
 
-                    b.Property<int>("Gender")
+                    b.Property<int?>("Gender")
                         .HasColumnType("int");
 
                     b.Property<string>("LicenceNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("isBlocked")
+                    b.Property<bool?>("isBlocked")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("isExperienced")
+                    b.Property<bool?>("isExperienced")
                         .HasColumnType("bit");
 
-                    b.Property<int>("lessonCount")
+                    b.Property<int?>("lessonCount")
                         .HasColumnType("int");
 
                     b.HasDiscriminator().HasValue("Learner");

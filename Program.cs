@@ -26,6 +26,15 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
 
 builder.Services.AddControllersWithViews();
 
+//Registers EmailService as a transient service
+
+builder.Services.AddTransient<EmailService>();
+
+
+//adds Stripe service
+var stripeKey = builder.Configuration.GetSection("Stripe")["SecretKey"];
+builder.Services.AddStripe(stripeKey);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
