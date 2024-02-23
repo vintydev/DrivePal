@@ -33,7 +33,7 @@ namespace DrivePal.Models
         
         public string LearnerId { get; set; }
 
-        public  Learner Learner;
+        public  Learner? Learner;
 
 
 

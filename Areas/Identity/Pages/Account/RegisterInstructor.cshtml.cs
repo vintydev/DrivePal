@@ -260,6 +260,7 @@ namespace DrivePal.Areas.Identity.Pages.Account
                 instructor.LicenceNumber = Input.LicenceNumber;
                 instructor.isBlocked = true;
                 instructor.isApproved = false;
+                instructor.TotalRating = 0;
 
                 return instructor;
             }
