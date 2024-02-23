@@ -10,6 +10,16 @@ namespace DrivePal.Data
             : base(options)
         {
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            // Set the delete behavior for all relationships to Restrict
+            foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+        }
 
         public DbSet<Review>Reviews { get; set; }
         public DbSet<Admin> Admins { get; set; }

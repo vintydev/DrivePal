@@ -1,0 +1,121 @@
+﻿@model DrivePal.Models.Review
+
+@{
+    ViewData["Title"] = "Create";
+    
+}
+
+<h1>@ViewBag.Name</h1>
+
+<h4>Review</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" id="reviewForm">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Rating" class="control-label">Your Rating:</label>
+
+                <!-- Star Rating Section -->
+                <p class="star-rating">
+                    <i class="my-star star-1" data-star="1"></i>
+                    <i class="my-star star-2" data-star="2"></i>
+                    <i class="my-star star-3" data-star="3"></i>
+                    <i class="my-star star-4" data-star="4"></i>
+                    <i class="my-star star-5" data-star="5"></i>
+                </p>
+
+                <input type="hidden" id="selectedRating" name="Rating" />
+                <span asp-validation-for="Rating" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ReviewMessage" class="control-label">Leave your review here:</label>
+                <textarea asp-for="ReviewMessage" class="form-control"></textarea>
+                <span asp-validation-for="ReviewMessage" class="text-danger"></span>
+                <input type="hidden" asp-for="@Model.InstructorId" value="@ViewBag.InstructorId" />
+                <input type="hidden" asp-for="@Model.LearnerId" value="@ViewBag.LearnerId" />
+                <input type="hidden" asp-for="@Model.DateCreated" />
+                <input type="hidden" asp-for="@Model.Instructor" value="@ViewBag.Instructor"/>
+                
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+<style>
+    .star-rating {
+        color: #bebebe;
+        font-size: 2em;
+    }
+
+    .my-star::before {
+        content: "\2605";
+    }
+
+    .my-star {
+        font-style: unset !important;
+        cursor: pointer;
+    }
+
+    .is-active {
+        color: #fb8900;
+    }
+
+    .my-star:not(.is-active):hover {
+        color: #fb8900;
+    }
+</style>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            (function () {
+                let sr = document.querySelectorAll('.my-star');
+                let i = 0;
+                // loop through stars
+                while (i < sr.length) {
+                    // attach click event
+                    sr[i].addEventListener('click', function () {
+                        // current star
+                        let cs = parseInt(this.getAttribute("data-star"));
+                        // output current clicked star value
+                        document.querySelector('#selectedRating').value = cs;
+
+                        // loop through and set the active class on preceding stars
+                        for (let pre = 1; pre <= cs; pre++) {
+                            let starElement = document.querySelector('.star-' + pre);
+                            if (!starElement.classList.contains('is-active')) {
+                                starElement.classList.add('is-active');
+                            }
+                        }
+
+                        // loop through and unset the active class on succeeding stars
+                        for (let succ = cs + 1; succ <= 5; succ++) {
+                            let starElement = document.querySelector('.star-' + succ);
+                            if (starElement.classList.contains('is-active')) {
+                                starElement.classList.remove('is-active');
+                            }
+                        }
+                    });
+                    i++;
+                }
+            })();
+        });
+    </script>
+}

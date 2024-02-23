@@ -58,6 +58,7 @@ namespace DrivePal.Models.ServiceClasses
                     Street = "Buchanan Street",
                     PostCode = "G12AA",
                     DOB = new DateOnly(1996, 5, 10),
+                    TotalRating = 0,
                     EmailConfirmed = true,
 
                 };

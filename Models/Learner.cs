@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Hosting;
+
 
 namespace DrivePal.Models
     
@@ -16,6 +18,9 @@ namespace DrivePal.Models
         public bool? isExperienced { get; set; }
 
         public int? lessonCount { get; set; }
+
+        //Navigational property
+        public List<Review> Reviews { get; set; }
 
 
     }

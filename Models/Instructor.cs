@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.Extensions.Hosting;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DrivePal.Models
 {
@@ -15,6 +17,13 @@ namespace DrivePal.Models
         public bool? isApproved { get; set; }
 
         public bool? isBlocked { get; set; }
+        [Display(Name = "Total Rating")]
+        [Column(TypeName = "decimal(3,1)")]
+
+        public decimal TotalRating { get; set; }
+
+        //navigational property
+        public List<Review> Reviews { get; set; }
 
 
     }

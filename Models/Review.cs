@@ -11,17 +11,32 @@ namespace DrivePal.Models
 
      
         [Required]
-        [Display(Name = "Unit Price")]
+        [Display(Name = "Your Rating")]
         [Column(TypeName = "decimal(18,2)")]
-        [Range(typeof(decimal), "1.0", "79228162514264337593543950335")]
-        public decimal Rating { get; set; }
+        [Range(typeof(decimal), "0", "5.00")]
+        public required decimal Rating { get; set; }
         [Required]
-        [Display(Name = "Description")]
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Leave your review here")]
         public string? ReviewMessage { get; set; }
     
         public DateTime? DateCreated { get; set; }
 
+    
 
-     
+
+    //Navigational properties
+        public string InstructorId { get; set; }
+
+        public virtual Instructor? Instructor { get; set; }
+
+        
+        public string LearnerId { get; set; }
+
+        public  Learner Learner;
+
+
+
+
     }
 }
