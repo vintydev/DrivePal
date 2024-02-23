@@ -100,7 +100,6 @@ namespace DrivePal.Models.ServiceClasses
                     PostCode = "G15AA",
                     DOB = new DateOnly(1994, 4, 11),
                     EmailConfirmed = true,
-
                 };
                 await userManager.CreateAsync(adminUser, "Learner2Password123!");
                 await userManager.AddToRoleAsync(adminUser, "Learner");

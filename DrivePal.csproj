@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Home\Index Ross.cshtml" />
+    <Content Remove="Views\Home\Instructors old.cshtml" />
+    <Content Remove="Views\Home\resources.cshtml" />
+    <Content Remove="Views\Home\signup.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Cloud.Firestore" Version="3.5.1" />
     <PackageReference Include="MailKit" Version="4.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.2" />
@@ -22,7 +29,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="Models\ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Home\Index Ross.cshtml" />
+    <None Include="Views\Home\Instructors old.cshtml" />
+    <None Include="Views\Home\Resources.cshtml" />
+    <None Include="Views\Home\SignUp.cshtml" />
   </ItemGroup>
 
 </Project>

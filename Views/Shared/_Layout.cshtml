@@ -5,11 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - DrivePal</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/DrivePal.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
+        <nav>
+            <div class="logo">
+                <img src="/img/logo.png" width="100" alt="DrivePal Logo" style="padding: 30px;">
+            </div>
+            <ul class="navbar">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/Home/Instructors">Instructors</a></li>
+                <li><a href="/Home/Resources">Resources</a></li>
+                <partial name="_LoginPartial" />
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Learner"))
+                    {
+                        <li><a href="/AccountData/CustomerOwnDetails">See your details</a></li>
+                        <li><a href="/Card/CustomerSeeOwnCards">See your debit/credit cards</a></li>
+                        <li><a href="/Booking/ShowOwnBookings">See your booked classes</a></li>
+                    }
+                    if (User.IsInRole("Instructor"))
+                    {
+                        <li><a href="/AccountData/CustomersList">See your Learners' details</a></li>
+                        <li><a href="/Booking/StaffSeeAllBookings">Manage your classes</a></li>
+                    }
+                    if (User.IsInRole("Admin"))
+                    {
+                        <li><span>Manage:</span></li>
+                        <li><a href="/AccountData/StaffsList">Staff</a></li>
+                    }
+                }
+            </ul>
+
+
+        </nav>
+    </header>
+
+
+
+    @* <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DrivePal</a>
@@ -73,7 +111,7 @@
                 </div>
             </div>
         </nav>
-    </header>
+    </header> *@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
