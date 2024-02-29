@@ -20,8 +20,9 @@ namespace DrivePal.Models
         public int? lessonCount { get; set; }
 
         //Navigational property
-        public List<Review> Reviews { get; set; }
-
+        public List<Review>? Reviews { get; set; }
+        public virtual ICollection<Card>? Cards { get; set; }
+        public virtual ICollection<Booking>? Bookings { get; set; }
 
     }
 

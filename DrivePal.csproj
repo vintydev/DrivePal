@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Home\Index Ross.cshtml" />
     <Content Remove="Views\Home\Instructors old.cshtml" />
     <Content Remove="Views\Home\resources.cshtml" />
     <Content Remove="Views\Home\signup.cshtml" />
@@ -24,17 +23,14 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.1" />
-    <PackageReference Include="Stripe.net" Version="41.16.0" />
     <PackageReference Include="Twilio" Version="6.6.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Migrations\" />
-    <Folder Include="Models\ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\Home\Index Ross.cshtml" />
     <None Include="Views\Home\Instructors old.cshtml" />
     <None Include="Views\Home\Resources.cshtml" />
     <None Include="Views\Home\SignUp.cshtml" />

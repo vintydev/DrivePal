@@ -8,8 +8,6 @@ namespace DrivePal.Models
         [Key]
         //Product Properties
         public int ReviewId { get; set; }
-
-     
         [Required]
         [Display(Name = "Your Rating")]
         [Column(TypeName = "decimal(18,2)")]
@@ -18,25 +16,17 @@ namespace DrivePal.Models
         [Required]
         [DataType(DataType.MultilineText)]
         [Display(Name = "Leave your review here")]
-        public string? ReviewMessage { get; set; }
-    
+        public string? ReviewMessage { get; set; }    
         public DateTime? DateCreated { get; set; }
 
-    
-
-
     //Navigational properties
-        public string InstructorId { get; set; }
+        public string? InstructorId { get; set; }
 
         public virtual Instructor? Instructor { get; set; }
-
         
-        public string LearnerId { get; set; }
+        public string? LearnerId { get; set; }
 
-        public  Learner Learner;
-
-
-
+        public  Learner? Learner;
 
     }
 }
