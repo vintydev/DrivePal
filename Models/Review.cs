@@ -35,8 +35,5 @@ namespace DrivePal.Models
 
         public  Learner? Learner;
 
-
-
-
     }
 }
