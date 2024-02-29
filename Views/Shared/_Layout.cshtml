@@ -24,13 +24,13 @@
                 {
                     if (User.IsInRole("Learner"))
                     {
-                        <li><a href="/AccountData/CustomerOwnDetails">See your details</a></li>
+                        <li><a href="/LearnerData/LearnerSeeOwnDetails">See your Learner's details</a></li>
                         <li><a href="/Card/CustomerSeeOwnCards">See your debit/credit cards</a></li>
                         <li><a href="/Booking/ShowOwnBookings">See your booked classes</a></li>
                     }
                     if (User.IsInRole("Instructor"))
                     {
-                        <li><a href="/AccountData/CustomersList">See your Learners' details</a></li>
+                        <li><a href="/InstructorData/InstructorSeeOwnDetails">See your Instructor' details</a></li>
                         <li><a href="/Booking/StaffSeeAllBookings">Manage your classes</a></li>
                     }
                     if (User.IsInRole("Admin"))
@@ -41,77 +41,8 @@
                 }
             </ul>
 
-
         </nav>
     </header>
-
-
-
-    @* <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DrivePal</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Reviews" asp-action="Index">Instructors</a>
-                        </li>
-                    </ul>
-                    <partial name="_LoginPartial" />
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        if (User.IsInRole("Learner"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="AccountData" asp-action="CustomerOwnDetails">See your details</a>
-                            </li>
-                            <li class="nav-item">_</li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Card" asp-action="CustomerSeeOwnCards">See your debit/credit cards</a>
-                            </li>
-                            <li class="nav-item">_</li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="ShowOwnBookings">See your booked classes</a>
-                            </li>
-                            <li class="nav-item">_</li>
-                        }
-                        if (User.IsInRole("Instructor"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="AccountData" asp-action="CustomersList">See your details Learners</a>
-                            </li>
-                            <li class="nav-item">_</li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Booking" asp-action="StaffSeeAllBookings">Manage your classes</a>
-                            </li>
-                            <li class="nav-item">_</li>
-                        }
-                        if (User.IsInRole("Admin"))
-                        {
-                            <li class="nav-item">
-                                <span class="nav-link text-dark">Manage:</span>
-                            </li>
-                            <li class="nav-item"> _ </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="AccountData" asp-action="StaffsList">Staff</a>
-                            </li>                        
-                        }
-                    }
-                </div>
-            </div>
-        </nav>
-    </header> *@
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()

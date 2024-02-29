@@ -15,6 +15,8 @@ namespace DrivePal.Models.ServiceClasses
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
+
+
             // Create roles if they do not exist
             string[] roles = { "Admin", "Instructor", "Learner" };
             foreach (var roleName in roles)
@@ -39,7 +41,7 @@ namespace DrivePal.Models.ServiceClasses
                     PostCode = "G11AA",
                     DOB = new DateOnly(1994, 7, 22),
                     EmailConfirmed = true,
-                    
+
                 };
                 await userManager.CreateAsync(adminUser, "AdminPassword123!");
                 await userManager.AddToRoleAsync(adminUser, "Admin");
@@ -60,11 +62,37 @@ namespace DrivePal.Models.ServiceClasses
                     DOB = new DateOnly(1996, 5, 10),
                     TotalRating = 0,
                     EmailConfirmed = true,
+                    LicenceNumber = "1234567812345678"
 
                 };
                 await userManager.CreateAsync(adminUser, "InstructorPassword123!");
                 await userManager.AddToRoleAsync(adminUser, "Instructor");
             }
+
+
+            if (!context.Users.Any(u => u.UserName == "instructor2@example.com"))
+            {
+                var adminUser = new Instructor
+                {
+                    UserName = "instructor2@example.com",
+                    Email = "instructor2@example.com",
+                    FirstName = "Dwayne",
+                    LastName = "Wade",
+                    City = "Glasgow",
+                    Street = "Maryhill Street",
+                    PostCode = "G203AA",
+                    DOB = new DateOnly(1997, 3, 11),
+                    TotalRating = 0,
+                    EmailConfirmed = true,
+                    LicenceNumber = "8765432187654321"
+
+                };
+                await userManager.CreateAsync(adminUser, "Instructor2Password123!");
+                await userManager.AddToRoleAsync(adminUser, "Instructor");
+            }
+
+
+
 
             // Create an admin user if it does not exist
             if (!context.Users.Any(u => u.UserName == "learner@example.com"))
@@ -80,6 +108,7 @@ namespace DrivePal.Models.ServiceClasses
                     PostCode = "G32AA",
                     DOB = new DateOnly(1997, 3, 13),
                     EmailConfirmed = true,
+                    LicenceNumber = "12345678"
 
                 };
                 await userManager.CreateAsync(adminUser, "LearnerPassword123!");
@@ -104,8 +133,6 @@ namespace DrivePal.Models.ServiceClasses
                 await userManager.CreateAsync(adminUser, "Learner2Password123!");
                 await userManager.AddToRoleAsync(adminUser, "Learner");
             }
-
         }
     }
-
 }

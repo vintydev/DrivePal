@@ -1,9 +1,19 @@
-﻿namespace DrivePal.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DrivePal.Models
 {
     public class Payment
     {
         public int PaymentId { get; set; }
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
+
+        // Navigation properties
+        [ForeignKey("Booking")]
+        public int? BookingId { get; set; }
+        public virtual Booking? Booking { get; set; }
+        [ForeignKey("Card")]
+        public int? CardId { get; set; }
+        public virtual Card? Card { get; set; }
     }
 }

@@ -16,6 +16,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
+    min-height: 100vh;
 }
 
 /* Style header */
@@ -44,7 +45,7 @@ nav {
     .navbar a {
         color: white; /* White text color */
         text-decoration: none; /* Remove underline from links */
-        padding: 10px 20px; /* Add padding to the links */
+        padding: 10px 10px; /* Add padding to the links */
         display: inline-block; /* Display links side by side */
     }
 
@@ -68,12 +69,27 @@ li {
     padding-bottom: 5px;
 }
 
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
 .container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, auto);
-    gap: 20px; /* Adjust gap between boxes */
-    margin: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust the column size as needed */
+    gap: 20px;
+    max-width: 1500px; /* Adjust maximum width as needed */
+    width: 100%;
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 20px;
 }
 
 .info-box {
@@ -81,12 +97,14 @@ li {
     border-radius: 10px;
     padding: 20px;
     text-align: center;
+    box-sizing: border-box;
+    width: 100%; /* Ensure info boxes take full width of grid cell */
 }
 
     .info-box h2 {
-        text-align: left; /* Align only h2 tags to the left */
+        text-align: left;
         font-size: 20px;
-        margin-top: 0; /* Remove top margin for consistency */
+        margin-top: 0;
     }
 
 .box-content img {
@@ -95,8 +113,6 @@ li {
     display: block;
     margin: 0 auto;
 }
-
-
 
 
 .signup-login-container {
@@ -498,15 +514,18 @@ tr:hover {
         }
 
 /* Style footer */
+
 footer {
+    position: fixed; /* Position the footer relative to the viewport */
+    bottom: 0; /* Align the footer to the bottom of the viewport */
+    width: 100%; /* Occupy the full width of the viewport */
     background-color: white; /* White background */
     color: black; /* Black text */
-    margin-top: auto;
-    width: 100%;
     padding: 10px;
     text-align: center;
     border-top: 20px solid #008000; /* Green border */
 }
+
 
     footer p {
         text-align: center;

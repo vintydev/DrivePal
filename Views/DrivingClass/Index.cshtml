@@ -1,0 +1,60 @@
+﻿@model IEnumerable<DrivePal.Models.DrivingClass>
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+@if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Instructor"))
+                    {
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+                    }
+                }
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DrivingClassStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DrivingClassEnd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Instructor)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DrivingClassStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DrivingClassEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Instructor.LastName)
+            </td>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Instructor") && item.InstructorId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                {
+                    <td>
+                        <a asp-action="Delete" asp-route-id="@item.DrivingClassId">Delete</a>
+                    </td>
+                }
+        </tr>
+}
+    </tbody>
+</table>
