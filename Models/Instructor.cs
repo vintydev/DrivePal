@@ -26,7 +26,10 @@ namespace DrivePal.Models
         public List<Review>? Reviews { get; set; }
         public List<DrivingClass>? DrivingClasses { get; set; }
 
-
+        public string GetPostcode()
+        {
+            return this.PostCode;
+        }
 
     }
 
