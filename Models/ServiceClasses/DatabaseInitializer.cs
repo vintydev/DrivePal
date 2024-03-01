@@ -62,7 +62,9 @@ namespace DrivePal.Models.ServiceClasses
                     DOB = new DateOnly(1996, 5, 10),
                     TotalRating = 0,
                     EmailConfirmed = true,
-                    LicenceNumber = "1234567812345678"
+                    LicenceNumber = "1234567812345678",
+                    isApproved = true,
+                    isBlocked = false,
 
                 };
                 await userManager.CreateAsync(adminUser, "InstructorPassword123!");
@@ -84,7 +86,9 @@ namespace DrivePal.Models.ServiceClasses
                     DOB = new DateOnly(1997, 3, 11),
                     TotalRating = 0,
                     EmailConfirmed = true,
-                    LicenceNumber = "8765432187654321"
+                    LicenceNumber = "8765432187654321",
+                    isApproved = true,
+                    isBlocked = false,
 
                 };
                 await userManager.CreateAsync(adminUser, "Instructor2Password123!");

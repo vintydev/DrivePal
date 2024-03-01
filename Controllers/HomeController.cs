@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using DrivePal.Data;
+using DrivePal.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace DrivePal.Controllers
 {
@@ -34,6 +36,27 @@ namespace DrivePal.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> SeeAllInstructors()
+        {
+            var instructors = await _context.Instructors
+                .Where(i => i.isApproved == true && i.isBlocked == false) // Assuming you want to filter by these
+                .Select(i => new InstructorsDetailsViewModel
+                {
+                    Id = i.Id,
+                    FirstName = i.FirstName,
+                    LastName = i.LastName,
+                    PostCode = i.PostCode,
+                    TotalRating = i.TotalRating
+                })
+                .ToListAsync();
+
+            return View(instructors);
+        }
+
+
+
+
 
         public IActionResult Instructors()
         {
