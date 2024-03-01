@@ -34,18 +34,20 @@ nav {
     background-position: center; /* This centers the background image */
     color: #ffffff;
     text-align: center;
+    padding: 10px 0; /* Reduce padding on top and bottom */
+    font-size: 14px; /* Reduce font size */
 }
 
 .navbar {
     background-color: rgba(9, 56, 9, 0.8); /* Darker semi-transparent green background */
     text-align: center; /* Center align the links */
-    padding: 10px 0; /* Add padding to the top and bottom */
+    padding: 5px 0; /* Reduce padding on top and bottom */
 }
 
     .navbar a {
         color: white; /* White text color */
         text-decoration: none; /* Remove underline from links */
-        padding: 10px 10px; /* Add padding to the links */
+        padding: 5px 10px; /* Reduce padding */
         display: inline-block; /* Display links side by side */
     }
 
@@ -58,7 +60,6 @@ nav {
             font-weight: bold; /* Make the active link bold */
             color: #7bfc7b; /* Change the color of the active link */
         }
-
 
 ul {
     list-style-type: none;
@@ -513,20 +514,15 @@ tr:hover {
             margin-bottom: 5px; /* Add bottom margin for separation between list items */
         }
 
-/* Style footer */
-
+/* Footer styles */
 footer {
-    position: fixed; /* Position the footer relative to the viewport */
-    bottom: 0; /* Align the footer to the bottom of the viewport */
-    width: 100%; /* Occupy the full width of the viewport */
-    background-color: white; /* White background */
-    color: black; /* Black text */
-    padding: 10px;
+    position: relative; /* Change position to relative */
+    background-color: white;
+    color: black;
+    padding: 20px;
     text-align: center;
-    border-top: 20px solid #008000; /* Green border */
+    clear: both; /* Clear any floated elements */
+    width: 100%; /* Occupy full width */
+    border-top: 10px solid #008000; /* Green border at the top */
 }
 
-
-    footer p {
-        text-align: center;
-    }

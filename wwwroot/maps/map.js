@@ -1,8 +1,17 @@
-document.addEventListener("DOMContentLoaded", function() {
+// Wait for the DOM content to be fully loaded
+document.addEventListener("DOMContentLoaded", function () {
+    // Check if the page has been refreshed already
+    if (!sessionStorage.getItem('pageRefreshed')) {
+        // Set the flag to indicate that the page has been refreshed
+        sessionStorage.setItem('pageRefreshed', 'true');
+        // Refresh the page
+        location.reload();
+    }
+
     // Select the radius slider element
     const radiusSlider = document.getElementById("radiusSlider");
     // Set the initial value of the slider
-    radiusSlider.value = "11"; // Set the default value to 10
+    radiusSlider.value = "11"; // Set the default value to 11
 
     // Select the radius value span element
     const radiusValue = document.getElementById("radiusValue");
@@ -12,105 +21,183 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Initialize and add the map
     let map;
-    let marker;
     let circle;
-    let position;
+    let markers = []; // Array to store markers
+    let userMarker; // Variable to store the user's marker
+    let postcodeMarker; // Variable to store the postcode marker
 
     async function initMap() {
-        // The location of London
-        position = { lat: 51.5074, lng: -0.1278 }; // London coordinates
+        // Try to get the user's current position using Geolocation API
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                // Success callback
+                function (position) {
+                    // Get the user's current coordinates
+                    const userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
 
-        // Request needed libraries.
-        //@ts-ignore
-        const { Map } = await google.maps.importLibrary("maps");
-        const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+                    // Initialize the map with the user's current location as the center
+                    map = new google.maps.Map(document.getElementById("map"), {
+                        zoom: 10,
+                        center: userLocation,
+                        mapId: "DEMO_MAP_ID",
+                        mapTypeControl: false,
+                        mapTypeId: 'terrain',
+                        fullscreenControl: false,
+                        streetViewControl: false
+                    });
 
-        // The map, centered at London
-        map = new Map(document.getElementById("map"), {
+                    // Add a marker at the user's location
+                    userMarker = new google.maps.Marker({
+                        position: userLocation,
+                        map: map,
+                        title: "Your Location",
+                        animation: google.maps.Animation.DROP // Add animation to marker
+                    });
+
+                    // Add a radius circle centered around the user's location
+                    circle = new google.maps.Circle({
+                        map: map,
+                        center: userLocation,
+                        radius: 11000,
+                        strokeColor: "#FFFFFF",
+                        strokeOpacity: 1,
+                        strokeWeight: 3,
+                        fillColor: "#0F52BA",
+                        fillOpacity: 0.2,
+                    });
+
+                    // Continue with other map initialization logic (e.g., slider, markers)
+                    initializeMapFeatures();
+                },
+                // Error callback
+                function (error) {
+                    console.error("Error getting user location:", error);
+                    // If getting user location fails, fallback to default location (London)
+                    initializeMapWithDefaultLocation();
+                }
+            );
+        } else {
+            // If Geolocation API is not supported, fallback to default location (London)
+            initializeMapWithDefaultLocation();
+        }
+    }
+
+    function initializeMapWithDefaultLocation() {
+        // Initialize the map with default location (London)
+        map = new google.maps.Map(document.getElementById("map"), {
             zoom: 10,
-            center: position,
+            center: {
+                lat: 51.5074,
+                lng: 0.1278
+            },
             mapId: "DEMO_MAP_ID",
+            mapTypeControl: false,
+            mapTypeId: 'terrain',
+            fullscreenControl: false,
+            streetViewControl: false
         });
 
-        // The marker, positioned at London
-        marker = new google.maps.marker.AdvancedMarkerElement({
-            map: map,
-            position: position,
-            title: "London",
-        });
-
-
-
-        // Add a radius circle centered around the marker
+        // Add a radius circle centered around the default location (London)
         circle = new google.maps.Circle({
             map: map,
-            center: position,
-            radius: 11000, // Initial radius in meters
+            center: {
+                lat: 51.5074,
+                lng: 0.1278
+            },
+            radius: 11000,
             strokeColor: "#FFFFFF",
             strokeOpacity: 1,
             strokeWeight: 3,
             fillColor: "#0F52BA",
-            fillOpacity: 0.35,
+            fillOpacity: 0.2,
         });
 
+        // Continue with other map initialization logic (e.g., slider, markers)
+        initializeMapFeatures();
+    }
+
+    function initializeMapFeatures() {
         // Listen for changes in the slider value and update the circle radius dynamically
-        const radiusSlider = document.getElementById("radiusSlider");
         radiusSlider.addEventListener("input", function () {
             const newRadius = parseInt(radiusSlider.value);
             circle.setRadius(newRadius * 1000); // Convert kilometers to meters
-            const radiusValue = (newRadius).toFixed(1); // Round to 1 decimal place
+            const radiusValue = newRadius.toFixed(1); // Round to 1 decimal place
             document.getElementById("radiusValue").textContent = radiusValue + " km";
+
+            // Update markers visibility based on new circle radius
+            updateMarkersVisibility(circle, markers);
         });
 
-        // Add event listener to the user location button
-        const userLocationBtn = document.getElementById("userLocationBtn");
-        userLocationBtn.addEventListener("click", getUserLocation);
-    }
+        // Add event listener to the "See Instructors" button
+        const seeInstructorsBtn = document.getElementById("seeInstructorsBtn");
+        seeInstructorsBtn.addEventListener("click", function () {
+            // Get the center of the map
+            const center = circle.getCenter();
 
-    function getUserLocation() {
-        // Show loading spinner
-        document.getElementById("loadingSpinner").style.display = "inline-block";
-        console.log("getUserLocation function triggered"); // Debugging console log
+            // Get the radius value from the slider
+            const radius = parseInt(radiusSlider.value);
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const userPosition = {
-                        lat: pos.coords.latitude,
-                        lng: pos.coords.longitude
-                    };
-                    console.log("User position:", userPosition); // Debugging console log
+            // Remove markers outside the circle
+            removeMarkersOutsideCircle(center, radius);
 
-                    // Update map center
-                    map.setCenter(userPosition);
+            // Generate and display a random marker inside the circle for each instructor
+            generateRandomMarkersForInstructors(center, radius);
+        });
 
-                    // Remove existing marker
-                    if (marker) {
-                        marker.setMap(null);
+        // Add event listener to the "Submit" button for postcode search
+        const submitPostalCodeBtn = document.getElementById("submitPostalCode");
+        submitPostalCodeBtn.addEventListener("click", function () {
+            // Get the entered postal code
+            const postalCode = document.getElementById("postalCodeInput").value;
+
+            // Use geocoding to convert the entered postcode to geographic coordinates
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({
+                address: postalCode
+            }, function (results, status) {
+                if (status === google.maps.GeocoderStatus.OK) {
+                    // Get the geographic coordinates (latitude and longitude) of the postcode
+                    const location = results[0].geometry.location;
+
+                    // Remove the previous postcode marker if it exists
+                    if (postcodeMarker) {
+                        postcodeMarker.setMap(null);
                     }
 
-                    // Create a new marker at the user's location
-                    marker = new google.maps.marker.AdvancedMarkerElement({
+                    // Remove the user's marker if it exists
+                    if (userMarker) {
+                        userMarker.setMap(null);
+                    }
+
+                    // Set the map's center to the new coordinates
+                    map.setCenter(location);
+
+                    // Move circle to the new center
+                    circle.setCenter(location);
+
+                    // Add a marker at the location of the postcode search
+                    postcodeMarker = new google.maps.Marker({
+                        position: location,
                         map: map,
-                        position: userPosition,
-                        title: "Your Location"
+                        title: "Postcode Location",
+                        animation: google.maps.Animation.DROP // Add animation to marker
                     });
 
+                    // Update markers visibility based on new circle radius
+                    updateMarkersVisibility(circle, markers);
 
-                    // Move circle to user's location
-                    circle.setCenter(userPosition);
-
-                    // Hide loading spinner
-                    document.getElementById("loadingSpinner").style.display = "none";
-                },
-                (error) => {
-                    console.error("Error getting user location:", error);
-                    alert("Error getting user location. Please enable location services.");
+                    // Remove markers from the previous search
+                    removeMarkers();
+                } else {
+                    // Handle geocoding error
+                    console.error("Geocode was not successful for the following reason: " + status);
+                    alert("Geocode was not successful for the following reason: " + status);
                 }
-            );
-        } else {
-            alert("Geolocation is not supported by this browser.");
-        }
+            });
+        });
     }
 
     function generateRandomPosition(center, radius) {
@@ -132,80 +219,88 @@ document.addEventListener("DOMContentLoaded", function() {
         return latLng;
     }
 
-    let marker1;
-    let marker2;
+    function generateRandomMarkersForInstructors(center, radius) {
+        // Get all instructor names from the table
+        const instructorNames = document.querySelectorAll(".instructor-name");
 
-function addRandomMarkers(center, radius) {
-    console.log("Adding random markers...");
+        // Generate and display a random marker inside the circle for each instructor
+        instructorNames.forEach(function (instructor) {
+            // Generate a random position inside the circle
+            const position = generateRandomPosition(center, radius);
 
-    // Generate two random positions inside the radius
-    const position1 = generateRandomPosition(center, radius);
-    const position2 = generateRandomPosition(center, radius);
+            // Create a new marker at the random position with custom icon
+            const marker = new google.maps.Marker({
+                map: map,
+                position: position,
+                title: instructor.textContent.trim(), // Set instructor name as marker title
+                icon: {
+                    url: '/img/mapcar.png', // Custom icon
+                    scaledSize: new google.maps.Size(40, 40) // Set default size for the marker
+                },
+                animation: google.maps.Animation.DROP // Add animation to markers
+            });
 
-    // Log the coordinates of the generated positions to the console
-    console.log("Random Position 1:", position1.lat(), position1.lng());
-    console.log("Random Position 2:", position2.lat(), position2.lng());
+            // Add marker to the markers array
+            markers.push(marker);
 
-    // Create custom marker icon with the green dot
-    const icon = {
-        url: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
-        scaledSize: new google.maps.Size(32, 32),
-        origin: new google.maps.Point(0, 0),
-        anchor: new google.maps.Point(16, 32)
-    };
+            // Log marker coordinates to console
+            console.log("Marker Position:", marker.getPosition().lat(), marker.getPosition().lng());
 
-    // Check if existing markers are outside the circle's radius and remove them
-    if (marker1 && google.maps.geometry.spherical.computeDistanceBetween(marker1.getPosition(), center) > radius) {
-        marker1.setMap(null);
-        marker1 = null; // Reset marker variable
-    }
-    if (marker2 && google.maps.geometry.spherical.computeDistanceBetween(marker2.getPosition(), center) > radius) {
-        marker2.setMap(null);
-        marker2 = null; // Reset marker variable
-    }
+            // Add event listener for marker click
+            markers.forEach(function (marker) {
+                marker.addListener('click', function () {
+                    // Get the title of the clicked marker (instructor's name)
+                    const instructorName = marker.getTitle();
+                    console.log("Clicked Marker: " + instructorName); // Print the instructor's name to the console
 
-    // Create markers at the generated positions using AdvancedMarkerElement
-    if (!marker1) {
-        marker1 = new google.maps.marker.AdvancedMarkerElement({
-            position: position1,
-            map: map,
-            title: "Instructor 1"
+                    // Find all table rows
+                    const instructorRows = document.querySelectorAll('.instructor-row');
+
+                    // Reset the background color of all table rows to white
+                    instructorRows.forEach(row => {
+                        row.style.backgroundColor = "white";
+                    });
+
+                    // Find the corresponding table row by instructor's name
+                    const instructorRow = document.querySelector(`[data-instructor="${instructorName}"]`).closest('.instructor-row');
+
+                    // Update the background color of the table row to pale green
+                    instructorRow.style.backgroundColor = "#a6fca6";
+                });
+            });
+
         });
-        marker1.setIcon(icon1); // Set custom icon
     }
 
-    if (!marker2) {
-        marker2 = new google.maps.marker.AdvancedMarkerElement({
-            position: position2,
-            map: map,
-            title: "Instructor 2"
+    function removeMarkers() {
+        // Remove all markers from the map
+        markers.forEach(function (marker) {
+            marker.setMap(null);
         });
-        marker2.setIcon(icon2); // Set custom icon
     }
 
-    
-    
-
-    // Extend the bounds to include the new markers
-    const bounds = new google.maps.LatLngBounds();
-    if (marker1) {
-        bounds.extend(marker1.getPosition());
+    function removeMarkersOutsideCircle(center, radius) {
+        // Remove markers outside the circle
+        markers.forEach(function (marker) {
+            const distance = google.maps.geometry.spherical.computeDistanceBetween(marker.getPosition(), center);
+            if (distance > radius) {
+                marker.setMap(null);
+            }
+        });
     }
-    if (marker2) {
-        bounds.extend(marker2.getPosition());
+
+    function updateMarkersVisibility(circle, markers) {
+        // Update markers visibility based on whether they are inside or outside the circle
+        markers.forEach(function (marker) {
+            const distance = google.maps.geometry.spherical.computeDistanceBetween(marker.getPosition(), circle.getCenter());
+            if (distance <= circle.getRadius()) {
+                marker.setVisible(true);
+            } else {
+                marker.setVisible(false);
+            }
+        });
     }
-}   
-    document.getElementById("seeInstructorsBtn").addEventListener("click", function() {
-        // Get the center of the map
-        const center = map.getCenter();
 
-        // Get the radius value from the slider
-        const radiusSlider = document.getElementById("radiusSlider");
-        const radius = parseInt(radiusSlider.value);
-
-        // Add random markers inside the radius
-        addRandomMarkers(center, radius);
-    });
-
+    // Call the initMap function to initialize the map
     initMap();
 });
