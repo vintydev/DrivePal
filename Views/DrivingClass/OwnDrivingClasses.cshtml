@@ -1,0 +1,60 @@
+﻿@model IEnumerable<DrivePal.Models.DrivingClass>
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "OwnDrivingClasses";
+}
+
+<h1>OwnDrivingClasses</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DrivingClassStart)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DrivingClassEnd)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Instructor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LearnerId)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DrivingClassStart)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DrivingClassEnd)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Instructor.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LearnerId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.DrivingClassId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DrivingClassId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DrivingClassId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

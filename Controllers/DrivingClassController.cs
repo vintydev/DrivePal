@@ -31,12 +31,43 @@ namespace DrivePal.Controllers
             _roleManager = roleManager;
         }
 
+        private string GetUserId()
+        {
+            return User.FindFirstValue(ClaimTypes.NameIdentifier);
+        }
+
+        public async Task<IActionResult> OwnDrivingClasses()
+        {
+            // Assuming GetUserId() retrieves the current logged-in instructor's ID.
+            string currentInstructorId = GetUserId();
+
+            // Now, filter the driving classes to include only those that match the instructor ID.
+            var drivingClasses = _context.DrivingClasses
+                                        .Include(i => i.Instructor)
+                                        .Where(d => d.Instructor.Id == currentInstructorId);
+
+            return View(await drivingClasses.ToListAsync());
+        }
+
+
+
         public async Task<IActionResult> Index()
         {
             var drivingClasses = _context.DrivingClasses.Include(i => i.Instructor);
             return View(await drivingClasses.ToListAsync());
 
         }
+
+
+
+
+
+
+
+
+
+
+
 
         // GET: Reviews/Create
         [Authorize(Roles = "Instructor")]
