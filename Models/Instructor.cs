@@ -17,7 +17,7 @@ namespace DrivePal.Models
         public bool? isApproved { get; set; }
 
         public bool? isBlocked { get; set; }
-        [Display(Name = "Total Rating")]
+        [Display(Name = "Average Rating")]
         [Column(TypeName = "decimal(3,1)")]
 
         public decimal TotalRating { get; set; }
