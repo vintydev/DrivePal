@@ -18,7 +18,7 @@ namespace DrivePal.Models.ServiceClasses
 
 
             // Create roles if they do not exist
-            string[] roles = { "Admin", "Instructor", "Learner" };
+            string[] roles = { "Admin", "Instructor", "Learner","Staff" };
             foreach (var roleName in roles)
             {
                 if (!await roleManager.RoleExistsAsync(roleName))
