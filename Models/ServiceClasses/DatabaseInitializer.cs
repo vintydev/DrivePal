@@ -65,8 +65,8 @@ namespace DrivePal.Models.ServiceClasses
                     isApproved = true,
                     isBlocked = false,
                 };
-                await userManager.CreateAsync(adminUser, "pass123");
-                await userManager.AddToRoleAsync(adminUser, "Instructor");
+                await userManager.CreateAsync(instructorUser, "pass123");
+                await userManager.AddToRoleAsync(instructorUser, "Instructor");
             }
 
             if (!context.Users.Any(u => u.UserName == "instructor2@example.com"))
@@ -87,8 +87,8 @@ namespace DrivePal.Models.ServiceClasses
                     isApproved = true,
                     isBlocked = false,
                 };
-                await userManager.CreateAsync(adminUser, "Instructor2Password123!");
-                await userManager.AddToRoleAsync(adminUser, "Instructor");
+                await userManager.CreateAsync(instructorUser2, "pass123");
+                await userManager.AddToRoleAsync(instructorUser2, "Instructor");
             }
             //seeding instructor non approved
             if (!context.Users.Any(u => u.UserName == "instructor4@example.com"))
@@ -107,48 +107,73 @@ namespace DrivePal.Models.ServiceClasses
                     EmailConfirmed = true,
                     LicenceNumber = "8765412187654321",
                     isApproved = false,
-                    isBlocked = false,
+                    isBlocked = false
+                };
+                await userManager.CreateAsync(adminUser, "pass123");
+                await userManager.AddToRoleAsync(adminUser, "Instructor");
 
+            }
+            if (!context.Users.Any(u => u.UserName == "instructor5@example.com"))
+            {
+                var adminUser = new Instructor
+                {
+                    UserName = "instructor4@example.com",
+                    Email = "instructor4@example.com",
+                    FirstName = "Lewis",
+                    LastName = "Shamilton",
+                    City = "Glasgow",
+                    Street = "2 Maryhill Street",
+                    PostCode = "G203AA",
+                    DOB = new DateOnly(1997, 3, 11),
+                    TotalRating = 0,
+                    EmailConfirmed = true,
+                    LicenceNumber = "8765412187654323",
+                    isApproved = false,
+                    isBlocked = false
+                };
+                await userManager.CreateAsync(adminUser, "pass123");
+                await userManager.AddToRoleAsync(adminUser, "Instructor");
 
-
+            }
 
             // Create an admin user if it does not exist
             if (!context.Users.Any(u => u.UserName == "learner@example.com"))
-            {
-                var learnerUser = new Learner
                 {
-                    UserName = "learner@example.com",
-                    Email = "learner@example.com",
-                    FirstName = "Emma",
-                    LastName = "Williams",
-                    City = "Glasgow",
-                    Street = "Bath Street",
-                    PostCode = "G1 1AA",
-                    DOB = new DateOnly(1997, 3, 13),
-                    EmailConfirmed = true,
-                    LicenceNumber = "12345678"
-                };
-                await userManager.CreateAsync(adminUser, "LearnerPassword123!");
-                await userManager.AddToRoleAsync(adminUser, "Learner");
-            }
+                    var learnerUser = new Learner
+                    {
+                        UserName = "learner@example.com",
+                        Email = "learner@example.com",
+                        FirstName = "Emma",
+                        LastName = "Williams",
+                        City = "Glasgow",
+                        Street = "Bath Street",
+                        PostCode = "G1 1AA",
+                        DOB = new DateOnly(1997, 3, 13),
+                        EmailConfirmed = true,
+                        LicenceNumber = "12345678"
+                    };
+                    await userManager.CreateAsync(learnerUser, "pass123");
+                    await userManager.AddToRoleAsync(learnerUser, "Learner");
+                }
 
-            if (!context.Users.Any(u => u.UserName == "learner2@example.com"))
-            {
-                var learnerUser2 = new Learner
+                if (!context.Users.Any(u => u.UserName == "learner2@example.com"))
                 {
-                    UserName = "learner2@example.com",
-                    Email = "learner2@example.com",
-                    FirstName = "Sophie",
-                    LastName = "Brown",
-                    City = "Glasgow",
-                    Street = "Hope Street",
-                    PostCode = "G15AA",
-                    DOB = new DateOnly(1994, 4, 11),
-                    EmailConfirmed = true,
-                };
-                await userManager.CreateAsync(adminUser, "Learner2Password123!");
-                await userManager.AddToRoleAsync(adminUser, "Learner");
+                    var learnerUser2 = new Learner
+                    {
+                        UserName = "learner2@example.com",
+                        Email = "learner2@example.com",
+                        FirstName = "Sophie",
+                        LastName = "Brown",
+                        City = "Glasgow",
+                        Street = "Hope Street",
+                        PostCode = "G15AA",
+                        DOB = new DateOnly(1994, 4, 11),
+                        EmailConfirmed = true,
+                    };
+                    await userManager.CreateAsync(learnerUser2, "pass123");
+                    await userManager.AddToRoleAsync(learnerUser2, "Learner");
+                }
             }
         }
     }
-}
+
