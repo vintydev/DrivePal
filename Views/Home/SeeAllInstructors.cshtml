@@ -104,6 +104,7 @@
                                 }
                             </td>
                             <td>
+                                <a href="@Url.Action("Inbox", "Messaging", new { receiverId = instructor.Id })" class="btn btn-secondary">Message</a>
                                 <a href="@Url.Action("Create", "Reviews", new { id = instructor.Id })" class="btn btn-primary">Write a Review</a>
                                 <a href="@Url.Action("ViewReviews", "Reviews", new { id = instructor.Id })" class="btn btn-primary">View all Reviews</a>
                             </td>

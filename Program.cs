@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
+using DrivePal.Hubs;
+using System.Web.Http;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +44,9 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.AddTransient<EmailService>();
 
+//SignalR service
+builder.Services.AddSignalR();
+
 
 ////adds Stripe service
 //var stripeKey = builder.Configuration.GetSection("Stripe")["SecretKey"];
@@ -72,7 +78,16 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+//added new route for messaging
+//app.MapControllerRoute(
+//    name: "messaging",
+//    pattern: "{controller=Messaging}/{action=Inbox}/{receiverId?}",
+//        defaults: new { receiverId = RouteParameter.Optional });
+
 app.MapRazorPages();
+
+app.MapHub<MessagesHub>("/messagesHub");
 
 // Initialize the database
 using (var scope = app.Services.CreateScope())

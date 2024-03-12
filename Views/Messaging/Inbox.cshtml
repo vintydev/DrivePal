@@ -1,0 +1,32 @@
+﻿@model DrivePal.Models.User
+
+@section Scripts {
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/messaging.js"></script>
+}
+
+<div class="messaging-container">
+    <div class="sidebar">
+        <div class="search-box">
+            <input type="text" placeholder="Search...">
+        </div>
+        <div class="conversation-list">
+            <!-- Conversation list items will be rendered here -->
+        </div>
+    </div>
+    <div class="chat-window">
+        <div class="chat-header">
+            <div class="receiver-info">
+                <img src="#" alt="Receiver Avatar" class="receiver-avatar">
+                <span id="receiverName"></span>
+            </div>
+        </div>
+        <div class="chat-body">
+            <ul id="messageList"></ul>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="messageInput" placeholder="Type your message...">
+            <button id="sendButton">Send</button>
+        </div>
+    </div>
+</div>

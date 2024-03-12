@@ -577,3 +577,19 @@ footer {
         color: #c9302c; /* Darker shade on hover */
     }
 
+#messageList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.message {
+    margin-bottom: 10px;
+}
+
+.sent {
+    text-align: right;
+}
+
+.received {
+    text-align: left;
+}

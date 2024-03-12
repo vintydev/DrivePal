@@ -14,6 +14,18 @@ namespace DrivePal.Data
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Message>()
+            .HasOne(m => m.Sender)
+            .WithMany()
+            .HasForeignKey(m => m.SenderId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Message>()
+                .HasOne(m => m.Receiver)
+                .WithMany()
+                .HasForeignKey(m => m.ReceiverId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             // Set the delete behavior for all relationships to Restrict
             foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
@@ -30,6 +42,7 @@ namespace DrivePal.Data
         public DbSet<Card> Cards { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<DrivingClass> DrivingClasses { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
     }
 }
