@@ -48,6 +48,7 @@ namespace DrivePal.Migrations
                     isBlocked = table.Column<bool>(type: "bit", nullable: true),
                     isExperienced = table.Column<bool>(type: "bit", nullable: true),
                     lessonCount = table.Column<int>(type: "int", nullable: true),
+                    WorkType = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -175,27 +176,6 @@ namespace DrivePal.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Bookings",
-                columns: table => new
-                {
-                    BookingId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    LearnerId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bookings", x => x.BookingId);
-                    table.ForeignKey(
-                        name: "FK_Bookings_AspNetUsers_LearnerId",
-                        column: x => x.LearnerId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Cards",
                 columns: table => new
                 {
@@ -228,6 +208,7 @@ namespace DrivePal.Migrations
                     DrivingClassStart = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DrivingClassEnd = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    IsReserved = table.Column<bool>(type: "bit", nullable: true),
                     InstructorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     LearnerId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -268,6 +249,41 @@ namespace DrivePal.Migrations
                         column: x => x.LearnerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bookings",
+                columns: table => new
+                {
+                    BookingId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BookingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    InstructorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    LearnerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    DrivingClassId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bookings", x => x.BookingId);
+                    table.ForeignKey(
+                        name: "FK_Bookings_AspNetUsers_InstructorId",
+                        column: x => x.InstructorId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Bookings_AspNetUsers_LearnerId",
+                        column: x => x.LearnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Bookings_DrivingClasses_DrivingClassId",
+                        column: x => x.DrivingClassId,
+                        principalTable: "DrivingClasses",
+                        principalColumn: "DrivingClassId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -339,6 +355,18 @@ namespace DrivePal.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Bookings_DrivingClassId",
+                table: "Bookings",
+                column: "DrivingClassId",
+                unique: true,
+                filter: "[DrivingClassId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bookings_InstructorId",
+                table: "Bookings",
+                column: "InstructorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Bookings_LearnerId",
                 table: "Bookings",
                 column: "LearnerId");
@@ -356,7 +384,9 @@ namespace DrivePal.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_BookingId",
                 table: "Payments",
-                column: "BookingId");
+                column: "BookingId",
+                unique: true,
+                filter: "[BookingId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_CardId",
@@ -393,9 +423,6 @@ namespace DrivePal.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "DrivingClasses");
-
-            migrationBuilder.DropTable(
                 name: "Payments");
 
             migrationBuilder.DropTable(
@@ -409,6 +436,9 @@ namespace DrivePal.Migrations
 
             migrationBuilder.DropTable(
                 name: "Cards");
+
+            migrationBuilder.DropTable(
+                name: "DrivingClasses");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

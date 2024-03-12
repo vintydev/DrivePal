@@ -9,6 +9,7 @@ namespace DrivePal.Models
         public DateTime DrivingClassStart { get; set; }
         public DateTime DrivingClassEnd { get; set; }
         public decimal Price { get; set; }
+        public bool? IsReserved { get; set; }
 
         ///Navigation properties
         [ForeignKey("Instructor")]
@@ -16,9 +17,7 @@ namespace DrivePal.Models
         public virtual Instructor? Instructor { get; set; }
         [ForeignKey("Learner")]
         public string? LearnerId { get; set; }
-        public Learner? Learner;
-
-
-
+        public virtual Learner? Learner { get; set; }
+        public virtual Booking? Booking { get; set; }
     }
 }

@@ -27,11 +27,13 @@
                         <li><a href="/LearnerData/LearnerSeeOwnDetails">See your Learner's details</a></li>
                         <li><a href="/Card/CustomerSeeOwnCards">See your debit/credit cards</a></li>
                         <li><a href="/Booking/ShowOwnBookings">See your booked classes</a></li>
+                        <li><a href="/DrivingClass/Index">See all classes</a></li>
                     }
                     if (User.IsInRole("Instructor"))
                     {
                         <li><a href="/InstructorData/InstructorSeeOwnDetails">See your Instructor' details</a></li>
                         <li><a href="/DrivingClass/OwnDrivingClasses">Manage your classes</a></li>
+                        <li><a href="/Booking/ShowBookedClasses">See what classes have been booked</a></li>
                     }
                     if (User.IsInRole("Admin"))
                     {

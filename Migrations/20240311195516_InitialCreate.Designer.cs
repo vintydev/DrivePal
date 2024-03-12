@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrivePal.Migrations
 {
     [DbContext(typeof(DrivePalDbContext))]
-    [Migration("20240228140253_InitialCreate")]
+    [Migration("20240311195516_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -36,6 +36,12 @@ namespace DrivePal.Migrations
                     b.Property<DateTime>("BookingDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("DrivingClassId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("InstructorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("LearnerId")
                         .HasColumnType("nvarchar(450)");
 
@@ -43,6 +49,12 @@ namespace DrivePal.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("BookingId");
+
+                    b.HasIndex("DrivingClassId")
+                        .IsUnique()
+                        .HasFilter("[DrivingClassId] IS NOT NULL");
+
+                    b.HasIndex("InstructorId");
 
                     b.HasIndex("LearnerId");
 
@@ -103,6 +115,9 @@ namespace DrivePal.Migrations
                     b.Property<string>("InstructorId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool?>("IsReserved")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LearnerId")
                         .HasColumnType("nvarchar(max)");
 
@@ -138,7 +153,9 @@ namespace DrivePal.Migrations
 
                     b.HasKey("PaymentId");
 
-                    b.HasIndex("BookingId");
+                    b.HasIndex("BookingId")
+                        .IsUnique()
+                        .HasFilter("[BookingId] IS NOT NULL");
 
                     b.HasIndex("CardId");
 
@@ -486,15 +503,34 @@ namespace DrivePal.Migrations
                 {
                     b.HasBaseType("DrivePal.Models.User");
 
+                    b.Property<int>("WorkType")
+                        .HasColumnType("int");
+
                     b.HasDiscriminator().HasValue("Staff");
                 });
 
             modelBuilder.Entity("DrivePal.Models.Booking", b =>
                 {
-                    b.HasOne("DrivePal.Models.Learner", null)
+                    b.HasOne("DrivePal.Models.DrivingClass", "DrivingClass")
+                        .WithOne("Booking")
+                        .HasForeignKey("DrivePal.Models.Booking", "DrivingClassId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("DrivePal.Models.Instructor", "Instructor")
+                        .WithMany()
+                        .HasForeignKey("InstructorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("DrivePal.Models.Learner", "Learner")
                         .WithMany("Bookings")
                         .HasForeignKey("LearnerId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("DrivingClass");
+
+                    b.Navigation("Instructor");
+
+                    b.Navigation("Learner");
                 });
 
             modelBuilder.Entity("DrivePal.Models.Card", b =>
@@ -520,8 +556,8 @@ namespace DrivePal.Migrations
             modelBuilder.Entity("DrivePal.Models.Payment", b =>
                 {
                     b.HasOne("DrivePal.Models.Booking", "Booking")
-                        .WithMany()
-                        .HasForeignKey("BookingId")
+                        .WithOne("Payment")
+                        .HasForeignKey("DrivePal.Models.Payment", "BookingId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("DrivePal.Models.Card", "Card")
@@ -602,9 +638,19 @@ namespace DrivePal.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DrivePal.Models.Booking", b =>
+                {
+                    b.Navigation("Payment");
+                });
+
             modelBuilder.Entity("DrivePal.Models.Card", b =>
                 {
                     b.Navigation("Payments");
+                });
+
+            modelBuilder.Entity("DrivePal.Models.DrivingClass", b =>
+                {
+                    b.Navigation("Booking");
                 });
 
             modelBuilder.Entity("DrivePal.Models.Instructor", b =>
