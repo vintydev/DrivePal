@@ -3,58 +3,66 @@
 
 @{
     ViewData["Title"] = "Index";
+    var groupedClasses = Model
+        .Where(i => i.IsReserved == false)
+        .GroupBy(i => i.Instructor.LastName)
+        .OrderBy(g => g.Key);
 }
 
-<h1>Index</h1>
-@if (User.Identity.IsAuthenticated)
-                {
-                    if (User.IsInRole("Instructor"))
-                    {
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-                    }
-                }
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DrivingClassStart)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DrivingClassEnd)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Instructor)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DrivingClassStart)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DrivingClassEnd)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Instructor.LastName)
-            </td>
-                @if (User.Identity.IsAuthenticated && User.IsInRole("Instructor") && item.InstructorId == User.FindFirstValue(ClaimTypes.NameIdentifier))
-                {
-                    <td>
-                        <a asp-action="Delete" asp-route-id="@item.DrivingClassId">Delete</a>
-                    </td>
-                }
-        </tr>
+<h2>All available classes</h2>
+@if (User.Identity.IsAuthenticated && User.IsInRole("Instructor"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
 }
-    </tbody>
-</table>
+
+@foreach (var group in groupedClasses)
+{
+    <h3>@group.Key's Classes</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DrivingClassStart)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DrivingClassEnd)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in group)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DrivingClassStart)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DrivingClassEnd)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Learner"))
+                    {
+                        <td>
+                            <a asp-controller="Booking" asp-action="SelectClass" asp-route-id="@item.DrivingClassId" class="btn btn-primary">Select this class</a>
+                        </td>
+                    }
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Instructor") && item.InstructorId == User.FindFirstValue(ClaimTypes.NameIdentifier))
+                    {
+                        <td>
+                            <a asp-action="Delete" asp-route-id="@item.DrivingClassId">Delete</a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+

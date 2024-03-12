@@ -1,0 +1,25 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model DrivePal.Models.DrivingClass
+
+@{
+    ViewData["Title"] = "Select Class";
+}
+
+<h1>Select Class</h1>
+
+<div>
+    <h2>Class Details</h2>
+    <div>Date/Time: @Model.DrivingClassStart - @Model.DrivingClassEnd</div>
+    <div>Price: @Model.Price</div>
+    <div>Instructor: @Model.Instructor.LastName</div>
+    <!-- Add more details as needed -->
+</div>
+
+<form asp-controller="Booking" asp-action="MakeBooking" method="post">
+    <input type="hidden" name="DrivingClassId" value="@Model.DrivingClassId" />
+    <input type="submit" value="Reserve this class" class="btn btn-success" />
+</form>

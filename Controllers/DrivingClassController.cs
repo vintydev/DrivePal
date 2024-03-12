@@ -44,12 +44,11 @@ namespace DrivePal.Controllers
             // Now, filter the driving classes to include only those that match the instructor ID.
             var drivingClasses = _context.DrivingClasses
                                         .Include(i => i.Instructor)
+                                        .Include(d => d.Learner) // Include the Learner navigation property
                                         .Where(d => d.Instructor.Id == currentInstructorId);
 
             return View(await drivingClasses.ToListAsync());
         }
-
-
 
         public async Task<IActionResult> Index()
         {
@@ -57,18 +56,6 @@ namespace DrivePal.Controllers
             return View(await drivingClasses.ToListAsync());
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
         // GET: Reviews/Create
         [Authorize(Roles = "Instructor")]
         public IActionResult Create()
@@ -84,23 +71,26 @@ namespace DrivePal.Controllers
         [HttpPost]
         [Authorize(Roles = "Instructor")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DrivingClassStart,DrivingClassEnd,Price,InstructorId,LearnerId")] DrivingClass drivingClass)
+        public async Task<IActionResult> Create([Bind("DrivingClassStart,DrivingClassEnd,Price,InstructorId")] DrivingClass drivingClass)
         {
             if (ModelState.IsValid)
             {
-                // Set the InstructorId if not set from the form, as the user is authenticated and authorized as an Instructor
+                // Set the InstructorId if not set from the form
                 if (string.IsNullOrEmpty(drivingClass.InstructorId))
                 {
                     drivingClass.InstructorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 }
 
+                // Set IsReserved to false when creating a new DrivingClass
+                drivingClass.IsReserved = false;
+
                 _context.Add(drivingClass);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(OwnDrivingClasses));
             }
-
             return View(drivingClass);
         }
+
 
 
         // GET: DrivingClasses/Delete/5

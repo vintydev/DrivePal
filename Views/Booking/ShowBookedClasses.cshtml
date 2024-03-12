@@ -1,0 +1,44 @@
+﻿@model DrivePal.Models.ViewModels.LearnerBookingsViewModel
+
+@{
+    ViewData["Title"] = "Booked Classes";
+}
+
+@{
+    ViewData["Title"] = "Your Booked Classes";
+}
+
+<h2>Your Booked Classes</h2>
+
+@if (Model.Bookings.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Booking Date</th>
+                <th>Price</th>
+                <th>Class Start</th>
+                <th>Class End</th>
+                <th>Learner</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model.Bookings)
+            {
+                <tr>
+                    <td>@booking.BookingId</td>
+                    <td>@booking.BookingDate.ToString("g")</td>
+                    <td>@booking.Price</td>
+                    <td>@booking.DrivingClassStart.ToString("g")</td>
+                    <td>@booking.DrivingClassEnd.ToString("g")</td>
+                    <td>@booking.LearnerLastName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>You have no booked classes.</p>
+}
