@@ -23,7 +23,7 @@ namespace DrivePal.Models
         public decimal TotalRating { get; set; }
 
         //navigational property
-        public List<Review>? Reviews { get; set; }
+        public virtual ICollection<Review>? Reviews { get; set; }
         public List<DrivingClass>? DrivingClasses { get; set; }
 
         public string GetPostcode()

@@ -43,7 +43,7 @@ namespace DrivePal.Models.ServiceClasses
                     EmailConfirmed = true,
 
                 };
-                await userManager.CreateAsync(adminUser, "AdminPassword123!");
+                await userManager.CreateAsync(adminUser, "pass123");
                 await userManager.AddToRoleAsync(adminUser, "Admin");
             }
 
@@ -67,7 +67,7 @@ namespace DrivePal.Models.ServiceClasses
                     isBlocked = false,
 
                 };
-                await userManager.CreateAsync(adminUser, "InstructorPassword123!");
+                await userManager.CreateAsync(adminUser, "pass123");
                 await userManager.AddToRoleAsync(adminUser, "Instructor");
             }
 
@@ -91,10 +91,56 @@ namespace DrivePal.Models.ServiceClasses
                     isBlocked = false,
 
                 };
-                await userManager.CreateAsync(adminUser, "Instructor2Password123!");
+                await userManager.CreateAsync(adminUser, "pass123");
                 await userManager.AddToRoleAsync(adminUser, "Instructor");
             }
+          
+            //seeding instructor non approved
+            if (!context.Users.Any(u => u.UserName == "instructor3@example.com"))
+            {
+                var adminUser = new Instructor
+                {
+                    UserName = "instructor3@example.com",
+                    Email = "instructor3@example.com",
+                    FirstName = "Lewis",
+                    LastName = "Shamilton",
+                    City = "Glasgow",
+                    Street = "4 Maryhill Street",
+                    PostCode = "G203AA",
+                    DOB = new DateOnly(1997, 3, 11),
+                    TotalRating = 0,
+                    EmailConfirmed = true,
+                    LicenceNumber = "8165432187654321",
+                    isApproved = false,
+                    isBlocked = false,
 
+                };
+                await userManager.CreateAsync(adminUser, "pass123");
+                await userManager.AddToRoleAsync(adminUser, "Instructor");
+            }
+            //seeding instructor non approved
+            if (!context.Users.Any(u => u.UserName == "instructor4@example.com"))
+            {
+                var adminUser = new Instructor
+                {
+                    UserName = "instructor4@example.com",
+                    Email = "instructor4@example.com",
+                    FirstName = "Lando",
+                    LastName = "Norris",
+                    City = "Glasgow",
+                    Street = "2 Maryhill Street",
+                    PostCode = "G203AA",
+                    DOB = new DateOnly(1997, 3, 11),
+                    TotalRating = 0,
+                    EmailConfirmed = true,
+                    LicenceNumber = "8765412187654321",
+                    isApproved = false,
+                    isBlocked = false,
+
+                };
+                await userManager.CreateAsync(adminUser, "pass123");
+                await userManager.AddToRoleAsync(adminUser, "Instructor");
+            }
 
 
 
@@ -115,7 +161,7 @@ namespace DrivePal.Models.ServiceClasses
                     LicenceNumber = "12345678"
 
                 };
-                await userManager.CreateAsync(adminUser, "LearnerPassword123!");
+                await userManager.CreateAsync(adminUser, "pass123");
                 await userManager.AddToRoleAsync(adminUser, "Learner");
             }
 
@@ -134,7 +180,7 @@ namespace DrivePal.Models.ServiceClasses
                     DOB = new DateOnly(1994, 4, 11),
                     EmailConfirmed = true,
                 };
-                await userManager.CreateAsync(adminUser, "Learner2Password123!");
+                await userManager.CreateAsync(adminUser, "pass123");
                 await userManager.AddToRoleAsync(adminUser, "Learner");
             }
         }

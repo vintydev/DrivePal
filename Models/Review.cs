@@ -22,10 +22,12 @@ namespace DrivePal.Models
     
         public DateTime? DateCreated { get; set; }
 
-    
+        public bool isFlagged { get; set; }
 
 
-    //Navigational properties
+
+
+        //Navigational properties
         public string InstructorId { get; set; }
 
         public virtual Instructor? Instructor { get; set; }
@@ -33,7 +35,7 @@ namespace DrivePal.Models
         
         public string LearnerId { get; set; }
 
-        public  Learner? Learner;
+        public virtual Learner? Learner { get; set; }
 
     }
 }

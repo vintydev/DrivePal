@@ -1,0 +1,41 @@
+﻿@model IEnumerable<DrivePal.Models.Instructor>
+@{
+
+}
+<h1>Main Menu</h1>
+<hr />
+
+<h3>Instructors needing approved (@ViewBag.Count)</h3>
+
+<a class="btn btn-primary" asp-controller="StaffArea" asp-action="ViewReviews">View Reported Reviews (@ViewBag.Reviews)</a>
+<a class="btn btn-success" asp-controller="Admin" asp-action="AllUsersPDF">All Learners</a>
+<a class="btn btn-success" asp-controller="Warehouse" asp-action="Index">All Instructors</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Postcode</th>
+            <th>License Number</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.FirstName</td>
+                <td>@user.LastName</td>
+                <td>@user.Email</td>
+                <td>@user.PostCode</td>
+                <td>@user.LicenceNumber</td>
+                <td>
+
+                    <a class="btn btn-primary" asp-controller="StaffArea" asp-action="ApproveInstructor" asp-route-Id="@user.Id">Approve Account</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

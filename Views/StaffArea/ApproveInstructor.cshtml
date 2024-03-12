@@ -1,0 +1,59 @@
+﻿@model DrivePal.Models.ViewModels.InstructorEditOwnDetails
+
+@{
+    ViewData["Title"] = "Check Instructor Details";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="ApproveInstructor" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Email" class="control-label"></label>
+        <input asp-for="Email" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FirstName" class="control-label"></label>
+        <input asp-for="FirstName" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LastName" class="control-label"></label>
+        <input asp-for="LastName" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DOB" class="control-label"></label>
+        <input asp-for="DOB" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LicenceNumber" class="control-label"></label>
+        <input asp-for="LicenceNumber" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Street" class="control-label"></label>
+        <input asp-for="Street" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PostCode" class="control-label"></label>
+        <input asp-for="PostCode" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="City" class="control-label"></label>
+        <input asp-for="City" class="form-control" readonly />
+    </div>
+
+   <br />
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Approve</button>
+        <a class="btn btn-danger" asp-controller="StaffArea" asp-action="Index">Reject</a>
+    </div>
+</form>
+

@@ -33,22 +33,28 @@ namespace DrivePal.Controllers
         }
 
         // GET: Reviews/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> ViewReviews(string? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
+            var instructor=_context.Instructors.Where(r=>r.Id==id).FirstOrDefault();
+            ViewBag.Name=instructor.FirstName+" "+instructor.LastName;
 
-            var review = await _context.Reviews
-                .Include(r => r.Instructor)
-                .FirstOrDefaultAsync(m => m.ReviewId == id);
-            if (review == null)
+            var reviews = _context.Reviews
+            .Where(r => r.InstructorId == id)
+            .Include(r => r.Learner)
+            .Include(r => r.Instructor)
+            .ToList();
+
+
+            if (reviews == null)
             {
                 return NotFound();
             }
 
-            return View(review);
+            return View(reviews);
         }
 
         // GET: Reviews/Create
@@ -81,7 +87,11 @@ namespace DrivePal.Controllers
         {
             review.DateCreated = DateTime.Now;
             var instructor = _context.Instructors.Where(r => r.Id == review.InstructorId).FirstOrDefault();
+            var learner = _context.Learners.Where(r => r.Id == review.LearnerId).FirstOrDefault();
             review.Instructor = instructor;
+            review.Learner=learner;
+            review.isFlagged = false;
+            
             
 
 
@@ -95,7 +105,7 @@ namespace DrivePal.Controllers
                 _context.Update(instructor);
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("SeeAllInstructors", "Home");
             }
             ViewData["InstructorId"] = new SelectList(_context.Instructors, "Id", "Id", review.InstructorId);
             return View(review);

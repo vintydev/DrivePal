@@ -71,7 +71,7 @@ namespace DrivePal.Controllers
 
         public IActionResult RegisterStaff()
         {
-            ViewData["Title"] = "CreateStaffAccount";
+            ViewData["Title"] = "Create Staff Account";
 
             var workTypes = Enum.GetValues(typeof(DrivePal.Models.ViewModels.WorkType))
                                 .Cast<Models.ViewModels.WorkType>()
