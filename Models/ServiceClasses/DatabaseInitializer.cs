@@ -117,8 +117,8 @@ namespace DrivePal.Models.ServiceClasses
             {
                 var adminUser = new Instructor
                 {
-                    UserName = "instructor4@example.com",
-                    Email = "instructor4@example.com",
+                    UserName = "instructor5@example.com",
+                    Email = "instructor5@example.com",
                     FirstName = "Lewis",
                     LastName = "Shamilton",
                     City = "Glasgow",
