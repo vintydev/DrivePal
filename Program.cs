@@ -47,6 +47,8 @@ builder.Services.AddTransient<EmailService>();
 //SignalR service
 builder.Services.AddSignalR();
 
+builder.Services.AddScoped<ChatService>();
+
 
 ////adds Stripe service
 //var stripeKey = builder.Configuration.GetSection("Stripe")["SecretKey"];
@@ -87,7 +89,7 @@ app.MapControllerRoute(
 
 app.MapRazorPages();
 
-app.MapHub<MessagesHub>("/messagesHub");
+app.MapHub<ChatHub>("/chatHub");
 
 // Initialize the database
 using (var scope = app.Services.CreateScope())

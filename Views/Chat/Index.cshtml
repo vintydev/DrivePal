@@ -1,0 +1,51 @@
+﻿@model List<ChatMessage>
+
+<h2>Chat</h2>
+
+@if (Model.Any())
+{
+    <ul id="messages">
+        @foreach (var message in Model)
+        {
+            <li>
+                <strong>@message.SentAt.ToString("HH:mm:ss")</strong> -
+                <span>@message.Content</span> -
+                <em>@(message.SenderId)</em>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>No previous chats.</p>
+}
+
+<div>
+    <input type="text" id="messageInput" />
+    <button id="sendButton">Send</button>
+</div>
+
+@section Scripts {
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/chat.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chathub")
+            .build();
+
+        connection.start().catch(err => console.error(err.toString()));
+
+        document.getElementById("sendButton").addEventListener("click", event => {
+            const message = document.getElementById("messageInput").value;
+            connection.invoke("SendMessage", message).catch(err => console.error(err.toString()));
+            event.preventDefault();
+        });
+
+        connection.on("ReceiveMessage", (user, message) => {
+            const encodedMessage = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            const li = document.createElement("li");
+            li.innerHTML = `<strong>${new Date().toLocaleTimeString()}</strong> - <span>${encodedMessage}</span> - <em>${user}</em>`;
+            document.getElementById("messages").appendChild(li);
+        });
+    </script>
+}
