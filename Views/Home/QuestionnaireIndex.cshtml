@@ -23,18 +23,20 @@
                
                 <label asp-for="MinPrice" class="control-label"></label>
                 <br/>
-                 <span asp-validation-for="MinPrice" class="text-danger"></span>
+                <span asp-validation-for="MinPrice" class="text-danger"></span>
                 <input asp-for="MinPrice" class="form-control"/>
 
             </div>
+            <br/>
             <div class="form-group">
                
                 <label asp-for="MaxPrice" class="control-label"></label>
                 <br/>
-                 <span asp-validation-for="MaxPrice" class="text-danger"></span>
+                <span asp-validation-for="MaxPrice" class="text-danger"></span>
                 <input asp-for="MaxPrice" class="form-control"/>
 
             </div>
+            <br/>
 
             @* <div class="form-group"> *@
             @*     <label asp-for="DrivingStatus"></label> *@
@@ -43,12 +45,13 @@
             @* </div> *@
 
             <div class="form-group">
-                <label asp-for="TeachingType"></label>
+                <label asp-for="DrivingStatus"></label>
                 <div class="col-md-3">
                     <select asp-for="@Model.DrivingStatus" class="form-control" asp-items="Html.GetEnumSelectList<DrivingStatus>()"></select>
                     @Html.ValidationMessageFor(model => model.DrivingStatus, "", new { @class = "text-danger" })
                 </div>
             </div>
+            <br/>
 
             <div class="form-group">
                 <label asp-for="TeachingType"></label>
@@ -57,6 +60,7 @@
                     @Html.ValidationMessageFor(model => model.TeachingType, "", new { @class = "text-danger" })
                 </div>
             </div>
+            <br/>
 
             <div class="form-group">
                 <label asp-for="LessonDuration"></label>
@@ -65,20 +69,21 @@
                     @Html.ValidationMessageFor(model => model.LessonDuration, "", new { @class = "text-danger" })
                 </div>
             </div>
+            <br/>
             
             <div>
                 <label asp-for="DrivingGoals"></label>
                 <span asp-validation-for="DrivingGoals" class="text-danger"></span>
 
-             @if (Model.GoalIndex.HasValue && ViewBag.ErrorMessages != null && ViewBag.ErrorMessages.Count > Model.GoalIndex.Value)
-             {
-                 <label class="text-danger">
-                     @if (Model.GoalIndex != null)
-                     {
-                         @ViewBag.ErrorMessages[Model.GoalIndex.Value]
-                     }
-                 </label>
-             }
+                @if (Model.GoalIndex.HasValue && ViewBag.ErrorMessages != null && ViewBag.ErrorMessages.Count > Model.GoalIndex.Value)
+                {
+                    <label class="text-danger">
+                        @if (Model.GoalIndex != null)
+                        {
+                            @ViewBag.ErrorMessages[Model.GoalIndex.Value]
+                        }
+                    </label>
+                }
 
 
 
@@ -94,6 +99,7 @@
                 }
 
             </div>
+            <br/>
             
             <div>
                 <label asp-for="TeachingTraits"></label>
@@ -118,31 +124,31 @@
                 }
 
             </div>
+            <br/>
             
-          <div>
-              <label asp-for="AvailableDaysOf"></label>
-              <span asp-validation-for="AvailableDaysOf" class="text-danger"></span>
-              @if (Model.DayIndex.HasValue && ViewBag.ErrorMessages != null && ViewBag.ErrorMessages.Count > Model.DayIndex.Value)
-              {
-                  <label class="text-danger">
-                      @if (Model.DayIndex != null)
-                      {
-                          @ViewBag.ErrorMessages[Model.DayIndex.Value]
-                      }
-                  </label>
-              }
+            <div>
+                <label asp-for="AvailableDaysOf"></label>
+                <span asp-validation-for="AvailableDaysOf" class="text-danger"></span>
+                @if (Model.DayIndex.HasValue && ViewBag.ErrorMessages != null && ViewBag.ErrorMessages.Count > Model.DayIndex.Value)
+                {
+                    <label class="text-danger">
+                        @if (Model.DayIndex != null)
+                        {
+                            @ViewBag.ErrorMessages[Model.DayIndex.Value]
+                        }
+                    </label>
+                }
 
-              @foreach (var day in Model.AvailableDaysOf)
-              {
-                  <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="@($"Day_{day}")" name="selectedDays" value="@day")>
-                      <label class="form-check-label" for="@($"Day_{day}")">@day</label>
-                  </div>
+                @foreach (var day in Model.AvailableDaysOf)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="@($"Day_{day}")" name="selectedDays" value="@day")>
+                        <label class="form-check-label" for="@($"Day_{day}")">@day</label>
+                    </div>
                   
-              }
-          </div>
-
-
+                }
+            </div>
+            <br/>
 
             <div class="form-group">
                 <label asp-for="TimeOfDay"></label>
