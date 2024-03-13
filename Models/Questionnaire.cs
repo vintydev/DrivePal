@@ -10,13 +10,6 @@ namespace DrivePal.Models
     {
         [Key]
         public int QuestionnaireId { get; set; }
-        
-       // Error message purposes
-        public int? DayIndex { get; set; }
-        
-        public int? GoalIndex { get; set; }
-        
-        public int? TraitIndex { get; set; }
 
         [Range(0.01, 100, ErrorMessage = "Price must be above £0.00 & Below £100.00.")]
         [Display(Name = "Enter minimum price per lesson.")]
@@ -71,8 +64,18 @@ namespace DrivePal.Models
 
         // Nullable to prevent datetime conversions
         public DateTime? DateCompleted { get; set; }
+        
+        // Error message purposes, dont add to database
+        [NotMapped]
+        public int? DayIndex { get; set; }
+        
+        [NotMapped]
+        public int? GoalIndex { get; set; }
+        
+        [NotMapped]
+        public int? TraitIndex { get; set; }
 
-        // Navigational Propertiessss
+        // Navigational Properties
         [ForeignKey("Learner")]
         public string? LearnerId { get; set; }
         public Learner? Learner { get; set; }

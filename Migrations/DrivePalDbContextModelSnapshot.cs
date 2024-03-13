@@ -176,17 +176,11 @@ namespace DrivePal.Migrations
                     b.Property<DateTime?>("DateCompleted")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DayIndex")
-                        .HasColumnType("int");
-
                     b.Property<string>("DrivingGoals")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DrivingStatus")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("GoalIndex")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsFinished")
@@ -216,9 +210,6 @@ namespace DrivePal.Migrations
                     b.Property<string>("TimeOfDay")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("TraitIndex")
-                        .HasColumnType("int");
 
                     b.HasKey("QuestionnaireId");
 
