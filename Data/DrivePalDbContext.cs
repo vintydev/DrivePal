@@ -30,6 +30,8 @@ namespace DrivePal.Data
         public DbSet<Card> Cards { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<DrivingClass> DrivingClasses { get; set; }
+        
+        public DbSet<Questionnaire> Questionnaires { get; set; }
 
     }
 }

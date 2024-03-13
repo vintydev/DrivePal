@@ -14,8 +14,9 @@ namespace DrivePal.Models.ServiceClasses
             UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager)
         {
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+            // Dont drop database, messes with migrations
+            // Ensure create instead
+            await context.Database.EnsureCreatedAsync();
 
             // Create roles if they do not exist
             string[] roles = { "Admin", "Instructor", "Learner", "Staff" };

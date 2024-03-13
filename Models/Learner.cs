@@ -18,6 +18,11 @@ namespace DrivePal.Models
         public bool? isExperienced { get; set; }
 
         public int? lessonCount { get; set; }
+        
+        public string? GetUserId()
+        {
+            return this.Id;
+        }
 
         //Navigational property
         public virtual ICollection<Review>? Reviews { get; set; }
@@ -36,4 +41,6 @@ namespace DrivePal.Models
         [Display(Name = "Non-Binary")]
         NonBinary
     }
+    
+
 }
