@@ -1,6 +1,18 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Microsoft.AspNetCore.Identity
+@using DrivePal.Data
+@using DrivePal.Models;
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.EntityFrameworkCore
+@using System.Web.Http.ModelBinding
+@{
+
+
 }
+    
+   
+    
+
+
 
 <head>
     <meta charset="UTF-8">
@@ -52,10 +64,27 @@
                     <img src="/img/progress.png" width="100" alt="Progress Image">
                 </div>
             </section>
+
+            @if (User.IsInRole("Learner"))
+            {
+                <section class="info-box">
+                    <div class="box-content">
+                        <h2>Submit Questionnaire</h2>
+                        <p>Placeholder text</p>
+                        <p>
+                            <a href="/Home/QuestionnaireIndex">
+                                <img src="/img/questionnaire.png" width="100" alt="Questionnaire Image">
+                            </a>
+                            
+                        </p>
+                    </div>
+                </section>
+            }
+            
+            
         </div>
 
     </main>
 
 </body>
 
-</html>
