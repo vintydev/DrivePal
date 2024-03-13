@@ -26,6 +26,8 @@ namespace DrivePal.Controllers
 
         private ILogger<HomeController> _logger;
 
+        
+        // Constructor
         public HomeController(ILogger<HomeController> logger, DrivePalDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _logger = logger;
@@ -46,7 +48,6 @@ namespace DrivePal.Controllers
         {
 
             var model = new Questionnaire();
-            
             
             // Retrieve all values of the DrivingStatus enum and convert them into an enumerable of DrivingStatus.
             var experienceType = Enum.GetValues(typeof(DrivingStatus))
@@ -79,6 +80,7 @@ namespace DrivePal.Controllers
             ViewBag.DriveSelectList = new SelectList(drivingType, "Value", "Text");
             ViewBag.ExperienceSelectList = new SelectList(experienceType, "Value", "Text");
 
+            
             return View(model);
         }
 
@@ -86,7 +88,7 @@ namespace DrivePal.Controllers
         [ValidateAntiForgeryToken]  
         public async Task<IActionResult> CreateQuestionnaire([Bind("QuestionnaireId,MinPrice,MaxPrice,DrivingStatus,TeachingTraits,DrivingGoals,TeachingType," +
                                                                    "AvailableDaysOf,TimeOfDay,LessonDuration,IsFinished,DateCompleted,LearnerId,Learner")]
-            Questionnaire questionnaire, ICollection<TeachingTraits> teachingTraits, ICollection<DrivingGoals> selectedGoals, List<string> selectedDays)
+            Questionnaire questionnaire, List<string> teachingTraits, List <string>selectedGoals, List<string> selectedDays)
         {
             
             // Get user
@@ -99,22 +101,48 @@ namespace DrivePal.Controllers
             
             questionnaire.LearnerId = learner?.Id;
 
-            // Collect error messages
-            List<string> errorMessages = new List<string>();
+            // Collect error messages list initialisation
+            List<string> errorMessages = new List<string>(3);
+            int errorIndex = 0;
+            int? dayIndex;
+            int? goalIndex;
+            int? traitIndex;
             
+            // Add the error messages to the list
             if (selectedDays.Count == 0)
             {
-                errorMessages.Add("You must select at least one day.");
+   
+                dayIndex = errorIndex;
+                questionnaire.DayIndex = dayIndex;
+                
+                errorMessages.Add("You must select at least one day");
+                errorIndex++;
             }
-
-
+            
             if (selectedGoals.Count == 0)
             {
-                errorMessages.Add("You must select ast least one goal.");
+                goalIndex = errorIndex;
+                
+                questionnaire.GoalIndex = goalIndex;
+                
+                
+                errorMessages.Add("You must select at least one goal.");
+                errorIndex ++;
+
             }
 
-            // If there are any error messages, set ViewBag and return the view
-            if (errorMessages.Any())
+            if (teachingTraits.Count == 0)
+            {
+                traitIndex = errorIndex;
+                questionnaire.TraitIndex = traitIndex;
+                
+                errorMessages.Add("You must select at least one trait.");
+                errorIndex ++;
+
+            }
+
+            // If there are any error messages, set ViewBag and return the view with model
+            if (errorMessages.Count != 0)
             {
                 ViewBag.ErrorMessages = errorMessages;
                 return View("QuestionnaireIndex", questionnaire);
@@ -134,10 +162,12 @@ namespace DrivePal.Controllers
             
             questionnaire.TeachingTraits = teachingTraits;
 
+            // Add questionnaire to db, save changes, redirect to Index action
             await _context.AddAsync(questionnaire);
 
             await _context.SaveChangesAsync();
-
+            
+            // Temp redirection
             return Redirect("Index");
         }
 

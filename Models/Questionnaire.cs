@@ -10,6 +10,13 @@ namespace DrivePal.Models
     {
         [Key]
         public int QuestionnaireId { get; set; }
+        
+       // Error message purposes
+        public int? DayIndex { get; set; }
+        
+        public int? GoalIndex { get; set; }
+        
+        public int? TraitIndex { get; set; }
 
         [Range(0.01, 100, ErrorMessage = "Price must be above £0.00 & Below £100.00.")]
         [Display(Name = "Enter minimum price per lesson.")]
@@ -27,12 +34,17 @@ namespace DrivePal.Models
         [Required(ErrorMessage = "You must enter your driving experience.")]
         public DrivingStatus DrivingStatus { get; set; }
 
-        [Display(Name = "What are some traits you look for in an instructor? \n Please select all that apply.")]
+        [Display(Name = "What are some traits you look for in an instructor? \b Please select all that apply.")]
         [Required(ErrorMessage = "You must select at least one trait.")]
-        public ICollection<TeachingTraits>? TeachingTraits { get; set; }
-        
-        [Display(Name = "What are some driving goals? \n Please select all that apply.")]
-        public ICollection<DrivingGoals>? DrivingGoals { get; set; }
+        public List<string> TeachingTraits { get; set; } =
+        [
+            "Assertive", "Patient", "Calm", "Experienced", "Empathetic", "Talkative", "Funny", "Straight to the point"
+        ];
+
+        [Display(Name = "What are some driving goals? \b Please select all that apply.")]
+        [Required(ErrorMessage = "You must select at least one goal.")]
+        public List<string> DrivingGoals { get; set; } =
+            ["Pass quickly", "Gain driving confidence", "Motorway skills"];
 
         // Static list, won't ever change
         [Display(Name = "Select which type of lessons you would like.")]
@@ -83,28 +95,5 @@ namespace DrivePal.Models
         [Description("Experienced driver, could pass soon.")]
         Experienced
     }
-
-    public enum TeachingTraits
-    {
-        Assertive,
-        Patient,
-        Calm,
-        Experienced,
-        Empathetic,
-        Talkative,
-        Funny,
-        [Display(Name = "Straight to the point")]
-        Concise
-    }
-
-    public enum DrivingGoals
-    {
-        [Display(Name = "Pass quickly")]
-        Quick,
-        [Display(Name ="Gain driving confidence")]
-        Confidence,
-        [Display(Name = "Motorway Skills")]
-        Motorway,
-        
-    }
+    
 }
