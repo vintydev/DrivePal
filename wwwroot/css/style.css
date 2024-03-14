@@ -21,45 +21,40 @@ body {
 
 /* Style header */
 header {
-    background-color: black; /* Black background */
+    background-image: url('/img/banner.png'); /* Specify the URL of your background image */
+    background-size: cover; /* Ensure the background image covers the entire header */
+    background-position: center; /* Center the background image */
     color: white; /* White text */
     padding-top: 5px;
     text-align: center;
 }
 
-/* Style navigation */
-nav {
-    background-image: url('/img/banner.png');
-    background-size: cover; /* This ensures the background image covers the entire navbar */
-    background-position: center; /* This centers the background image */
-    color: #ffffff;
-    text-align: center;
-    padding: 10px 0; /* Reduce padding on top and bottom */
-    font-size: 14px; /* Reduce font size */
-}
 
 .navbar {
-    background-color: rgba(9, 56, 9, 0.8); /* Darker semi-transparent green background */
-    text-align: center; /* Center align the links */
-    padding: 5px 0; /* Reduce padding on top and bottom */
+    background-color: rgba(9, 56, 9, 0.8) !important; /* Darker semi-transparent green background */
+    text-align: center !important; /* Center align the links */
+    padding: 5px 0 !important; /* Reduce padding on top and bottom */
+    display: flex !important; /* Use flexbox */
+    justify-content: space-evenly !important; /* Evenly distribute items along the main axis */
 }
 
-    .navbar a {
-        color: white; /* White text color */
-        text-decoration: none; /* Remove underline from links */
-        padding: 5px 10px; /* Reduce padding */
-        display: inline-block; /* Display links side by side */
-    }
+.navbar a {
+    color: white !important; /* White text color */
+    text-decoration: none !important; /* Remove underline from links */
+    padding: 5px 10px !important; /* Reduce padding */
+    display: inline-block !important; /* Display links side by side */
+}
 
-        .navbar a:hover {
-            font-weight: bold; /* Make the text bold on hover */
-        }
+.navbar a:hover {
+    font-weight: bold !important; /* Make the text bold on hover */
+}
 
-        .navbar a.active,
-        .navbar a.active:hover {
-            font-weight: bold; /* Make the active link bold */
-            color: #7bfc7b; /* Change the color of the active link */
-        }
+.navbar a.active,
+.navbar a.active:hover {
+    font-weight: bold !important; /* Make the active link bold */
+    color: #7bfc7b !important; /* Change the color of the active link */
+}
+
 
 ul {
     list-style-type: none;
@@ -102,11 +97,11 @@ body, html {
     width: 100%; /* Ensure info boxes take full width of grid cell */
 }
 
-    .info-box h2 {
-        text-align: left;
-        font-size: 20px;
-        margin-top: 0;
-    }
+.info-box h2 {
+    text-align: left;
+    font-size: 20px;
+    margin-top: 0;
+}
 
 .box-content img {
     width: 100px;
@@ -133,63 +128,61 @@ body, html {
     text-align: center; /* Center align the content */
 }
 
-    .signup-box h2,
-    .login-box h2 {
-        margin-top: 0;
-        margin-bottom: 20px;
-        color: #4CAF50; /* Match the heading color from the theme */
-    }
+.signup-box h2,
+.login-box h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #4CAF50; /* Match the heading color from the theme */
+}
 
-    .signup-box label,
-    .login-box label {
-        display: block;
-        margin-bottom: 10px;
-        text-align: left; /* Align label text to the left */
-    }
+.signup-box label,
+.login-box label {
+    display: block;
+    margin-bottom: 10px;
+    text-align: left; /* Align label text to the left */
+}
 
-    .signup-box input[type="email"],
-    .signup-box input[type="password"],
-    .login-box input[type="email"],
-    .login-box input[type="password"] {
-        width: calc(100% - 20px); /* Adjust width to account for padding */
-        padding: 10px;
-        margin-bottom: 15px;
-        border: 1px solid rgb(18, 75, 18); /* Match the border color from the theme */
-        border-radius: 5px;
-        box-sizing: border-box; /* Include padding and border in width calculation */
-    }
+.signup-box input[type="email"],
+.signup-box input[type="password"],
+.login-box input[type="email"],
+.login-box input[type="password"] {
+    width: calc(100% - 20px); /* Adjust width to account for padding */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid rgb(18, 75, 18); /* Match the border color from the theme */
+    border-radius: 5px;
+    box-sizing: border-box; /* Include padding and border in width calculation */
+}
 
-    .signup-box button,
-    .login-box button {
-        width: calc(100% - 20px); /* Adjust width to account for padding */
-        padding: 10px;
-        background-color: #255e27; /* Match the button color from the theme */
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        box-sizing: border-box; /* Include padding and border in width calculation */
-    }
+.signup-box button,
+.login-box button {
+    width: calc(100% - 20px); /* Adjust width to account for padding */
+    padding: 10px;
+    background-color: #255e27; /* Match the button color from the theme */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-sizing: border-box; /* Include padding and border in width calculation */
+}
 
-        .signup-box button:hover,
-        .login-box button:hover {
-            background-color: #45a049; /* Match the button hover color from the theme */
-        }
-
-
+.signup-box button:hover,
+.login-box button:hover {
+    background-color: #45a049; /* Match the button hover color from the theme */
+}
 
 .box-content {
     text-align: left;
 }
 
-    .box-content h3 {
-        margin-top: 0;
-        color: #4CAF50;
-    }
+.box-content h3 {
+    margin-top: 0;
+    color: #4CAF50;
+}
 
-    .box-content p {
-        margin-bottom: 0;
-    }
+.box-content p {
+    margin-bottom: 0;
+}
 
 
 /* Style section */
@@ -275,6 +268,7 @@ tr:hover {
 .practical-videos {
     width: 100%; /* Set table width to 100% of its container */
     border-collapse: collapse; /* Collapse table borders */
+    padding-bottom:20px;
 }
 
     .practical-videos td {
@@ -347,6 +341,7 @@ tr:hover {
 
     .button:hover {
         background-color: #45a049;
+        color: white;
     }
 
 
@@ -423,14 +418,14 @@ tr:hover {
     color: #333;
 }
 
-    #sidebar ul li a:hover {
-        background-color: rgb(204, 252, 214);
-    }
+#sidebar ul li a:hover {
+    background-color: rgb(204, 252, 214);
+}
 
-    #sidebar ul li a.active {
-        color: green; /* Green text color for active item */
-        font-weight: bold;
-    }
+#sidebar ul li a.active {
+    color: green; /* Green text color for active item */
+    font-weight: bold;
+}
 
 /* Default sidebar text size */
 #sidebar-container #sidebar ul li a {
@@ -488,7 +483,7 @@ tr:hover {
         display: block; /* Make the links block-level elements */
         text-decoration: none; /* Remove underline from links */
         color: black; /* Black text color */
-        background-color: #f2f2f2; /* Light grey background color */
+        background-color: #9edca5; /* Light green background color */
         padding: 10px; /* Add padding to the links */
         border-radius: 5px; /* Add border radius */
         text-align: center; /* Center align the text */
@@ -497,7 +492,7 @@ tr:hover {
     }
 
         .download-links a:hover {
-            background-color: #e0e0e0; /* Darker grey background color on hover */
+            background-color: #639e6a; /* Darker grey background color on hover */
         }
 
 .practical-info {

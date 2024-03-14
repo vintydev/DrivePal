@@ -8,7 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Home\resources.cshtml" />
     <Content Remove="Views\Home\signup.cshtml" />
   </ItemGroup>
 
@@ -31,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\Home\Resources.cshtml" />
     <None Include="Views\Home\SignUp.cshtml" />
   </ItemGroup>
 
