@@ -17,10 +17,16 @@ namespace DrivePal.Models
         public bool? isApproved { get; set; }
 
         public bool? isBlocked { get; set; }
+        
         [Display(Name = "Average Rating")]
         [Column(TypeName = "decimal(3,1)")]
-
         public decimal TotalRating { get; set; }
+        
+        
+        // Questionnaire Metrics
+        public decimal AveragePricePerLesson { get; set; }
+        
+        
 
         //navigational property
         public virtual ICollection<Review>? Reviews { get; set; }

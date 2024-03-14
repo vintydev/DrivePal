@@ -4,6 +4,7 @@ using DrivePal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrivePal.Migrations
 {
     [DbContext(typeof(DrivePalDbContext))]
-    partial class DrivePalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240312221830_QuestionnaireLogicUpdate2")]
+    partial class QuestionnaireLogicUpdate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,7 +180,6 @@ namespace DrivePal.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DrivingGoals")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DrivingStatus")
@@ -503,9 +505,6 @@ namespace DrivePal.Migrations
             modelBuilder.Entity("DrivePal.Models.Instructor", b =>
                 {
                     b.HasBaseType("DrivePal.Models.User");
-
-                    b.Property<decimal>("AveragePricePerLesson")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("Gender")
                         .HasColumnType("int");

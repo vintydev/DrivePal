@@ -4,6 +4,7 @@ using DrivePal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrivePal.Migrations
 {
     [DbContext(typeof(DrivePalDbContext))]
-    partial class DrivePalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240312183306_QuestionnaireLogic")]
+    partial class QuestionnaireLogic
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -169,16 +172,15 @@ namespace DrivePal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("QuestionnaireId"));
 
-                    b.Property<string>("AvailableDaysOf")
+                    b.Property<string>("AvailableDaysOfWeek")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("DateCompleted")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DrivingGoals")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DrivingGoals")
+                        .HasColumnType("int");
 
                     b.Property<int>("DrivingStatus")
                         .HasColumnType("int");
@@ -187,6 +189,7 @@ namespace DrivePal.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LearnerId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LessonDuration")
@@ -199,9 +202,8 @@ namespace DrivePal.Migrations
                     b.Property<decimal>("MinPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("TeachingTraits")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TeachingTraits")
+                        .HasColumnType("int");
 
                     b.Property<string>("TeachingType")
                         .IsRequired()
@@ -504,9 +506,6 @@ namespace DrivePal.Migrations
                 {
                     b.HasBaseType("DrivePal.Models.User");
 
-                    b.Property<decimal>("AveragePricePerLesson")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int?>("Gender")
                         .HasColumnType("int");
 
@@ -644,7 +643,8 @@ namespace DrivePal.Migrations
                     b.HasOne("DrivePal.Models.Learner", "Learner")
                         .WithMany()
                         .HasForeignKey("LearnerId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Learner");
                 });

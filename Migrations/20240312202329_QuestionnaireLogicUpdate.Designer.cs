@@ -4,6 +4,7 @@ using DrivePal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrivePal.Migrations
 {
     [DbContext(typeof(DrivePalDbContext))]
-    partial class DrivePalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240312202329_QuestionnaireLogicUpdate")]
+    partial class QuestionnaireLogicUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -176,9 +179,8 @@ namespace DrivePal.Migrations
                     b.Property<DateTime?>("DateCompleted")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("DrivingGoals")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DrivingGoals")
+                        .HasColumnType("int");
 
                     b.Property<int>("DrivingStatus")
                         .HasColumnType("int");
@@ -199,9 +201,8 @@ namespace DrivePal.Migrations
                     b.Property<decimal>("MinPrice")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("TeachingTraits")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("TeachingTraits")
+                        .HasColumnType("int");
 
                     b.Property<string>("TeachingType")
                         .IsRequired()
@@ -503,9 +504,6 @@ namespace DrivePal.Migrations
             modelBuilder.Entity("DrivePal.Models.Instructor", b =>
                 {
                     b.HasBaseType("DrivePal.Models.User");
-
-                    b.Property<decimal>("AveragePricePerLesson")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("Gender")
                         .HasColumnType("int");

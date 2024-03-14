@@ -1,0 +1,167 @@
+@using Microsoft.EntityFrameworkCore
+@using Google.Type
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.ComponentModel.DataAnnotations
+@using System.Web.Http.ModelBinding
+@using DrivePal.Extensions
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model DrivePal.Models.Questionnaire
+
+@{
+    ViewData["Title"] = "DrivePal Questionnaire";
+}
+
+
+<h1>DrivePal Questionnaire</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateQuestionnaire">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+               
+                <label asp-for="MinPrice" class="control-label"></label>
+                <br/>
+                <span asp-validation-for="MinPrice" class="text-danger"></span>
+                <input asp-for="MinPrice" class="form-control"/>
+
+            </div>
+            <br/>
+            <div class="form-group">
+               
+                <label asp-for="MaxPrice" class="control-label"></label>
+                <br/>
+                <span asp-validation-for="MaxPrice" class="text-danger"></span>
+                <input asp-for="MaxPrice" class="form-control"/>
+
+            </div>
+            <br/>
+
+            <div class="form-group">
+                <label asp-for="DrivingStatus"></label>
+                <div class="col-md-3">
+                    <select asp-for="@Model.DrivingStatus" class="form-control" asp-items="Html.GetEnumSelectList<DrivingStatus>()"></select>
+                    @Html.ValidationMessageFor(model => model.DrivingStatus, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br/>
+
+            <div class="form-group">
+                <label asp-for="TeachingType"></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.TeachingType, new SelectList(Model.TeachingType), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TeachingType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br/>
+
+            <div class="form-group">
+                <label asp-for="LessonDuration"></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.LessonDuration, new SelectList(Model.LessonDuration), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LessonDuration, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br/>
+            
+            <div>
+                <label asp-for="DrivingGoals"></label>
+                <span asp-validation-for="DrivingGoals" class="text-danger"></span>
+
+                @if (Model.GoalIndex.HasValue && ViewBag.ErrorMessages != null && ViewBag.ErrorMessages.Count > Model.GoalIndex.Value)
+                {
+                    <label class="text-danger">
+                        @if (Model.GoalIndex != null)
+                        {
+                            @ViewBag.ErrorMessages[Model.GoalIndex.Value]
+                        }
+                    </label>
+                }
+
+
+
+                
+                @* For each driving goal in enum*@
+                @foreach (var goal in Model.DrivingGoals)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="@goal" name="selectedGoals" value="@goal">
+                        <label class="form-check-label" for="@goal">@goal</label>
+
+                    </div>
+                }
+
+            </div>
+            <br/>
+            
+            <div>
+                <label asp-for="TeachingTraits"></label>
+                <span asp-validation-for="TeachingTraits" class="text-danger"></span>
+
+                @if (Model.TraitIndex.HasValue && ViewBag.ErrorMessages != null && ViewBag.ErrorMessages.Count > Model.TraitIndex.Value)
+                {
+                    <label class="text-danger">
+                        @if (Model.TraitIndex != null)
+                        {
+                            @ViewBag.ErrorMessages[Model.TraitIndex.Value]
+                        }
+                    </label>
+                }
+                
+                @foreach (var trait in Model.TeachingTraits)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="@trait" name="teachingTraits" value="@trait">
+                        <label class="form-check-label" for="@trait">@trait</label>
+                    </div>
+                }
+
+            </div>
+            <br/>
+            
+            <div>
+                <label asp-for="AvailableDaysOf"></label>
+                <span asp-validation-for="AvailableDaysOf" class="text-danger"></span>
+                @if (Model.DayIndex.HasValue && ViewBag.ErrorMessages != null && ViewBag.ErrorMessages.Count > Model.DayIndex.Value)
+                {
+                    <label class="text-danger">
+                        @if (Model.DayIndex != null)
+                        {
+                            @ViewBag.ErrorMessages[Model.DayIndex.Value]
+                        }
+                    </label>
+                }
+
+                @foreach (var day in Model.AvailableDaysOf)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="@($"Day_{day}")" name="selectedDays" value="@day")>
+                        <label class="form-check-label" for="@($"Day_{day}")">@day</label>
+                    </div>
+                  
+                }
+            </div>
+            <br/>
+
+            <div class="form-group">
+                <label asp-for="TimeOfDay"></label>
+                <div class="col-md-3">
+                    @Html.DropDownListFor(model => model.TimeOfDay, new SelectList(Model.TimeOfDay), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TimeOfDay, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            
+            <br/>
+            
+            <div class="form-group">
+                <input type="submit" value="Submit Questionnaire" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to Home</a>
+</div>
+
