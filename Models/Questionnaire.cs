@@ -42,8 +42,7 @@ namespace DrivePal.Models
         // Static list, won't ever change
         [Display(Name = "Select which type of lessons you would like.")]
         [Required(ErrorMessage = "You must select a lesson type.")]
-        public string[] TeachingType { get; set; } = [ "Manual", "Automatic" ];
-        
+        public List<string> TeachingType { get; set; } = [ "Manual", "Automatic" ];
         
         [Display(Name = "What days of the week are you available? \n Please select all that apply.")]
         [Required(ErrorMessage = "You must select at least one day.")]
@@ -53,7 +52,7 @@ namespace DrivePal.Models
         // Static list, won't ever change
         [Display(Name = "What time of day would you prefer?")]
         [Required(ErrorMessage = "You must select at least one timeframe.")]
-        public string[] TimeOfDay { get; set; } = ["Morning", "Afternoon", "Evening"];
+        public List<string> TimeOfDay { get; set; } = ["Morning", "Afternoon", "Evening"];
 
         // Static list, won't ever change
         [Display(Name ="How many minutes per lesson?")]

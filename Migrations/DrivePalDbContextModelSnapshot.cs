@@ -504,6 +504,9 @@ namespace DrivePal.Migrations
                 {
                     b.HasBaseType("DrivePal.Models.User");
 
+                    b.Property<decimal>("AveragePricePerLesson")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int?>("Gender")
                         .HasColumnType("int");
 

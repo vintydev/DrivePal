@@ -25,7 +25,6 @@ namespace DrivePal.Controllers
         private RoleManager<IdentityRole> _roleManager;
 
         private ILogger<HomeController> _logger;
-
         
         // Constructor
         public HomeController(ILogger<HomeController> logger, DrivePalDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager)
@@ -76,10 +75,9 @@ namespace DrivePal.Controllers
                     Value = ((int)e).ToString(),
                     Text = e.GetDisplayName()
                 }).ToList();
-
+            
             ViewBag.DriveSelectList = new SelectList(drivingType, "Value", "Text");
             ViewBag.ExperienceSelectList = new SelectList(experienceType, "Value", "Text");
-
             
             return View(model);
         }
@@ -124,7 +122,6 @@ namespace DrivePal.Controllers
                 goalIndex = errorIndex;
                 
                 questionnaire.GoalIndex = goalIndex;
-                
                 
                 errorMessages.Add("You must select at least one goal.");
                 errorIndex ++;
@@ -171,6 +168,11 @@ namespace DrivePal.Controllers
             return Redirect("Index");
         }
 
+        // public Task<IActionResult> SeeRecommendedInstructors()
+        // {
+        //     return Task.FromResult<IActionResult>(View());
+        // }
+
         public async Task<IActionResult> SeeAllInstructors()
         {
             var instructors = await _context.Instructors
@@ -187,10 +189,7 @@ namespace DrivePal.Controllers
 
             return View(instructors);
         }
-
-
-
-
+        
 
         public IActionResult Instructors()
         {
@@ -206,15 +205,12 @@ namespace DrivePal.Controllers
         {
             return View();
         }
-
-
+        
         public IActionResult SignUp()
         {
             return View();
         }
-
-
-
+        
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
