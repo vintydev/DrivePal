@@ -1,40 +1,30 @@
-﻿using MimeKit;
-using MailKit.Net.Smtp;
+﻿using MailKit.Net.Smtp;
+using MimeKit;
 
-namespace DrivePal.Models.ServiceClasses
+public class EmailService
 {
-    /// <summary>
-    /// Service class for sending emails using the MailKit package.
-    /// </summary>
-    public class EmailService
+    private readonly IConfiguration _configuration;
+
+    public EmailService(IConfiguration configuration)
     {
-        /// <summary>
-        /// Sends an email asynchronously.
-        /// </summary>
-        /// <param name="toEmail">The email address of the recipient.</param>
-        /// <param name="subject">The subject of the email.</param>
-        /// <param name="message">The content of the email.</param>
-        /// <returns>A task representing the asynchronous operation.</returns>
-        public async Task SendEmailAsync(string toEmail, string subject, string message)
-        {
-            //Creates a new MimeMessage instance
-            var emailMessage = new MimeMessage();
+        _configuration = configuration;
+    }
 
-            //Sets the sender and recipient of the email
-            emailMessage.From.Add(new MailboxAddress("*****Header for your email account*******", "******your email*****"));
-            emailMessage.To.Add(new MailboxAddress("", toEmail));
-            // Sets the subject and body of the email
-            emailMessage.Subject = subject;
-            emailMessage.Body = new TextPart("plain") { Text = message };
+    public async Task SendEmailAsync(string toEmail, string subject, string message)
+    {
+        var emailSettings = _configuration.GetSection("EmailSettings");
 
-            //Creates a new SmtpClient instance and sends the email
-            using (var client = new SmtpClient())
-            {
-                await client.ConnectAsync("smtp.office365.com", 587, false);
-                await client.AuthenticateAsync("******your email*******", "*****your password****");
-                await client.SendAsync(emailMessage);
-                await client.DisconnectAsync(true);
-            }
-        }
+        var email = new MimeMessage();
+        email.From.Add(MailboxAddress.Parse(emailSettings["Username"]));
+        email.To.Add(MailboxAddress.Parse(toEmail));
+        email.Subject = subject;
+        var bodyBuilder = new BodyBuilder { HtmlBody = message };
+        email.Body = bodyBuilder.ToMessageBody();
+
+        using var smtpClient = new SmtpClient();
+        await smtpClient.ConnectAsync(emailSettings["Host"], int.Parse(emailSettings["Port"]), bool.Parse(emailSettings["UseSsl"]));
+        await smtpClient.AuthenticateAsync(emailSettings["Username"], emailSettings["Password"]);
+        await smtpClient.SendAsync(email);
+        await smtpClient.DisconnectAsync(true);
     }
 }
