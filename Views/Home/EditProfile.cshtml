@@ -1,16 +1,35 @@
-﻿<!DOCTYPE html>
+﻿@model DrivePal.Models.Learner
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        function displayDefaultPicture() {
+            var input = document.getElementById('profilePicture');
+            var img = document.querySelector('.profile-picture');
+
+            if (!input.files || !input.files[0]) {
+                img.src = "/img/profilepictures/defaultprofile.png";
+            }
+            else {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 </head>
 <body>
 
     <div class="profile-container">
         <div>
-            <img class="profile-picture" src="@Model.ProfilePicture" alt="Profile Picture">
+            <img class="profile-picture" src="@ViewBag.ProfilePicture" alt="Profile Picture">
         </div>
         <div class="profile-details">
             <h2 style="text-align:center">Edit Profile</h2>
@@ -18,8 +37,11 @@
                 <table>
                     <tr>
                         <td><label for="profilePicture">Profile Picture:</label></td>
-                        <td><input type="file" id="profilePicture" name="profilePicture" accept="image/*"></td>
+                        <td>
+                            <input type="file" id="profilePicture" name="profilePicture" accept="image/*" onchange="displayDefaultPicture()">
+                        </td>
                     </tr>
+
                     <tr>
                         <td><label for="email">Email:</label></td>
                         <td><input type="email" id="email" name="email" value="@Model.Email" required></td>
@@ -46,19 +68,23 @@
                     </tr>
                     <tr>
                         <td><label for="dob">Date of Birth:</label></td>
-                        <td><input type="date" id="dob" name="dob" value="@Model.DOB?.ToString("yyyy-MM-dd")" required></td>
+                        <td><input type="date" id="dob" name="dob" value="@Model.DOB.ToString("yyyy-MM-dd")" required></td>
                     </tr>
+
+
                     <tr>
                         <td><label for="gender">Gender:</label></td>
                         <td>
                             <select id="gender" name="gender">
-                                <option value="Male" selected="@((Model.Gender == DrivePal.Models.Gender.Male).ToString().ToLower())">Male</option>
-                                <option value="Female" selected="@((Model.Gender == DrivePal.Models.Gender.Female).ToString().ToLower())">Female</option>
-                                <option value="PreferNotToSay" selected="@((Model.Gender == DrivePal.Models.Gender.PreferNotToSay).ToString().ToLower())">Prefer Not to Say</option>
-                                <option value="NonBinary" selected="@((Model.Gender == DrivePal.Models.Gender.NonBinary).ToString().ToLower())">Non-Binary</option>
+                                <option value="Male" selected="@((Model.Gender == DrivePal.Models.Gender.Male) ? "selected" : null)">Male</option>
+                                <option value="Female" selected="@((Model.Gender == DrivePal.Models.Gender.Female) ? "selected" : null)">Female</option>
+                                <option value="PreferNotToSay" selected="@((Model.Gender == DrivePal.Models.Gender.PreferNotToSay) ? "selected" : null)">Prefer Not To Say</option>
+                                <option value="NonBinary" selected="@((Model.Gender == DrivePal.Models.Gender.NonBinary) ? "selected" : null)">Non-Binary</option>
                             </select>
                         </td>
                     </tr>
+
+
                     <tr>
                         <td><label for="isBlocked">Account Blocked?</label></td>
                         <td><input type="checkbox" id="isBlocked" name="isBlocked" @(Model.isBlocked == true ? "checked" : "")></td>
