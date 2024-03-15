@@ -210,7 +210,52 @@ namespace DrivePal.Controllers
         {
             return View();
         }
-        
+
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            // Pass the user object to the view
+            return View(user);
+        }
+
+        public IActionResult EditProfile()
+        {
+            // Retrieve the current user's details, including the date of birth
+            var user = _userManager.GetUserAsync(User).Result;
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveProfileChanges(Learner updatedProfile)
+        {
+            if (ModelState.IsValid)
+            {
+                // Get the current logged-in user
+                var user = await _userManager.GetUserAsync(User);
+
+                // Update the user's profile details using model binding
+                user.FirstName = updatedProfile.FirstName;
+                user.LastName = updatedProfile.LastName;
+                user.Street = updatedProfile.Street;
+                user.City = updatedProfile.City;
+                user.PostCode = updatedProfile.PostCode;
+                user.DOB = updatedProfile.DOB;
+                user.Gender = updatedProfile.Gender;
+                user.isBlocked = updatedProfile.isBlocked;
+                user.isExperienced = updatedProfile.isExperienced;
+
+                // Save changes to the database
+                await _userManager.UpdateAsync(user);
+
+                // Redirect the user to their profile page
+                return RedirectToAction("Profile");
+            }
+
+            // If the model state is not valid, return to the edit profile page
+            return View("EditProfile", updatedProfile);
+        }
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

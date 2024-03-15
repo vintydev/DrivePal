@@ -23,7 +23,6 @@
                 {
                     if (User.IsInRole("Learner"))
                     {
-                        <li><a href="/LearnerData/LearnerSeeOwnDetails"><a>My Profile</a></li>
                         <li><a href="/Card/CustomerSeeOwnCards">See your debit/credit cards</a></li>
                         <li><a href="/Booking/ShowOwnBookings">See your booked classes</a></li>
                         <li><a href="/DrivingClass/Index">See all classes</a></li>
@@ -31,7 +30,6 @@
                     }
                     if (User.IsInRole("Instructor"))
                     {
-                        <li><a href="/InstructorData/InstructorSeeOwnDetails">My Profile</a></li>
                         <li><a href="/DrivingClass/OwnDrivingClasses">Manage Classes</a></li>
                         <li><a href="/Booking/ShowBookedClasses">Booked Classes</a></li>
                     }

@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="profile-container">
+        <div>
+            <img class="profile-picture" src="@Model.ProfilePicture" alt="Profile Picture">
+        </div>
+        <div class="profile-details">
+            <h2 style="text-align:center">Your Details</h2>
+            <table>
+                <tr>
+                    <td><strong>Email:</strong></td>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <td><strong>First Name:</strong></td>
+                    <td>@Model.FirstName</td>
+                </tr>
+                <tr>
+                    <td><strong>Last Name:</strong></td>
+                    <td>@Model.LastName</td>
+                </tr>
+                <tr>
+                    <td><strong>Street:</strong></td>
+                    <td>@Model.Street</td>
+                </tr>
+                <tr>
+                    <td><strong>City:</strong></td>
+                    <td>@Model.City</td>
+                </tr>
+                <tr>
+                    <td><strong>PostCode:</strong></td>
+                    <td>@Model.PostCode</td>
+                </tr>
+                <tr>
+                    <td><strong>Date of Birth:</strong></td>
+                    <td>@Model.DOB</td>
+                </tr>
+                <tr>
+                    <td><strong>Licence Number:</strong></td>
+                    <td>@Model.LicenceNumber</td>
+                </tr>
+                <tr>
+                    <td><strong>Gender:</strong></td>
+                    <td>@Model.Gender</td>
+                </tr>
+                <tr>
+                    <td><strong>Account Blocked?</strong></td>
+                    <td>@Model.isBlocked</td>
+                </tr>
+                <tr>
+                    <td><strong>Experienced?</strong></td>
+                    <td>@Model.isExperienced</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <a class="button" href="/Home/EditProfile">Edit</a>
+    </div>
+
+</body>
+</html>

@@ -11,11 +11,7 @@ namespace DrivePal.Models
         
         public string? LicenceNumber { get; set; }
 
-        public Gender? Gender { get; set; }
-
-        public  bool? isBlocked { get; set; }
-
-        public bool? isExperienced { get; set; }
+        
 
         public int? lessonCount { get; set; }
         

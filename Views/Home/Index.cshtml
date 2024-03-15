@@ -6,7 +6,6 @@
 @using System.Web.Http.ModelBinding
 @{
 
-
 }
 <head>
     <meta charset="UTF-8">
@@ -14,7 +13,7 @@
     <title>Home</title>
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
 </head>
-<h4>Click the image inside each info box to navigate to that page!</h4>
+<p style="text-align:center">Click the image inside each info box to navigate!</p>
 <body>
 
     <main class="main-container">
@@ -57,14 +56,14 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <!-- If user is authenticated, direct them to the resources page -->
-                        <a href="/Resources">
+                        <a href="/Home/Resources">
                             <img src="/img/keys.png" width="100" alt="Buying Image">
                         </a>
                     }
                     else
                     {
                         <!-- If user is not authenticated, direct them to login/signup page -->
-                        <a href="/Identity/Account/Login?returnUrl=/Resources">
+                        <a href="/Identity/Account/Login?returnUrl=/Home/Resources">
                             <img src="/img/keys.png" width="100" alt="Buying Image">
                         </a>
                     }
