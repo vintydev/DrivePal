@@ -161,9 +161,79 @@ function showContent(type) {
                 `;
             break;
 
-
         case 'buying':
-            content = "<p>Content for First Time Buying option</p>";
+            content = content = `
+            <div style="display: flex; align-items: center;">
+                <div style="flex: 1;">
+                    <h2>Buying Your First Car</h2>
+                    <p>Buying your first car is an exciting milestone, but it's essential to approach the process with careful consideration to make a well-informed decision.</p>
+                    <p>Firstly, determine your budget and consider all associated costs, including insurance, maintenance, and fuel. It's crucial to ensure that you can afford not only the initial purchase price but also ongoing expenses.</p>
+                    <p>Research different makes and models to find a car that suits your needs and preferences. Consider factors such as fuel efficiency, safety features, and reliability ratings.</p>
+                    <p>When visiting dealerships or private sellers, inspect the car thoroughly and take it for a test drive to assess its condition and performance. Don't hesitate to ask questions and request maintenance records.</p>
+                    <p>Once you've found the right car, negotiate the price to ensure you're getting the best deal possible. Be prepared to walk away if the seller isn't willing to meet your terms.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Negotiation Tactics</th>
+                                <th>Further Information</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1. High Pressure Tactics</td>
+                                <td>Some sellers may use high-pressure tactics to rush you into making a decision. Be wary of pushy salespeople and take your time to consider your options.</td>
+                            </tr>
+                            <tr>
+                                <td>2. Hidden Fees</td>
+                                <td>Watch out for hidden fees or additional costs that may not be disclosed upfront. Always ask for a breakdown of all fees before agreeing to any deal.</td>
+                            </tr>
+                            <tr>
+                                <td>3. Misleading Information</td>
+                                <td>Be cautious of sellers who provide misleading information about the car's condition, history, or features. Verify all information independently if possible.</td>
+                            </tr>
+                            <tr>
+                                <td>4. Unrealistic Promises</td>
+                                <td>Be skeptical of sellers who make unrealistic promises or guarantees about the car's performance, longevity, or future value.</td>
+                            </tr>
+                            <tr>
+                                <td>5. Unnecessary Add-Ons</td>
+                                <td>Be cautious of sellers who try to upsell unnecessary add-ons or extended warranties that may not provide value for your specific needs.</td>
+                            </tr>
+                            <tr>
+                                <td>6. Pressure to Buy Immediately</td>
+                                <td>Avoid sellers who pressure you to make an immediate purchase without giving you time to thoroughly evaluate the car and consider your options.</td>
+                            </tr>
+                            <tr>
+                                <td>7. Non-Refundable Deposits</td>
+                                <td>Be cautious of sellers who require non-refundable deposits or payments upfront before allowing you to test drive or inspect the car.</td>
+                            </tr>
+                            <tr>
+                                <td>8. Lack of Transparency</td>
+                                <td>Be wary of sellers who are not transparent about the car's history, ownership, or maintenance records. Transparency is essential for making an informed decision.</td>
+                            </tr>
+                            <tr>
+                                <td>9. Verbal Agreements</td>
+                                <td>Avoid relying solely on verbal agreements. Always get important terms and conditions in writing to avoid misunderstandings or disputes later on.</td>
+                            </tr>
+                            <tr>
+                                <td>10. Pressure to Overspend</td>
+                                <td>Be cautious of sellers who pressure you to overspend or stretch your budget beyond what you're comfortable with. Stick to your budget and financial limits.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p style="padding-top:20px">Finally, ensure that all necessary paperwork is in order before finalizing the purchase. This includes obtaining a vehicle history report, transferring ownership, and arranging for insurance coverage.</p>
+
+                    <h4>Additional Resources</h4>
+                    <p>Here are some reputable car-selling websites in the UK:</p>
+                    <div>
+                        <a class="button" href="https://www.autotrader.co.uk/" class="button">Visit Autotrader</a>
+                        <a class="button" href="https://www.arnoldclark.com/" class="button">Visit Arnold Clark</a>
+                        <a class="button" href="https://www.motors.co.uk/" class="button">Visit Motors</a>
+                        <a class="button" href="https://www.carwow.co.uk/buy-a-new-car" class="button">Visit Carwow</a>
+                    </div>
+                </div>
+                <img src="/img/keys.png" style="width: 150px; margin-left: 20px;" alt="Car Buying Image">
+            </div>`
             break;
 
         default:

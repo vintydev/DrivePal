@@ -6,24 +6,24 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li>
-            <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+            <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage Account</a>
         </li>
         <li>
             <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="btn btn-link">Logout</button>
+                <button type="submit">Logout</button>
             </form>
         </li>
     }
     else
     {
         <li>
-            <a asp-area="Identity" asp-page="/Account/RegisterInstructor">Register as an Instructor</a>
+            <a class="login-links" asp-area="Identity" asp-page="/Account/RegisterInstructor">Register as an Instructor</a>
         </li>
         <li>
-            <a asp-area="Identity" asp-page="/Account/RegisterLearner">Register as a Learner</a>
+            <a class="login-links" asp-area="Identity" asp-page="/Account/RegisterLearner">Register as a Learner</a>
         </li>
         <li>
-            <a asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="login-links" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
 </ul>
