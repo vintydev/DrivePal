@@ -127,6 +127,22 @@ namespace DrivePal.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Learner")]
+        public async Task<IActionResult> ShowClassesForThisInstructor(string instructorId)
+        {
+            if (string.IsNullOrEmpty(instructorId))
+            {
+                return NotFound();
+            }
+
+            var drivingClasses = await _context.DrivingClasses
+                                               .Where(d => d.InstructorId == instructorId && d.IsReserved == false)
+                                               .Include(d => d.Instructor) // To access instructor's details if needed in the view
+                                               .ToListAsync();
+
+            return View(drivingClasses);
+        }
+
 
 
 

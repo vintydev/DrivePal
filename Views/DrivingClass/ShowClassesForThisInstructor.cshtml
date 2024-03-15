@@ -1,0 +1,44 @@
+﻿@model IEnumerable<DrivePal.Models.DrivingClass>
+@using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
+@using DrivePal.Data
+@using DrivePal.Models;
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.EntityFrameworkCore
+@using System.Web.Http.ModelBinding
+
+
+@{
+    ViewData["Title"] = "Available Classes";
+}
+
+<h2>Your Available Classes</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Class Start</th>
+            <th>Class End</th>
+            <th>Price</th>
+            <th>Instructor</th> <!-- Add a header for Instructor -->
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.DrivingClassStart</td>
+                <td>@item.DrivingClassEnd</td>
+                <td>@item.Price</td>
+                <td>@item.Instructor.LastName</td>
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Learner"))
+                {
+                    <td>
+                        <a asp-controller="Booking" asp-action="SelectClass" asp-route-id="@item.DrivingClassId" class="btn btn-primary">Select this class</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

@@ -104,8 +104,12 @@
                                 }
                             </td>
                             <td>
-                                <a href="@Url.Action("Create", "Reviews", new { id = instructor.Id })" class="button">Write a Review</a>
-                                <a href="@Url.Action("ViewReviews", "Reviews", new { id = instructor.Id })" class="button">View all Reviews</a>
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Learner"))
+                                {
+                                    <a href="@Url.Action("Create", "Reviews", new { id = instructor.Id })" class="button">Write a Review</a>
+                                    <a href="@Url.Action("ViewReviews", "Reviews", new { id = instructor.Id })" class="button">View all Reviews</a>
+                                    <a class="btn btn-primary" asp-controller="DrivingClass" asp-action="ShowClassesForThisInstructor" asp-route-instructorId="@instructor.Id">See Classes for This Instructor</a>
+                                }
                             </td>
                         </tr>
                     }
