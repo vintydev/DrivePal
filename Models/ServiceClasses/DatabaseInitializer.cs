@@ -14,7 +14,7 @@ namespace DrivePal.Models.ServiceClasses
             UserManager<User> userManager,
             RoleManager<IdentityRole> roleManager)
         {
-
+            context.Database.EnsureDeleted();
 
             context.Database.EnsureCreated();
 
@@ -80,7 +80,7 @@ namespace DrivePal.Models.ServiceClasses
                     LastName = "Taylor",
                     City = "Glasgow",
                     Street = "Maryhill Street",
-                    PostCode = "G5 8AQ",
+                    PostCode = "G71 8AW",
                     DOB = new DateOnly(1997, 3, 11),
                     TotalRating = 2,
                     EmailConfirmed = true,

@@ -117,6 +117,7 @@ namespace DrivePal.Areas.Identity.Pages.Account
 
             [Required]
             [Display(Name = "Post Code")]
+            [RegularExpression(@"^[A-Z]{1,2}\d{1,2}\s?\d[A-Z]{2}$", ErrorMessage = "The Post Code is not in a valid format.")]
             public string PostCode { get; set; }
 
             [Required]
@@ -258,8 +259,8 @@ namespace DrivePal.Areas.Identity.Pages.Account
                 instructor.PostCode = Input.PostCode;
                 instructor.DOB = Input.DOB;
                 instructor.LicenceNumber = Input.LicenceNumber;
-                instructor.isBlocked = true;
-                instructor.isApproved = false;
+                instructor.isBlocked = false;
+                instructor.isApproved = true;
                 instructor.TotalRating = 0;
 
                 return instructor;
