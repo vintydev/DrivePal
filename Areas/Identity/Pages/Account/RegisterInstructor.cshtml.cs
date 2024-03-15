@@ -262,6 +262,7 @@ namespace DrivePal.Areas.Identity.Pages.Account
                 instructor.isBlocked = false;
                 instructor.isApproved = true;
                 instructor.TotalRating = 0;
+                instructor.Email = Input.Email;
 
                 return instructor;
             }

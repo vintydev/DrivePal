@@ -20,15 +20,20 @@ namespace DrivePal.Controllers
         // Role manager for managing user roles
         private RoleManager<IdentityRole> _roleManager;
 
+        private readonly IConfiguration _configuration;
+        private readonly EmailService _emailService;
+
         private ILogger<BookingController> _logger;
 
-        public BookingController(ILogger<BookingController> logger, DrivePalDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager)
+        public BookingController(ILogger<BookingController> logger, DrivePalDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, EmailService emailService)
         {
             _logger = logger;
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _configuration = configuration;
+            _emailService = emailService;
         }
 
         public async Task<IActionResult> SelectClass(int id)
@@ -45,18 +50,76 @@ namespace DrivePal.Controllers
             return View(drivingClass);
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> MakeBooking(int DrivingClassId)
+        //{
+        //    var drivingClass = await _context.DrivingClasses
+        //        .FirstOrDefaultAsync(m => m.DrivingClassId == DrivingClassId);
+
+        //    if (drivingClass == null || drivingClass.IsReserved == true)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var learnerId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get the ID of the current user (learner).
+
+        //    var booking = new Booking
+        //    {
+        //        BookingDate = DateTime.Now,
+        //        Price = drivingClass.Price,
+        //        DrivingClassId = drivingClass.DrivingClassId,
+        //        InstructorId = drivingClass.InstructorId,
+        //        LearnerId = learnerId,
+        //    };
+
+        //    // Set the IsReserved property of the DrivingClass to true.
+        //    drivingClass.IsReserved = true;
+
+        //    // Additionally, set the LearnerId for the DrivingClass.
+        //    drivingClass.LearnerId = learnerId; // This will link the DrivingClass to the Learner who made the booking.
+
+        //    _context.Bookings.Add(booking);
+        //    await _context.SaveChangesAsync(); // This saves both the Booking and the updated DrivingClass.
+
+
+        //    // Prepare email details
+        //    string subject = "Your Booking Confirmation";
+        //    string message = $"Hello,<br><br>" +
+        //                     $"This is a confirmation for your booking on xxxxxxxx.<br>" +
+        //                     $"Class details: random detalis.<br><br>" +
+        //                     $"Best,<br>Your Driving School Team";
+
+        //    // Send the email
+        //    await _emailService.SendEmailAsync(booking.Learner.Email, subject, message);
+
+        //    return RedirectToAction(nameof(BookingConfirmation), new { bookingId = booking.BookingId });
+        //}
+
+
         [HttpPost]
         public async Task<IActionResult> MakeBooking(int DrivingClassId)
         {
             var drivingClass = await _context.DrivingClasses
+                .Include(dc => dc.Instructor)
                 .FirstOrDefaultAsync(m => m.DrivingClassId == DrivingClassId);
 
-            if (drivingClass == null || drivingClass.IsReserved == true)
+            if (drivingClass == null)
             {
                 return NotFound();
             }
 
-            var learnerId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Get the ID of the current user (learner).
+            var learnerId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Assuming you're using ASP.NET Core Identity
+            var learner = await _context.Users
+                .OfType<Learner>()
+                .FirstOrDefaultAsync(u => u.Id == learnerId);
+
+            if (learner == null || string.IsNullOrEmpty(learner.Email))
+            {
+                // Handle the case where the learner or email is null or empty
+                _logger.LogError("Learner or email is null for user ID: {UserId}", learnerId);
+                // Redirect to an error page or return an error view
+                return View("Error");
+            }
 
             var booking = new Booking
             {
@@ -67,15 +130,29 @@ namespace DrivePal.Controllers
                 LearnerId = learnerId,
             };
 
-            // Set the IsReserved property of the DrivingClass to true.
-            drivingClass.IsReserved = true;
-
-            // Additionally, set the LearnerId for the DrivingClass.
-            drivingClass.LearnerId = learnerId; // This will link the DrivingClass to the Learner who made the booking.
-
             _context.Bookings.Add(booking);
-            await _context.SaveChangesAsync(); // This saves both the Booking and the updated DrivingClass.
+            await _context.SaveChangesAsync();
 
+            // Prepare the email content
+            string subject = "Your Booking Confirmation";
+            string message = $"Hello {learner.FirstName},<br><br>" +
+                             $"This is a confirmation for your booking on {booking.BookingDate}.<br>" +
+                             $"Class details: {drivingClass.DrivingClassEnd}.<br><br>" +
+                             $"Best,<br>Your Driving School Team";
+
+            // Send the email
+            try
+            {
+                await _emailService.SendEmailAsync(learner.Email, subject, message);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                _logger.LogError(ex, "Failed to send email to learner ID: {UserId}", learnerId);
+                // Handle email sending failure, maybe queue it for a retry
+            }
+
+            // Redirect to the BookingConfirmation action
             return RedirectToAction(nameof(BookingConfirmation), new { bookingId = booking.BookingId });
         }
 

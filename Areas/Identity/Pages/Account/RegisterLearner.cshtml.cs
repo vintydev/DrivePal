@@ -250,6 +250,7 @@ namespace DrivePal.Areas.Identity.Pages.Account
                 learner.City = Input.City;
                 learner.PostCode = Input.PostCode;
                 learner.DOB = Input.DOB;
+                learner.Email = Input.Email;
 
                 return learner;
             }
