@@ -12,8 +12,5 @@ namespace DrivePal.Models
         [ForeignKey("Booking")]
         public int? BookingId { get; set; }
         public virtual Booking? Booking { get; set; }
-        [ForeignKey("Card")]
-        public int? CardId { get; set; }
-        public virtual Card? Card { get; set; }
     }
 }

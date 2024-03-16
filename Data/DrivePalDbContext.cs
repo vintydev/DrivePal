@@ -27,7 +27,6 @@ namespace DrivePal.Data
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<Learner> Learners { get; set; }
         public DbSet<Staff> Staffs { get; set; }
-        public DbSet<Card> Cards { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<DrivingClass> DrivingClasses { get; set; }
         
