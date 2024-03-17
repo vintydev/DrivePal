@@ -175,32 +175,32 @@ namespace DrivePal.Models.ServiceClasses
                 }
 
             // Seed chat messages
-            await SeedChatMessages(context, userManager);
+            //await SeedChatMessages(context, userManager);
         }
 
-        private static async Task SeedChatMessages(DrivePalDbContext context, UserManager<User> userManager)
-        {
-            var learner = await userManager.FindByNameAsync("learner@example.com");
-            var instructor = await userManager.FindByNameAsync("instructor@example.com");
+        //private static async Task SeedChatMessages(DrivePalDbContext context, UserManager<User> userManager)
+        //{
+        //    var learner = await userManager.FindByNameAsync("learner@example.com");
+        //    var instructor = await userManager.FindByNameAsync("instructor@example.com");
 
-            if (learner != null && instructor != null)
-            {
-                if (!context.ChatMessages.Any(m => m.SenderId == learner.Id && m.RecipientId == instructor.Id))
-                {
-                    // Seed initial chat message
-                    var chatMessage = new ChatMessage
-                    {
-                        SenderId = learner.Id,
-                        RecipientId = instructor.Id,
-                        Content = "Hi instructor!",
-                        SentAt = DateTime.Now
-                    };
+        //    if (learner != null && instructor != null)
+        //    {
+        //        if (!context.ChatMessages.Any(m => m.SenderId == learner.Id && m.RecipientId == instructor.Id))
+        //        {
+        //            // Seed initial chat message
+        //            var chatMessage = new ChatMessage
+        //            {
+        //                SenderId = learner.Id,
+        //                RecipientId = instructor.Id,
+        //                Content = "Hi instructor!",
+        //                SentAt = DateTime.Now
+        //            };
 
-                    context.ChatMessages.Add(chatMessage);
-                    await context.SaveChangesAsync();
-                }
-            }
-        }
+        //            context.ChatMessages.Add(chatMessage);
+        //            await context.SaveChangesAsync();
+        //        }
+        //    }
+        //}
     }
 }
 

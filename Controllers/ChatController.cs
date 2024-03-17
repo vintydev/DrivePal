@@ -3,6 +3,9 @@ using DrivePal.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DrivePal.Controllers
@@ -26,7 +29,7 @@ namespace DrivePal.Controllers
             if (currentUser == null || instructor == null)
             {
                 // Handle error (e.g., user not found)
-                return View(new List<ChatMessage>()); // Return an empty list
+                return View(new ChatViewModel { Messages = new List<ChatMessage>() }); // Return an empty list
             }
 
             var chatMessages = _context.ChatMessages
@@ -50,7 +53,41 @@ namespace DrivePal.Controllers
                 message.SenderId = senderNames[message.SenderId];
             }
 
-            return View(chatMessages);
+            // Create a new ChatViewModel
+            var model = new ChatViewModel
+            {
+                OtherUserName = instructor.UserName, // Replace with the actual other user's name
+                RecipientId = instructor.Id, // Replace with the actual other user's ID
+                Messages = chatMessages
+            };
+
+            return View(model);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SendMessage(string recipientId, string content)
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                return Unauthorized();
+            }
+
+            var message = new ChatMessage
+            {
+                SenderId = currentUser.Id,
+                RecipientId = recipientId,
+                Content = content,
+                SentAt = DateTime.UtcNow
+            };
+
+            _context.ChatMessages.Add(message);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        
+
     }
 }

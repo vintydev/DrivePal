@@ -1,4 +1,4 @@
-﻿@model List<ChatMessage>
+﻿@model ChatViewModel
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +15,9 @@
         }
 
         .message-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align messages to the left */
             height: 500px;
             overflow-y: auto;
             margin-bottom: 1rem;
@@ -32,41 +35,45 @@
         }
 
         .message-bubble-sent {
+            align-self: flex-end; /* Messages sent by the current user are aligned to the right */
             background-color: #a1dfa7; /* Light green for messages sent by the current user */
         }
 
         .message-bubble-received {
+            align-self: flex-start; /* Messages received by the current user are aligned to the left */
             background-color: #c6c1c1; /* Light grey for messages received */
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="row">
-            <div class="col-6">
-                <!-- Left column content goes here -->
+    <div class="row">
+        <div class="col-6">
+            <h4>Recent Conversations</h4>
+            <!-- Recent conversations go here -->
+        </div>
+        <div class="col-6">
+            <h4>Chatting with @Model.OtherUserName</h4>
+            <div class="message-container" id="messageContainer">
+                @foreach (var message in Model.Messages)
+                {
+                    <div class="message-bubble @(message.SenderId == User.Identity.Name ? "message-bubble-sent" : "message-bubble-received")">
+                        <p><strong>@message.SenderId:</strong> @message.Content</p>
+                        <span class="small text-muted">@message.SentAt.ToString("HH:mm")</span>
+                    </div>
+                }
             </div>
-            <div class="col-6">
-                <div class="message-container" id="messageContainer">
-                    @foreach (var message in Model)
-                    {
-                        <div class="message-bubble @(message.SenderId == User.Identity.Name ? "message-bubble-sent" : "message-bubble-received")">
-                            <p><strong>@message.SenderId:</strong> @message.Content</p>
-                            <span class="small text-muted">@message.SentAt.ToString("HH:mm")</span>
-                        </div>
-                    }
-                </div>
-                <div class="row">
-                    <div class="input-group">
-                        <input type="text" id="messageInput" class="form-control" placeholder="Type a message...">
-                        <div class="input-group-append">
-                            <button id="sendButton" class="btn btn-primary">Send</button>
-                        </div>
+            <div class="row">
+                <div class="input-group">
+                    <input type="text" id="messageInput" class="form-control" placeholder="Type a message...">
+                    <div class="input-group-append">
+                        <button id="sendButton" class="btn btn-primary">Send</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.0/signalr.min.js"></script>
     <script>
@@ -87,7 +94,7 @@
             }
         });
 
-                document.getElementById('sendButton').addEventListener('click', function() {
+        document.getElementById('sendButton').addEventListener('click', function () {
             var messageInput = document.getElementById('messageInput');
             var messageContainer = document.getElementById('messageContainer');
 
@@ -95,19 +102,36 @@
                 var newMessage = document.createElement('div');
                 newMessage.className = 'message-bubble message-bubble-sent';
                 var now = new Date();
-                var timestamp = now.getHours().toString().padStart(2, '0') + ':' + 
-                                now.getMinutes().toString().padStart(2, '0');
+                var timestamp = now.getHours().toString().padStart(2, '0') + ':' +
+                    now.getMinutes().toString().padStart(2, '0');
                 newMessage.innerHTML = '<p><strong>You:</strong> ' + messageInput.value + '</p>' +
-                                    '<span class="small text-muted">' + timestamp + '</span>';
+                    '<span class="small text-muted">' + timestamp + '</span>';
                 messageContainer.appendChild(newMessage);
-                messageInput.value = '';
 
+                // Send the message to the database
+                $.ajax({
+                    url: '/Chat/SendMessage',
+                    type: 'POST',
+                    data: {
+                        //'senderId': '@User.Identity.Name',
+                        'recipientId': '@Model.RecipientId',
+                        'content': messageInput.value, // adds the content of the message to the request
+                        //'SentAt': now.toISOString() // adds the date of the message to the request
+                        // Handle success - the message was saved
+                    },
+                    error: function (response) {
+                        // Handle error - the message was not saved
+                    }
+                });
+
+                messageInput.value = '';
                 // Delay the scrolling until after the new message has been added
-                setTimeout(function() {
+                setTimeout(function () {
                     messageContainer.scrollTop = messageContainer.scrollHeight;
                 }, 0);
             }
         });
+
 
         connection.on("ReceiveMessage", (user, message) => {
             const encodedMessage = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
