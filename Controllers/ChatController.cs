@@ -1,4 +1,5 @@
 ﻿using DrivePal.Data;
+using DrivePal.Hubs;
 using DrivePal.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,27 +15,31 @@ namespace DrivePal.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly DrivePalDbContext _context;
+        private readonly ChatService _chatService;
 
-        public ChatController(UserManager<User> userManager, DrivePalDbContext context)
+        public ChatController(UserManager<User> userManager, DrivePalDbContext context, ChatService chatService)
         {
             _userManager = userManager;
             _context = context;
+            _chatService = chatService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string recipientId)
         {
-            var currentUser = await _userManager.FindByEmailAsync("learner@example.com"); // Replace with actual email logic
-            var instructor = await _userManager.FindByEmailAsync("instructor@example.com"); // Replace with actual email logic
+            var currentUser = await _userManager.GetUserAsync(User);
+            var currentUserName = $"{currentUser.FirstName} {currentUser.LastName}";
+            var recipient = await _userManager.FindByIdAsync(recipientId);
+            var recipientName = $"{recipient.FirstName} {recipient.LastName}";
 
-            if (currentUser == null || instructor == null)
+            if (currentUser == null || recipient == null)
             {
-                // Handle error (e.g., user not found)
-                return View(new ChatViewModel { Messages = new List<ChatMessage>() }); // Return an empty list
+                return NotFound();
             }
 
+            var groupName = _chatService.GetGroupName(currentUser.Id, recipient.Id);
+
             var chatMessages = _context.ChatMessages
-                .Where(m => (m.SenderId == currentUser.Id && m.RecipientId == instructor.Id) ||
-                            (m.SenderId == instructor.Id && m.RecipientId == currentUser.Id))
+                .Where(m => m.Group.Name == groupName)
                 .OrderBy(m => m.SentAt)
                 .ToList();
 
@@ -44,7 +49,10 @@ namespace DrivePal.Controllers
             foreach (var senderId in senderIds)
             {
                 var sender = await _userManager.FindByIdAsync(senderId);
-                senderNames[senderId] = $"{sender.FirstName} {sender.LastName}";
+                if (sender != null)
+                {
+                    senderNames[senderId] = $"{sender.FirstName} {sender.LastName}";
+                }
             }
 
             // Replace senderId with sender name in chatMessages
@@ -56,38 +64,79 @@ namespace DrivePal.Controllers
             // Create a new ChatViewModel
             var model = new ChatViewModel
             {
-                OtherUserName = instructor.UserName, // Replace with the actual other user's name
-                RecipientId = instructor.Id, // Replace with the actual other user's ID
-                Messages = chatMessages
+                CurrentUserName = currentUserName,
+                OtherUserName = recipientName, // Replace with the actual other user's name
+                RecipientId = recipient.Id, // Replace with the actual other user's ID
+                GroupName = groupName,
+                Messages = chatMessages,
+                SenderNames = senderNames
             };
 
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SendMessage(string recipientId, string content)
-        {
-            var currentUser = await _userManager.GetUserAsync(User);
-            if (currentUser == null)
-            {
-                return Unauthorized();
-            }
 
-            var message = new ChatMessage
-            {
-                SenderId = currentUser.Id,
-                RecipientId = recipientId,
-                Content = content,
-                SentAt = DateTime.UtcNow
-            };
+        //public async Task<IActionResult> Index(string recipientId)
+        //{
+        //    var currentUser = await _userManager.GetUserAsync(User);
+        //    var recipient = await _userManager.FindByIdAsync(recipientId);
 
-            _context.ChatMessages.Add(message);
-            await _context.SaveChangesAsync();
+        //    if (currentUser == null || recipient == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return Ok();
-        }
+        //    var groupName = _chatHub.GetGroupName(currentUser.Id, recipient.Id);
 
-        
+        //    var chatMessages = _context.ChatMessages
+        //        .Where(m => m.Group.Name == groupName)
+        //        .OrderBy(m => m.SentAt)
+        //        .ToList();
+
+        //    if (currentUser == null || recipient == null)
+        //    {
+        //        // Handle error (e.g., user not found)
+        //        return NotFound();
+        //    }
+
+
+        //    var chatMessages = _context.ChatMessages
+        //        .Where(m => (m.SenderId == currentUser.Id && m.RecipientId == recipient.Id) ||
+        //                    (m.SenderId == recipient.Id && m.RecipientId == currentUser.Id))
+        //        .OrderBy(m => m.SentAt)
+        //        .ToList();
+
+        //    // Retrieve sender names
+        //    var senderIds = chatMessages.Select(m => m.SenderId).Distinct();
+        //    var senderNames = new Dictionary<string, string>(); // Store sender names
+        //    foreach (var senderId in senderIds)
+        //    {
+        //        var sender = await _userManager.FindByIdAsync(senderId);
+        //        if (sender != null)
+        //        {
+        //            senderNames[senderId] = $"{sender.FirstName} {sender.LastName}";
+        //        }
+        //    }
+
+        //    // Replace senderId with sender name in chatMessages
+        //    foreach (var message in chatMessages)
+        //    {
+        //        message.SenderId = senderNames[message.SenderId];
+        //    }
+
+        //    // Create a new ChatViewModel
+        //    var model = new ChatViewModel
+        //    {
+        //        OtherUserName = recipient.UserName, // Replace with the actual other user's name
+        //        RecipientId = recipient.Id, // Replace with the actual other user's ID
+        //        GroupName = groupName,
+        //        Messages = chatMessages
+        //    };
+
+        //    return View(model);
+        //}
+
+
 
     }
 }

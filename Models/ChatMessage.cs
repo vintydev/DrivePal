@@ -8,6 +8,10 @@
         public string Content { get; set; }
         public DateTime SentAt { get; set; }
 
+
+        public int GroupId { get; set; }
+        public ChatGroup Group { get; set; }
+
     }
 
 }

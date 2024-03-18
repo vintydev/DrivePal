@@ -1,4 +1,8 @@
 ﻿@model ChatViewModel
+@using System.Security.Claims
+@{
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -46,6 +50,8 @@
     </style>
 </head>
 <body>
+    <div id="chatContainer" data-recipient-id="@Model.RecipientId" data-current-user="@userId">
+        <h2>@Model.GroupName</h2>
     <div class="container">
     <div class="row">
         <div class="col-6">
@@ -53,15 +59,28 @@
             <!-- Recent conversations go here -->
         </div>
         <div class="col-6">
+            <h4>@Model.CurrentUserName</h4>
             <h4>Chatting with @Model.OtherUserName</h4>
-            <div class="message-container" id="messageContainer">
+                    <div class="message-container" id="messageContainer">
+                        @foreach (var message in Model.Messages)
+                        {
+                            var senderName = Model.SenderNames.ContainsKey(message.SenderId) ? Model.SenderNames[message.SenderId] : message.SenderId;
+                            <div class="@(message.SenderId == userId ? "message-bubble-sent" : "message-bubble-received")">
+                                <p><strong>@senderName:</strong> @message.Content</p>
+                                <span class="small text-muted">@message.SentAt.ToString("HH:mm")</span>
+                            </div>
+                        }
+                    </div>
+
+
+            @* <div class="message-container" id="messageContainer">
                 @foreach (var message in Model.Messages)
                 {
-                    <div class="message-bubble @(message.SenderId == User.Identity.Name ? "message-bubble-sent" : "message-bubble-received")">
+                    <div class="message-bubble @(message.SenderId == userId ? "message-bubble-sent" : "message-bubble-received")">
                         <p><strong>@message.SenderId:</strong> @message.Content</p>
                         <span class="small text-muted">@message.SentAt.ToString("HH:mm")</span>
                     </div>
-                }
+                } *@
             </div>
             <div class="row">
                 <div class="input-group">
@@ -74,79 +93,99 @@
         </div>
     </div>
 </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/5.0.0/signalr.min.js"></script>
-    <script>
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/chathub")
-            .build();
-
-        connection.start().catch(err => console.error(err.toString()));
-
-                document.getElementById('messageInput').addEventListener('keypress', function(event) {
-            // Check if the key pressed was the Enter key
-            if (event.key === 'Enter') {
-                // Prevent the default action to stop the form from being submitted
-                event.preventDefault();
-
-                // Trigger the click event on the send button
-                document.getElementById('sendButton').click();
-            }
-        });
-
-        document.getElementById('sendButton').addEventListener('click', function () {
-            var messageInput = document.getElementById('messageInput');
-            var messageContainer = document.getElementById('messageContainer');
-
-            if (messageInput.value.trim() !== '') {
-                var newMessage = document.createElement('div');
-                newMessage.className = 'message-bubble message-bubble-sent';
-                var now = new Date();
-                var timestamp = now.getHours().toString().padStart(2, '0') + ':' +
-                    now.getMinutes().toString().padStart(2, '0');
-                newMessage.innerHTML = '<p><strong>You:</strong> ' + messageInput.value + '</p>' +
-                    '<span class="small text-muted">' + timestamp + '</span>';
-                messageContainer.appendChild(newMessage);
-
-                // Send the message to the database
-                $.ajax({
-                    url: '/Chat/SendMessage',
-                    type: 'POST',
-                    data: {
-                        //'senderId': '@User.Identity.Name',
-                        'recipientId': '@Model.RecipientId',
-                        'content': messageInput.value, // adds the content of the message to the request
-                        //'SentAt': now.toISOString() // adds the date of the message to the request
-                        // Handle success - the message was saved
-                    },
-                    error: function (response) {
-                        // Handle error - the message was not saved
-                    }
-                });
-
-                messageInput.value = '';
-                // Delay the scrolling until after the new message has been added
-                setTimeout(function () {
-                    messageContainer.scrollTop = messageContainer.scrollHeight;
-                }, 0);
-            }
-        });
-
-
-        connection.on("ReceiveMessage", (user, message) => {
-            const encodedMessage = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-            const isCurrentUser = user === "@User.Identity.Name";
-            const bubbleClass = isCurrentUser ? "message-bubble-sent" : "message-bubble-received";
-            const li = document.createElement("div");
-            li.className = `message-bubble ${bubbleClass} ${isCurrentUser ? "message-bubble-current-user" : ""}`;
-            li.innerHTML = `<p><strong>${user}:</strong> ${encodedMessage}</p><span class="small text-muted">${new Date().toLocaleTimeString()}</span>`;
-            document.getElementById("messageContainer").appendChild(li);
-
-            // Delay the scrolling until after the new message has been added
-            setTimeout(function() {
-                messageContainer.scrollTop = messageContainer.scrollHeight;
-            }, 0);
-        });
-    </script>
+</div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.7/signalr.min.js"></script>
+    <script src="~/js/chat.js"></script>
 </body>
 </html>
+
+
+   
+    <script>
+        // const connection = new signalR.HubConnectionBuilder()
+        //     .withUrl("/chathub")
+        //     .build();
+
+        // connection.start().catch(err => console.error(err.toString()));
+
+        //         document.getElementById('messageInput').addEventListener('keypress', function(event) {
+        //     // Check if the key pressed was the Enter key
+        //     if (event.key === 'Enter') {
+        //         // Prevent the default action to stop the form from being submitted
+        //         event.preventDefault();
+
+        //         // Trigger the click event on the send button
+        //         document.getElementById('sendButton').click();
+        //     }
+        // });
+
+        // document.getElementById('sendButton').addEventListener('click', function () {
+        //     var messageInput = document.getElementById('messageInput');
+        //     var messageContainer = document.getElementById('messageContainer');
+
+        //     if (messageInput.value.trim() !== '') {
+        //         // Send the message to the server
+        //         connection.invoke('SendMessage', '@Model.RecipientId', messageInput.value)
+        //             .catch(err => console.error(err.toString()));
+
+        //         messageInput.value = '';
+        //     }
+        // });
+
+        //Works as non-real time send and receive
+
+        // document.getElementById('sendButton').addEventListener('click', function () {
+        //     var messageInput = document.getElementById('messageInput');
+        //     var messageContainer = document.getElementById('messageContainer');
+
+        //     if (messageInput.value.trim() !== '') {
+        //         var newMessage = document.createElement('div');
+        //         newMessage.className = 'message-bubble message-bubble-sent';
+        //         var now = new Date();
+        //         var timestamp = now.getHours().toString().padStart(2, '0') + ':' +
+        //             now.getMinutes().toString().padStart(2, '0');
+        //         newMessage.innerHTML = '<p><strong>You:</strong> ' + messageInput.value + '</p>' +
+        //             '<span class="small text-muted">' + timestamp + '</span>';
+        //         messageContainer.appendChild(newMessage);
+
+        //         // Send the message to the database
+        //         $.ajax({
+        //             url: '/Chat/SendMessage',
+        //             type: 'POST',
+        //             data: {
+        //                 //'senderId': '@User.Identity.Name',
+        //                 'recipientId': '@Model.RecipientId',
+        //                 'content': messageInput.value, // adds the content of the message to the request
+        //                 //'SentAt': now.toISOString() // adds the date of the message to the request
+        //                 // Handle success - the message was saved
+        //             },
+        //             error: function (response) {
+        //                 // Handle error - the message was not saved
+        //             }
+        //         });
+
+        //         messageInput.value = '';
+        //         // Delay the scrolling until after the new message has been added
+        //         setTimeout(function () {
+        //             messageContainer.scrollTop = messageContainer.scrollHeight;
+        //         }, 0);
+        //     }
+        // });
+
+
+        // connection.on("ReceiveMessage", (user, message) => {
+        //     const encodedMessage = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        //     const isCurrentUser = user === "@User.Identity.Name";
+        //     const bubbleClass = isCurrentUser ? "message-bubble-sent" : "message-bubble-received";
+        //     const li = document.createElement("div");
+        //     li.className = `message-bubble ${bubbleClass} ${isCurrentUser ? "message-bubble-current-user" : ""}`;
+        //     li.innerHTML = `<p><strong>${user}:</strong> ${encodedMessage}</p><span class="small text-muted">${new Date().toLocaleTimeString()}</span>`;
+        //     document.getElementById("messageContainer").appendChild(li);
+
+        //     // Delay the scrolling until after the new message has been added
+        //     setTimeout(function() {
+        //         messageContainer.scrollTop = messageContainer.scrollHeight;
+        //     }, 0);
+        // });
+    </script>
