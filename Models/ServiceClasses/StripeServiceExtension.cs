@@ -1,4 +1,6 @@
-﻿//using Stripe;
+﻿
+
+using Stripe;
 
 namespace DrivePal.Models.ServiceClasses
 {
@@ -12,9 +14,11 @@ namespace DrivePal.Models.ServiceClasses
         ///// </summary>
         ///// <param name="services">The service collection to add the Stripe service to.</param>
         ///// <param name="apiKey">The Stripe API key.</param>
-        //public static void AddStripe(this IServiceCollection services, string apiKey)
-        //{
-        //    services.AddSingleton(new StripeClient(apiKey));
-        //}
+        public static void AddStripe(this IServiceCollection services, string apiKey)
+        {
+            // This sets the API key for all Stripe API calls
+            StripeConfiguration.ApiKey = apiKey;
+        }
+    
     }
 }

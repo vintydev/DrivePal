@@ -19,7 +19,9 @@
     <!-- Add more details as needed -->
 </div>
 
-<form asp-controller="Booking" asp-action="MakeBooking" method="post">
-    <input type="hidden" name="DrivingClassId" value="@Model.DrivingClassId" />
+
+
+<form asp-controller="Booking" asp-action="CheckOut" >
+    <input type="hidden" name="Id" value="@Model.DrivingClassId" />
     <input type="submit" value="Reserve this class" class="btn btn-success" />
 </form>

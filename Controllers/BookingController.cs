@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using DrivePal.Models.ViewModels;
+using Stripe.Checkout;
+
 
 
 namespace DrivePal.Controllers
@@ -94,9 +96,68 @@ namespace DrivePal.Controllers
 
         //    return RedirectToAction(nameof(BookingConfirmation), new { bookingId = booking.BookingId });
         //}
+        public async Task<IActionResult> CheckOut(int Id)
+        {
+            int lessonId = Id;
+            var lesson = await _context.DrivingClasses
+                .Include(dc => dc.Instructor).Include(dc => dc.Learner)
+                .FirstOrDefaultAsync(m => m.DrivingClassId == Id);
+
+            var learnerId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Assuming you're using ASP.NET Core Identity
+            var learner = await _context.Users
+                .OfType<Learner>()
+                .FirstOrDefaultAsync(u => u.Id == learnerId);
+
+            if (learner == null || string.IsNullOrEmpty(learner.Email))
+            {
+                // Handle the case where the learner or email is null or empty
+                _logger.LogError("Learner or email is null for user ID: {UserId}", learnerId);
+                // Redirect to an error page or return an error view
+                return View("Error");
+            }
+         
 
 
-        [HttpPost]
+            var options = new Stripe.Checkout.SessionCreateOptions
+            {
+                SuccessUrl = Url.Action("MakeBooking", "Booking", new { DrivingClassId = lessonId }, Request.Scheme),
+                CancelUrl = Url.Action("SelectClass", "Booking", new { Id = lessonId }, Request.Scheme),
+                LineItems = new List<Stripe.Checkout.SessionLineItemOptions>(),
+                Mode = "payment",
+                CustomerEmail = learner.Email
+
+            };
+          
+            long priceInPence = (long)(lesson.Price * 100); // Convert GBP to pence
+
+            var sessionListItem = new Stripe.Checkout.SessionLineItemOptions
+            {
+                PriceData = new Stripe.Checkout.SessionLineItemPriceDataOptions
+                {
+                    Currency = "gbp",
+                    UnitAmount = priceInPence,
+                    ProductData = new Stripe.Checkout.SessionLineItemPriceDataProductDataOptions
+                    {
+                        Name = "Driving Lesson Booking",
+                        Description= "Lesson starts at: "+lesson.DrivingClassStart.ToString()+" With "+lesson.Instructor.FirstName,
+                        
+                        
+                    },
+                },
+                Quantity = 1,
+            };
+            options.LineItems.Add(sessionListItem);
+            var service = new Stripe.Checkout.SessionService();
+            Session session = service.Create(options);
+
+            Response.Headers.Add("Location", session.Url);
+
+
+            return new StatusCodeResult(303);
+        }
+
+
+    
         public async Task<IActionResult> MakeBooking(int DrivingClassId)
         {
             var drivingClass = await _context.DrivingClasses
@@ -120,6 +181,7 @@ namespace DrivePal.Controllers
                 // Redirect to an error page or return an error view
                 return View("Error");
             }
+
 
             var booking = new Booking
             {

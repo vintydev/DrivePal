@@ -43,8 +43,8 @@ builder.Services.AddTransient<EmailService>();
 
 
 ////adds Stripe service
-//var stripeKey = builder.Configuration.GetSection("Stripe")["SecretKey"];
-//builder.Services.AddStripe(stripeKey);
+var stripeKey = builder.Configuration.GetSection("Stripe")["SecretKey"];
+builder.Services.AddStripe(stripeKey);
 
 var app = builder.Build();
 
