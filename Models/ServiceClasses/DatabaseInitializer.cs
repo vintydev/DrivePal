@@ -15,7 +15,6 @@ namespace DrivePal.Models.ServiceClasses
             RoleManager<IdentityRole> roleManager)
         {
             context.Database.EnsureDeleted();
-
             context.Database.EnsureCreated();
 
             // Create roles if they do not exist
@@ -65,6 +64,14 @@ namespace DrivePal.Models.ServiceClasses
                     LicenceNumber = "1234567812345678",
                     isApproved = true,
                     isBlocked = false,
+                    InstructorDrivingStatus = DrivingStatus.Experienced,
+                    InstructorTeachingTraits = ["Assertive", "Experienced"],
+                    InstructorDrivingGoals = ["Pass quickly"],
+                    InstructorTeachingType = ["Manual", "Automatic"],
+                    InstructorAvailableDaysOf = ["Monday", "Tuesday", "Saturday"],
+                    InstructorTimeOfDay = ["Morning", "Afternoon"],
+                    InstructorLessonDuration = [60],
+                    InstructorLessonAverage = 60
                 };
                 await userManager.CreateAsync(instructorUser, "pass123");
                 await userManager.AddToRoleAsync(instructorUser, "Instructor");
@@ -87,6 +94,14 @@ namespace DrivePal.Models.ServiceClasses
                     LicenceNumber = "8765432187654321",
                     isApproved = true,
                     isBlocked = false,
+                    InstructorDrivingStatus = DrivingStatus.Inexperienced,
+                    InstructorTeachingTraits = ["Patient", "Calm"],
+                    InstructorDrivingGoals = ["Gain driving confidence"],
+                    InstructorTeachingType = ["Manual"],
+                    InstructorAvailableDaysOf = ["Wednesday", "Thursday", "Friday"],
+                    InstructorTimeOfDay = ["Afternoon", "Evening"],
+                    InstructorLessonDuration = [90] ,
+                    InstructorLessonAverage = 75
                 };
                 await userManager.CreateAsync(instructorUser2, "pass123");
                 await userManager.AddToRoleAsync(instructorUser2, "Instructor");
@@ -94,7 +109,7 @@ namespace DrivePal.Models.ServiceClasses
             //seeding instructor non approved
             if (!context.Users.Any(u => u.UserName == "instructor4@example.com"))
             {
-                var adminUser = new Instructor
+                var instructorUser4 = new Instructor
                 {
                     UserName = "instructor4@example.com",
                     Email = "instructor4@example.com",
@@ -108,15 +123,23 @@ namespace DrivePal.Models.ServiceClasses
                     EmailConfirmed = true,
                     LicenceNumber = "8765412187654321",
                     isApproved = false,
-                    isBlocked = false
+                    isBlocked = false,
+                    InstructorDrivingStatus = DrivingStatus.Experienced,
+                    InstructorTeachingTraits = ["Assertive", "Empathetic"],
+                    InstructorDrivingGoals = ["Gain driving confidence", "Pass quickly"],
+                    InstructorTeachingType = ["Manual", "Automatic"],
+                    InstructorAvailableDaysOf = ["Friday", "Saturday", "Sunday"],
+                    InstructorTimeOfDay = ["Morning", "Afternoon", "Evening"],
+                    InstructorLessonDuration = [60],
+                    InstructorLessonAverage = 70
                 };
-                await userManager.CreateAsync(adminUser, "pass123");
-                await userManager.AddToRoleAsync(adminUser, "Instructor");
+                await userManager.CreateAsync(instructorUser4, "pass123");
+                await userManager.AddToRoleAsync(instructorUser4, "Instructor");
 
             }
             if (!context.Users.Any(u => u.UserName == "instructor5@example.com"))
             {
-                var adminUser = new Instructor
+                var instructorUser5 = new Instructor
                 {
                     UserName = "instructor5@example.com",
                     Email = "instructor5@example.com",
@@ -130,10 +153,18 @@ namespace DrivePal.Models.ServiceClasses
                     EmailConfirmed = true,
                     LicenceNumber = "8765412187654323",
                     isApproved = false,
-                    isBlocked = false
+                    isBlocked = false,
+                    InstructorDrivingStatus = DrivingStatus.Experienced,
+                    InstructorTeachingTraits = ["Assertive", "Empathetic"],
+                    InstructorDrivingGoals = ["Gain driving confidence", "Pass quickly"],
+                    InstructorTeachingType = ["Manual", "Automatic"],
+                    InstructorAvailableDaysOf = ["Friday", "Saturday", "Sunday"],
+                    InstructorTimeOfDay = ["Morning", "Afternoon", "Evening"],
+                    InstructorLessonDuration = [60],
+                    InstructorLessonAverage = 70
                 };
-                await userManager.CreateAsync(adminUser, "pass123");
-                await userManager.AddToRoleAsync(adminUser, "Instructor");
+                await userManager.CreateAsync(instructorUser5, "pass123");
+                await userManager.AddToRoleAsync(instructorUser5, "Instructor");
 
             }
 

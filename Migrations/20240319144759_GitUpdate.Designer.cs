@@ -4,6 +4,7 @@ using DrivePal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrivePal.Migrations
 {
     [DbContext(typeof(DrivePalDbContext))]
-    partial class DrivePalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240319144759_GitUpdate")]
+    partial class GitUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -475,35 +478,8 @@ namespace DrivePal.Migrations
                 {
                     b.HasBaseType("DrivePal.Models.User");
 
-                    b.Property<string>("InstructorAvailableDaysOf")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InstructorDrivingGoals")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("InstructorDrivingStatus")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("InstructorLessonAverage")
+                    b.Property<decimal>("AveragePricePerLesson")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("InstructorLessonDuration")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InstructorTeachingTraits")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InstructorTeachingType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InstructorTimeOfDay")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LicenceNumber")
                         .IsRequired()
