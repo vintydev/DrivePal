@@ -72,11 +72,6 @@
                             <th>@(Model.Count > 0 && Model[0].InstructorTimeAvaiable != null ? "Times Available" : "")</th>
                         }
                         <th>Contact</th>
-                       
-                        
-
-
-
                         
                     </tr>
                 </thead>
@@ -131,12 +126,11 @@
                                 
                             </td>
                              @if (@Model.Count > 0 && Model[0].AveragePrice != null || Model.Count > 0 && Model[0].InstructorDaysAvailable != null || Model.Count > 0 && Model[0].InstructorTimeAvaiable != null)
-                                                        {
-                                                            <td>@(instructor.AveragePrice != null ? instructor.AveragePrice.ToString() : "-")</td>
-                                                            <td>@(instructor.InstructorDaysAvailable != null ? string.Join(", ", instructor.InstructorDaysAvailable) : "-")</td>
-                                                            <td>@(instructor.InstructorTimeAvaiable != null ? string.Join(", ", instructor.InstructorTimeAvaiable) : "-")</td>
-                                                         
-                                                        }
+                             {
+                                 <td>@(instructor.AveragePrice != null ? instructor.AveragePrice.ToString() : "-")</td>
+                                 <td>@(instructor.InstructorDaysAvailable != null ? string.Join(", ", instructor.InstructorDaysAvailable) : "-")</td>
+                                 <td>@(instructor.InstructorTimeAvaiable != null ? string.Join(", ", instructor.InstructorTimeAvaiable) : "-")</td>
+                             }
                             <td>
                                 @if (User.Identity.IsAuthenticated && User.IsInRole("Learner"))
                                 {

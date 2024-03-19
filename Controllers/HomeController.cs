@@ -40,6 +40,18 @@ namespace DrivePal.Controllers
         {
             return View();
         }
+
+        public string OnikaBurger()
+        {
+            string onika ="";
+            string she;
+            string ate;
+            string burgers ="";
+
+            she = onika;
+            ate = burgers;
+            return she + ate;
+        }
         
         // Only for learners
         [Authorize(Roles="Learner")]
@@ -220,6 +232,8 @@ namespace DrivePal.Controllers
                 .ToListAsync();
 
             return View(instructors);
+            
+            
         }
         
 
