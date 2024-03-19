@@ -146,6 +146,10 @@ namespace DrivePal.Controllers
             
             // Redirects with validation errors
             if (!ModelState.IsValid) return View("QuestionnaireIndex",questionnaire);
+            else
+            {
+                
+            }
             
             // Add properties
             questionnaire.IsFinished = true;

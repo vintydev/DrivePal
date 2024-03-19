@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
 </head>
 
+
 <body>
     <main>
 
@@ -45,6 +46,17 @@
         <section>
             <h2>Instructors</h2>
 
+            @if (Model.Count == 0)
+            {
+                <div class="alert alert-danger" role="alert">
+                    Error: No matching instructors were found. Please try again.
+                </div>
+               
+                    <button style="text-align:center" class="btn-primary" onclick="window.location.href='/Home/QuestionnaireIndex'">Submit Again</button>
+               <br/>
+               
+               
+            }
             <table>
                 <thead>
                     <tr>
