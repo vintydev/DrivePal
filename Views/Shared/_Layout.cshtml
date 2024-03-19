@@ -16,8 +16,17 @@
             </div>
             <ul class="navbar">
                 <li><a href="/">Home</a></li>
-                <li><a href="/Home/SeeAllInstructors">Instructors</a></li>
-                <li><a href="/Home/Resources">Resources</a></li>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li><a href="/Home/Resources">Resources</a></li>
+                    <li><a href="/Home/SeeAllInstructors">Instructors</a></li>
+                }
+                else
+                {
+                    <li><a href="/Identity/Account/Login">Resources</a></li>
+                    <li><a href="/Identity/Account/Login">Instructors</a></li>
+                }
+                
 
                 @if (User.Identity.IsAuthenticated)
                 {
