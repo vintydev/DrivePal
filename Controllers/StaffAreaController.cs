@@ -49,10 +49,19 @@ namespace DrivePal.Controllers
         public ActionResult Index()
         {
             var drivePalDbContext = _context.Instructors.Where(r=>r.isApproved.Equals(false)).ToList();
-            var nonApprovedCount= drivePalDbContext.Count();
-            ViewBag.Count=nonApprovedCount;
-            var reviews =_context.Reviews.Where(r => r.isFlagged.Equals(true)).Count();
-            ViewBag.Reviews=reviews;
+            var count= drivePalDbContext.Count();
+            ViewBag.Count=count;
+          
+
+            return View(drivePalDbContext.ToList());
+        }
+        public ActionResult AllInstructors()// view of all instructors
+        {
+            var drivePalDbContext = _context.Instructors.ToList();
+            var nonApprovedCount = drivePalDbContext.Count();
+            ViewBag.Count = nonApprovedCount;
+            var reviews = _context.Reviews.Where(r => r.isFlagged.Equals(true)).Count();
+            ViewBag.Reviews = reviews;
 
             return View(drivePalDbContext.ToList());
         }
@@ -115,7 +124,7 @@ namespace DrivePal.Controllers
                     instructor.City = model.City;
                     instructor.LicenceNumber = model.LicenceNumber;
                     instructor.Gender = model.Gender;
-                    instructor.isBlocked = model.isBlocked;
+                    instructor.isBlocked = false;
                     instructor.isApproved = true;
                     instructor.TotalRating = model.TotalRating;
 

@@ -2,14 +2,15 @@
 
 namespace DrivePal.Models
 {
-    public class DrivingClass
+    public class Basket
     {
-        public int DrivingClassId { get; set; }
+        public int BasketId { get; set; }
+       
 
-        public DateTime DrivingClassStart { get; set; }
-        public DateTime DrivingClassEnd { get; set; }
+    
+        public DateTime BookingDate { get; set; }
+
         public decimal Price { get; set; }
-        public bool? IsReserved { get; set; }
 
         ///Navigation properties
         [ForeignKey("Instructor")]
@@ -18,9 +19,10 @@ namespace DrivePal.Models
         [ForeignKey("Learner")]
         public string? LearnerId { get; set; }
         public virtual Learner? Learner { get; set; }
-        public virtual Booking? Booking { get; set; }
-
-        //public virtual Basket? Basket { get; set; }
+        public virtual Payment? Payment { get; set; }
+        [ForeignKey("DrivingClass")]
+        public int? DrivingClassId { get; set; }
+        public virtual DrivingClass? DrivingClass { get; set; }
 
         
     }

@@ -2,14 +2,13 @@
 @{
 
 }
-<h1>Main Menu</h1>
+<h1>All Instructors</h1>
 <hr />
 
-<h3>Instructors needing approved (@ViewBag.Count)</h3>
+<h3>Number of Instructors registered: (@ViewBag.Count)</h3>
 
-<a class="btn btn-primary" asp-controller="StaffArea" asp-action="ViewReviews">View Reported Reviews (@ViewBag.Reviews)</a>
-<a class="btn btn-success" asp-controller="Admin" asp-action="AllUsersPDF">All Learners</a>
-<a class="btn btn-success" asp-controller="StaffArea" asp-action="AllInstructors">All Instructors</a>
+<a class="btn btn-primary" asp-controller="StaffArea" asp-action="Index">Back to Home</a>
+
 
 <table class="table table-striped">
     <thead>

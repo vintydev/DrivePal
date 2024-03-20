@@ -22,7 +22,6 @@ namespace DrivePal.Models
 
         //Navigational property
         public virtual ICollection<Review>? Reviews { get; set; }
-        public virtual ICollection<Card>? Cards { get; set; }
         public virtual ICollection<Booking>? Bookings { get; set; }
 
     }
