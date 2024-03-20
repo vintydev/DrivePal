@@ -4,6 +4,7 @@ using DrivePal.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DrivePal.Migrations
 {
     [DbContext(typeof(DrivePalDbContext))]
-    partial class DrivePalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240318011729_AddChatGroups")]
+    partial class AddChatGroups
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,6 +59,43 @@ namespace DrivePal.Migrations
                     b.HasIndex("LearnerId");
 
                     b.ToTable("Bookings");
+                });
+
+            modelBuilder.Entity("DrivePal.Models.Card", b =>
+                {
+                    b.Property<int>("CardId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CardId"));
+
+                    b.Property<string>("CardHolderAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CardHolderName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CardNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpireDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LearnerId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SecurityCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CardId");
+
+                    b.HasIndex("LearnerId");
+
+                    b.ToTable("Cards");
                 });
 
             modelBuilder.Entity("DrivePal.Models.ChatMessage", b =>
@@ -135,12 +175,11 @@ namespace DrivePal.Migrations
                     b.Property<int?>("BookingId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CardId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("StripeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PaymentId");
 
@@ -148,64 +187,9 @@ namespace DrivePal.Migrations
                         .IsUnique()
                         .HasFilter("[BookingId] IS NOT NULL");
 
+                    b.HasIndex("CardId");
+
                     b.ToTable("Payments");
-                });
-
-            modelBuilder.Entity("DrivePal.Models.Questionnaire", b =>
-                {
-                    b.Property<int>("QuestionnaireId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("QuestionnaireId"));
-
-                    b.Property<string>("AvailableDaysOf")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DateCompleted")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DrivingGoals")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DrivingStatus")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsFinished")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LearnerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LessonDuration")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("MaxPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("MinPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("TeachingTraits")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TeachingType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TimeOfDay")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("QuestionnaireId");
-
-                    b.HasIndex("LearnerId");
-
-                    b.ToTable("Questionnaires");
                 });
 
             modelBuilder.Entity("DrivePal.Models.Review", b =>
@@ -281,9 +265,6 @@ namespace DrivePal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Gender")
-                        .HasColumnType("int");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -315,10 +296,6 @@ namespace DrivePal.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProfilePicture")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("RegisteredAt")
                         .HasColumnType("datetime2");
 
@@ -335,12 +312,6 @@ namespace DrivePal.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool?>("isBlocked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("isExperienced")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -507,20 +478,6 @@ namespace DrivePal.Migrations
                 {
                     b.HasBaseType("DrivePal.Models.User");
 
-                    b.Property<string>("InstructorAvailableDaysOf")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InstructorDrivingGoals")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("InstructorDrivingStatus")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("InstructorLessonAverage")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int?>("Gender")
                         .HasColumnType("int");
 
@@ -535,10 +492,19 @@ namespace DrivePal.Migrations
                     b.Property<bool?>("isApproved")
                         .HasColumnType("bit");
 
+                    b.Property<bool?>("isBlocked")
+                        .HasColumnType("bit");
+
                     b.ToTable("AspNetUsers", t =>
                         {
+                            t.Property("Gender")
+                                .HasColumnName("Instructor_Gender");
+
                             t.Property("LicenceNumber")
                                 .HasColumnName("Instructor_LicenceNumber");
+
+                            t.Property("isBlocked")
+                                .HasColumnName("Instructor_isBlocked");
                         });
 
                     b.HasDiscriminator().HasValue("Instructor");
@@ -548,8 +514,17 @@ namespace DrivePal.Migrations
                 {
                     b.HasBaseType("DrivePal.Models.User");
 
+                    b.Property<int?>("Gender")
+                        .HasColumnType("int");
+
                     b.Property<string>("LicenceNumber")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("isBlocked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("isExperienced")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("lessonCount")
                         .HasColumnType("int");
@@ -591,6 +566,16 @@ namespace DrivePal.Migrations
                     b.Navigation("Learner");
                 });
 
+            modelBuilder.Entity("DrivePal.Models.Card", b =>
+                {
+                    b.HasOne("DrivePal.Models.Learner", "Learner")
+                        .WithMany("Cards")
+                        .HasForeignKey("LearnerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Learner");
+                });
+
             modelBuilder.Entity("DrivePal.Models.DrivingClass", b =>
                 {
                     b.HasOne("DrivePal.Models.Instructor", "Instructor")
@@ -615,17 +600,14 @@ namespace DrivePal.Migrations
                         .HasForeignKey("DrivePal.Models.Payment", "BookingId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("Booking");
-                });
-
-            modelBuilder.Entity("DrivePal.Models.Questionnaire", b =>
-                {
-                    b.HasOne("DrivePal.Models.Learner", "Learner")
-                        .WithMany()
-                        .HasForeignKey("LearnerId")
+                    b.HasOne("DrivePal.Models.Card", "Card")
+                        .WithMany("Payments")
+                        .HasForeignKey("CardId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("Learner");
+                    b.Navigation("Booking");
+
+                    b.Navigation("Card");
                 });
 
             modelBuilder.Entity("DrivePal.Models.Review", b =>
@@ -703,6 +685,11 @@ namespace DrivePal.Migrations
                     b.Navigation("Payment");
                 });
 
+            modelBuilder.Entity("DrivePal.Models.Card", b =>
+                {
+                    b.Navigation("Payments");
+                });
+
             modelBuilder.Entity("DrivePal.Models.DrivingClass", b =>
                 {
                     b.Navigation("Booking");
@@ -718,6 +705,8 @@ namespace DrivePal.Migrations
             modelBuilder.Entity("DrivePal.Models.Learner", b =>
                 {
                     b.Navigation("Bookings");
+
+                    b.Navigation("Cards");
 
                     b.Navigation("Reviews");
                 });

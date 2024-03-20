@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
 </head>
 
+
 <body>
     <main>
 
@@ -45,6 +46,17 @@
         <section>
             <h2>Instructors</h2>
 
+            @if (Model.Count == 0)
+            {
+                <div class="alert alert-danger" role="alert">
+                    Error: No matching instructors were found. Please try again.
+                </div>
+               
+                    <button style="text-align:center" class="btn-primary" onclick="window.location.href='/Home/QuestionnaireIndex'">Submit Again</button>
+               <br/>
+               
+               
+            }
             <table>
                 <thead>
                     <tr>
@@ -53,7 +65,14 @@
                         <th>Experience</th>
                         <th>Post Code</th>
                         <th>Rating</th>
+                        @if (@Model.Count > 0 && Model[0].AveragePrice != null || Model.Count > 0 && Model[0].InstructorDaysAvailable != null || Model.Count > 0 && Model[0].InstructorTimeAvaiable != null)
+                        {
+                            <th>@(Model.Count > 0 && Model[0].AveragePrice != null ? "Price Per Lesson" : "")</th>
+                            <th>@(Model.Count > 0 && Model[0].InstructorDaysAvailable != null ? "Days Available" : "")</th>
+                            <th>@(Model.Count > 0 && Model[0].InstructorTimeAvaiable != null ? "Times Available" : "")</th>
+                        }
                         <th>Contact</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -64,6 +83,8 @@
                             <td>[Not yet implemented]</td>
                             <td>[Not yet implemented]</td>
                             <td>@instructor.PostCode</td>
+                           
+                           
                             <td>
                                 @if (instructor.TotalRating > 0)
                                 {
@@ -102,14 +123,23 @@
                                 {
                                     <span>No reviews left yet!</span>
                                 }
+                                
                             </td>
+                             @if (@Model.Count > 0 && Model[0].AveragePrice != null || Model.Count > 0 && Model[0].InstructorDaysAvailable != null || Model.Count > 0 && Model[0].InstructorTimeAvaiable != null)
+                             {
+                                 <td>@(instructor.AveragePrice != null ? instructor.AveragePrice.ToString() : "-")</td>
+                                 <td>@(instructor.InstructorDaysAvailable != null ? string.Join(", ", instructor.InstructorDaysAvailable) : "-")</td>
+                                 <td>@(instructor.InstructorTimeAvaiable != null ? string.Join(", ", instructor.InstructorTimeAvaiable) : "-")</td>
+                             }
                             <td>
                                 @if (User.Identity.IsAuthenticated && User.IsInRole("Learner"))
                                 {
                                     <a href="@Url.Action("Create", "Reviews", new { id = instructor.Id })" class="button">Write a Review</a>
                                     <a href="@Url.Action("ViewReviews", "Reviews", new { id = instructor.Id })" class="button">View all Reviews</a>
                                     <a class="btn btn-primary" asp-controller="DrivingClass" asp-action="ShowClassesForThisInstructor" asp-route-instructorId="@instructor.Id">See Classes for This Instructor</a>
+                                    <a href="@Url.Action("Index", "Chat", new { recipientId = instructor.Id })" class="btn btn-secondary">Chat</a>
                                 }
+                                
                             </td>
                         </tr>
                     }

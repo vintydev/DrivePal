@@ -33,5 +33,7 @@ namespace DrivePal.Models
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime RegisteredAt { get; set; }
 
+        public ICollection<UserChatGroup> UserChatGroups { get; set; }
+
     }
 }

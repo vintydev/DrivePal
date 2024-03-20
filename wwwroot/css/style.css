@@ -545,3 +545,19 @@ footer {
     width: 150px;
     font-weight: bold;
 }
+#messageList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.message {
+    margin-bottom: 10px;
+}
+
+.sent {
+    text-align: right;
+}
+
+.received {
+    text-align: left;
+}
