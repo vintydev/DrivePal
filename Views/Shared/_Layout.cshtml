@@ -31,15 +31,16 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     if (User.IsInRole("Learner"))
-                    {
+                    {  
                         <li><a href="/Booking/ShowOwnBookings">See your booked classes</a></li>
                         <li><a href="/DrivingClass/Index">See all classes</a></li>
-
+                        <a class="nav-link" asp-controller="Chat" asp-action="ChatGroups">Chat</a>
                     }
                     if (User.IsInRole("Instructor"))
-                    {
-                        <li><a href="/DrivingClass/OwnDrivingClasses">Manage Classes</a></li>
-                        <li><a href="/Booking/ShowBookedClasses">Booked Classes</a></li>
+                    { 
+                        <li><a href="/DrivingClass/OwnDrivingClasses">Manage your classes</a></li>
+                        <li><a href="/Booking/ShowBookedClasses">See what classes have been booked</a></li>
+                        <a class="nav-link" asp-controller="Chat" asp-action="ChatGroups">Chat</a>
                     }
                     if (User.IsInRole("Admin"))
                     {

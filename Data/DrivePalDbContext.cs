@@ -1,6 +1,7 @@
 ﻿using DrivePal.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 
 namespace DrivePal.Data
 {
@@ -13,6 +14,11 @@ namespace DrivePal.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<UserChatGroup>()
+            .HasKey(ucg => new { ucg.UserId, ucg.ChatGroupId });
+
+
 
             // Set the delete behavior for all relationships to Restrict
             foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
@@ -30,6 +36,10 @@ namespace DrivePal.Data
         
         public DbSet<Payment> Payments { get; set; }
         public DbSet<DrivingClass> DrivingClasses { get; set; }
+        
+        public DbSet<ChatMessage> ChatMessages { get; set; }
+        public DbSet<ChatGroup> ChatGroups { get; set; }
+        public DbSet<UserChatGroup> UserChatGroups { get; set; }
         
         public DbSet<Questionnaire> Questionnaires { get; set; }
         //public DbSet <Basket> Baskets { get; set; }
