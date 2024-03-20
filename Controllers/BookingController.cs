@@ -21,13 +21,14 @@ namespace DrivePal.Controllers
         private SignInManager<User> _signInManager;
         // Role manager for managing user roles
         private RoleManager<IdentityRole> _roleManager;
+        private readonly IHttpContextAccessor _contextAccessor;
 
         private readonly IConfiguration _configuration;
         private readonly EmailService _emailService;
 
         private ILogger<BookingController> _logger;
 
-        public BookingController(ILogger<BookingController> logger, DrivePalDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, EmailService emailService)
+        public BookingController(ILogger<BookingController> logger, DrivePalDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, EmailService emailService,IHttpContextAccessor contextAccessor)
         {
             _logger = logger;
             _context = context;
@@ -36,6 +37,7 @@ namespace DrivePal.Controllers
             _roleManager = roleManager;
             _configuration = configuration;
             _emailService = emailService;
+            _contextAccessor = contextAccessor;
         }
 
         public async Task<IActionResult> SelectClass(int id)
@@ -120,7 +122,7 @@ namespace DrivePal.Controllers
 
             var options = new Stripe.Checkout.SessionCreateOptions
             {
-                SuccessUrl = Url.Action("MakeBooking", "Booking", new { DrivingClassId = lessonId }, Request.Scheme),
+                SuccessUrl = Url.Action("MakeBooking", "Booking", new { DrivingClassId = lessonId}, Request.Scheme),
                 CancelUrl = Url.Action("SelectClass", "Booking", new { Id = lessonId }, Request.Scheme),
                 LineItems = new List<Stripe.Checkout.SessionLineItemOptions>(),
                 Mode = "payment",
@@ -151,6 +153,8 @@ namespace DrivePal.Controllers
             Session session = service.Create(options);
 
             Response.Headers.Add("Location", session.Url);
+            HttpContext.Session.SetString("StripeSessionId", session.Id);
+           
 
 
             return new StatusCodeResult(303);
@@ -194,6 +198,17 @@ namespace DrivePal.Controllers
 
             _context.Bookings.Add(booking);
             await _context.SaveChangesAsync();
+            var stripeSessionId = HttpContext.Session.GetString("StripeSessionId");
+            var payment = new Payment
+            {
+                StripeId = stripeSessionId,
+                Amount = booking.Price,
+                BookingId = booking.BookingId,
+                PaymentDate = DateTime.Now,
+            };
+            _context.Payments.Add(payment);
+            await _context.SaveChangesAsync();
+
 
             // Prepare the email content
             string subject = "Your Booking Confirmation";
