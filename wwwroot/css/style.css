@@ -29,15 +29,6 @@ header {
     text-align: center;
 }
 
-.form-control {
-    border: 2px solid rgba(9, 56, 9, 0.8); 
-    border-radius: 5px; 
-    padding: 10px;
-    width: 100%; 
-    box-sizing: border-box; 
-    background-color: #baf6af !important;
-}
-
 
 .navbar {
     background-color: rgba(9, 56, 9, 0.8) !important; /* Darker semi-transparent green background */

@@ -181,6 +181,7 @@ namespace DrivePal.Models.ServiceClasses
                         Street = "Bath Street",
                         PostCode = "G1 1AA",
                         DOB = new DateOnly(1997, 3, 13),
+                        Gender = Gender.Female,
                         EmailConfirmed = true,
                         LicenceNumber = "12345678"
                     };
@@ -205,6 +206,25 @@ namespace DrivePal.Models.ServiceClasses
                     await userManager.CreateAsync(learnerUser2, "pass123");
                     await userManager.AddToRoleAsync(learnerUser2, "Learner");
                 }
+
+                if (!context.Users.Any(u => u.UserName == "learner3@example.com"))
+                {
+                    var learnerUser3 = new Learner
+                    {
+                        UserName = "learner3@example.com",
+                        Email = "learner3@example.com",
+                        FirstName = "James",
+                        LastName = "Thomas",
+                        City = "Glasgow",
+                        Street = "Mitchell Street",
+                        PostCode = "G1 3HL",
+                        DOB = new DateOnly(1967, 3, 26),
+                        EmailConfirmed = true,
+                    };
+                    await userManager.CreateAsync(learnerUser3, "pass123");
+                    await userManager.AddToRoleAsync(learnerUser3, "Learner");
+                }
+        }
 
         }
 
