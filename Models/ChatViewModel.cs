@@ -8,4 +8,5 @@ public class ChatViewModel
     public string GroupName { get; set; }
     public List<ChatMessage> Messages { get; set; }
     public Dictionary<string, string> SenderNames { get; set; }
+    public List<ChatGroup> UserGroups { get; set; }
 }

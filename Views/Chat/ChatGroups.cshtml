@@ -1,0 +1,20 @@
+﻿@model List<ChatGroup>
+
+<h2>Your Chat Groups</h2>
+
+@if (Model.Any())
+{
+    <ul>
+        @foreach (var group in Model)
+        {
+            <li>
+                <a href="@Url.Action("Index", "Chat", new { recipientId = group.Id, isGroup = true })">@group.Name</a>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <p>You are not part of any chat groups yet.</p>
+}
+

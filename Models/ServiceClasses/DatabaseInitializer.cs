@@ -174,8 +174,6 @@ namespace DrivePal.Models.ServiceClasses
                     await userManager.AddToRoleAsync(learnerUser2, "Learner");
                 }
 
-            // Seed chat messages
-            //await SeedChatMessages(context, userManager);
         }
 
         //private static async Task SeedChatMessages(DrivePalDbContext context, UserManager<User> userManager)
