@@ -24,6 +24,9 @@ namespace DrivePal.Models
         
         
         // Questionnaire Metrics
+        public decimal AveragePricePerLesson { get; set; }
+        
+        // Questionnaire Metrics
         
         public DrivingStatus InstructorDrivingStatus { get; set; }
 
@@ -39,10 +42,7 @@ namespace DrivePal.Models
 
         public int[] InstructorLessonDuration { get; set; }
 
-        public decimal InstructorLessonAverage { get; set; }
-
-        
-        
+        public decimal InstructorLessonAverage { get; set; }               
 
         //navigational property
         public virtual ICollection<Review>? Reviews { get; set; }
