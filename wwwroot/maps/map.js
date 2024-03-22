@@ -1,4 +1,9 @@
-document.addEventListener("DOMContentLoaded", function () {
+// Define map, circle, and markers variables outside of the DOMContentLoaded event listener
+let map;
+let circle;
+let markers = [];
+
+document.addEventListener("DOMContentLoaded", async function () {
     // Select the radius slider element
     const radiusSlider = document.getElementById("radiusSlider");
     // Set the initial value of the slider
@@ -10,51 +15,63 @@ document.addEventListener("DOMContentLoaded", function () {
     // Update the text content of the radius value span element
     radiusValue.textContent = radiusSlider.value + " km";
 
-    // Initialize and add the map
-    let map;
-    let circle;
-    let markers = []; // Array to store markers
-    let defaultPostcode = "@Model.PostCode"; // Store user's postcode if available
+    // Fetch the user's postcode from the server
+    const response = await fetch('/Home/GetUserPostcode');
+    const postcode = await response.text();
 
-    async function initMap() {
-        // Try to get the user's postcode from the backend
-        try {
-            const response = await fetch('/api/user/postcode');
-            const data = await response.json();
-            defaultPostcode = data.postcode;
-
-            // Initialize the map with the user's postcode if available
-            map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 10,
-                center: defaultPostcode ? await getCoordinates(defaultPostcode) : { lat: 55.8642, lng: -4.2518 }, // Glasgow coordinates
-                mapId: "DEMO_MAP_ID",
-                mapTypeControl: false,
-                mapTypeId: 'terrain',
-                fullscreenControl: false,
-                streetViewControl: false
-            });
-
-            // Add a radius circle centered around the default location (Glasgow)
-            circle = new google.maps.Circle({
-                map: map,
-                center: defaultPostcode ? await getCoordinates(defaultPostcode) : { lat: 55.8642, lng: -4.2518 }, // Glasgow coordinates
-                radius: 11000,
-                strokeColor: "#FFFFFF",
-                strokeOpacity: 1,
-                strokeWeight: 3,
-                fillColor: "#0F52BA",
-                fillOpacity: 0.2,
-            });
-
-            // Continue with other map initialization logic (e.g., slider, markers)
-            initializeMapFeatures();
-
-        } catch (error) {
-            console.error("Error getting user postcode:", error);
-            // If getting user postcode fails, fallback to default location (Glasgow)
-            initializeMapWithDefaultLocation();
-        }
+    // Check if the server returned an error
+    if (response.ok) {
+        // Pass the postcode to the initMap function
+        initMap(postcode);
+    } else {
+        // Handle the error (e.g., show a message to the user)
+        console.error('Failed to fetch the user\'s postcode:', postcode);
     }
+
+    async function initMap(postcode) {
+        // Use the provided postcode instead of "@Model.PostCode"
+        defaultPostcode = postcode;
+
+        // Geocode the postcode
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ address: postcode }, function (results, status) {
+            if (status === 'OK') {
+                // Use the location of the first result as the center of the map
+                const location = results[0].geometry.location;
+
+                // Initialize the map with the user's coordinates
+                map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 10,
+                    center: location, // Center the map on the obtained coordinates
+                    mapId: "DEMO_MAP_ID",
+                    mapTypeControl: false,
+                    mapTypeId: 'terrain',
+                    fullscreenControl: false,
+                    streetViewControl: false
+                });
+
+                // Add a radius circle centered around the user's location
+                circle = new google.maps.Circle({
+                    map: map,
+                    center: location,
+                    radius: 11000,
+                    strokeColor: "#FFFFFF",
+                    strokeOpacity: 1,
+                    strokeWeight: 3,
+                    fillColor: "#0F52BA",
+                    fillOpacity: 0.2,
+                });
+
+                // Continue with other map initialization logic (e.g., slider, markers)
+                initializeMapFeatures();
+
+            } else {
+                // Handle the error (e.g., show a message to the user)
+                console.error('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
+
 
     function initializeMapWithDefaultLocation() {
         // Initialize the map with default location (Glasgow)

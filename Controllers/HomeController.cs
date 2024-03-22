@@ -280,6 +280,23 @@ namespace DrivePal.Controllers
             return View("EditProfile", updatedProfile);
         }
 
+        [Authorize] // Ensure the user is logged in
+        public async Task<IActionResult> GetUserPostcode()
+        {
+            // Get the currently logged in user
+            var user = await _userManager.GetUserAsync(User);
+
+            // Check if the user and the postcode exist
+            if (user != null && !string.IsNullOrEmpty(user.PostCode))
+            {
+                // Return the user's postcode
+                return Ok(user.PostCode);
+            }
+
+            // If the user or the postcode doesn't exist, return an error
+            return NotFound("User or postcode not found");
+        }
+
 
         public IActionResult Error()
         {
