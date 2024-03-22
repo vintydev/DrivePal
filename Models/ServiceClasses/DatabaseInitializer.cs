@@ -371,8 +371,7 @@ namespace DrivePal.Models.ServiceClasses
                     DOB = new DateOnly(1997, 3, 13),
                     Gender = Gender.Female,
                     EmailConfirmed = true,
-                    LicenceNumber = "12345678"
-                };
+                    LicenceNumber = "12345678"                };
                 await userManager.CreateAsync(learnerUser, "pass123");
                 await userManager.AddToRoleAsync(learnerUser, "Learner");
             }

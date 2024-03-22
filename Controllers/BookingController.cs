@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using DrivePal.Models.ViewModels;
 using Stripe.Checkout;
+using DrivePal.Models.ServiceClasses;
+using Stripe;
 
 
 
@@ -212,11 +214,11 @@ namespace DrivePal.Controllers
 
             // Prepare the email content
             string subject = "Your Booking Confirmation";
-            string message = $"Hello {learner.FirstName},<br><br>" +
-                             $"This is a confirmation for your booking on {booking.BookingDate}.<br>" +
-                             $"Your driving lesson will start at {drivingClass.DrivingClassEnd} and will end at {drivingClass.DrivingClassEnd}.<br><br>" +
-                             $"Your instructor will be {drivingClass.Instructor.FirstName} <br><br>" +
-                             $"Best,<br>Your DrivePal Team";
+            string message = $"Hello {learner.FirstName},\n\n" +
+                             $"This is a confirmation for your booking on {booking.BookingDate}.\n\n" +
+                             $"Your driving lesson will start at {drivingClass.DrivingClassEnd} and will end at {drivingClass.DrivingClassEnd}.\n\n" +
+                             $"Your instructor will be {drivingClass.Instructor.FirstName}\n\n" +
+                             $"Best regards,\nYour DrivePal Team";
 
             // Send the email
             try
@@ -229,6 +231,19 @@ namespace DrivePal.Controllers
                 _logger.LogError(ex, "Failed to send email to learner ID: {UserId}", learnerId);
                 // Handle email sending failure, maybe queue it for a retry
             }
+
+            string toPhoneNumber = learner.PhoneNumber;
+
+            string fromPhoneNumber = "+447488899615";
+
+            //Instantiate the SmsService
+            SmsService smsService = new SmsService();
+
+            //Sends the SMS
+            await smsService.SendSmsAsync(toPhoneNumber, fromPhoneNumber, message);
+
+
+
 
             // Redirect to the BookingConfirmation action
             return RedirectToAction(nameof(BookingConfirmation), new { bookingId = booking.BookingId });

@@ -16,8 +16,8 @@ namespace DrivePal.Models.ServiceClasses
         /// </summary>
         public SmsService()
         {
-            _accountSid = "****************";
-            _authToken = "*****************";
+            _accountSid = "ACabc5f764180081632b3edf1164fe99c5";
+            _authToken = "ad2e9d1c5682242e1bcaf2c9f20fdaa9";
         }
 
         /// <summary>
