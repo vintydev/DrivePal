@@ -1,21 +1,21 @@
+using DrivePal.Data;
+using DrivePal.Extensions;
 using DrivePal.Models;
+using DrivePal.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Hosting;
-using DrivePal.Data;
-using DrivePal.Extensions;
-using DrivePal.Models.ViewModels;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Authorization;
 
 namespace DrivePal.Controllers
 {
@@ -38,7 +38,7 @@ namespace DrivePal.Controllers
         {
             return View();
         }
-        
+
         public ActionResult QuestionnaireIndex(string? id)
         {
             var model = new Questionnaire();
@@ -85,7 +85,6 @@ namespace DrivePal.Controllers
 
             if (selectedDays.Count == 0)
             {
-   
                 dayIndex = errorIndex;
                 questionnaire.DayIndex = dayIndex;
                 errorMessages.Add("You must select at least one day");
@@ -125,21 +124,8 @@ namespace DrivePal.Controllers
             await _context.AddAsync(questionnaire);
             await _context.SaveChangesAsync();
 
-
             return Redirect("Index");
         }
-
-
-            
-            // Temp redirection
-            return Redirect("Index");
-        }
-
-        // public Task<IActionResult> SeeRecommendedInstructors()
-        // {
-        //     return Task.FromResult<IActionResult>(View());
-        // }
-
 
         public async Task<IActionResult> SeeAllInstructors()
         {
@@ -228,7 +214,6 @@ namespace DrivePal.Controllers
 
             return View("EditProfile", updatedProfile);
         }
-
 
         public IActionResult Error()
         {
