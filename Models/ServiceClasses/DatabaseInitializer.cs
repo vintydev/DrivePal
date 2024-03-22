@@ -205,6 +205,7 @@ namespace DrivePal.Models.ServiceClasses
                     await userManager.CreateAsync(learnerUser2, "pass123");
                     await userManager.AddToRoleAsync(learnerUser2, "Learner");
                 }
+       
 
         }
 
