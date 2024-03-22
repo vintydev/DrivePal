@@ -122,6 +122,12 @@ namespace DrivePal.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Date of Birth")]
             public DateOnly DOB { get; set; }
+
+            [Display(Name = "Phone Number")]
+            [Required]
+            [StringLength(13, ErrorMessage = "The Phone Number must be exactly 13 characters.")]
+            [RegularExpression(@"^\+447\d{9}$", ErrorMessage = "The Phone Number must start with +44 and contain only numbers.")]
+            public string PhoneNumber { get; set; }
         }
 
 
@@ -251,6 +257,7 @@ namespace DrivePal.Areas.Identity.Pages.Account
                 learner.PostCode = Input.PostCode;
                 learner.DOB = Input.DOB;
                 learner.Email = Input.Email;
+                learner.PhoneNumber = Input.PhoneNumber;
 
                 return learner;
             }

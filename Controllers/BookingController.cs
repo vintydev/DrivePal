@@ -214,8 +214,9 @@ namespace DrivePal.Controllers
             string subject = "Your Booking Confirmation";
             string message = $"Hello {learner.FirstName},<br><br>" +
                              $"This is a confirmation for your booking on {booking.BookingDate}.<br>" +
-                             $"Class details: {drivingClass.DrivingClassEnd}.<br><br>" +
-                             $"Best,<br>Your Driving School Team";
+                             $"Your driving lesson will start at {drivingClass.DrivingClassEnd} and will end at {drivingClass.DrivingClassEnd}.<br><br>" +
+                             $"Your instructor will be {drivingClass.Instructor.FirstName} <br><br>" +
+                             $"Best,<br>Your DrivePal Team";
 
             // Send the email
             try

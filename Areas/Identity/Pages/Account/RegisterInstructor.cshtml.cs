@@ -130,6 +130,12 @@ namespace DrivePal.Areas.Identity.Pages.Account
             [RegularExpression("^[a-zA-Z0-9]*$", ErrorMessage = "The License Number must contain only letters and numbers.")]
             public string LicenceNumber { get; set; }
 
+            [Display(Name = "Phone Number")]
+            [Required]
+            [StringLength(13, ErrorMessage = "The Phone Number must be exactly 13 characters.")]
+            [RegularExpression(@"^\+447\d{9}$", ErrorMessage = "The Phone Number must start with +44 and contain only numbers.")]
+            public string PhoneNumber { get; set; }
+
         }
 
 
@@ -263,6 +269,7 @@ namespace DrivePal.Areas.Identity.Pages.Account
                 instructor.isApproved = true;
                 instructor.TotalRating = 0;
                 instructor.Email = Input.Email;
+                instructor.PhoneNumber = Input.PhoneNumber;
 
                 return instructor;
             }
