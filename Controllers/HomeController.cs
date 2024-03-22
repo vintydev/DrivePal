@@ -87,15 +87,15 @@ namespace DrivePal.Controllers
             // Collect error messages list initialisation
             List<string> errorMessages = new List<string>(3);
             int errorIndex = 0;
-            int? dayIndex;
-            int? goalIndex;
-            int? traitIndex;
+            int? dayIndex = null;
+            int? goalIndex = null;
+            int? traitIndex = null;
             
             // Add the error messages to the list
             if (selectedDays.Count == 0)
             {
                 dayIndex = errorIndex;
-                questionnaire.DayIndex = dayIndex;
+    
                 
                 errorMessages.Add("You must select at least one day");
                 errorIndex++;
@@ -105,7 +105,7 @@ namespace DrivePal.Controllers
             {
                 goalIndex = errorIndex;
                 
-                questionnaire.GoalIndex = goalIndex;
+       
                 
                 errorMessages.Add("You must select at least one goal.");
                 errorIndex ++;
@@ -115,25 +115,26 @@ namespace DrivePal.Controllers
             if (teachingTraits.Count == 0)
             {
                 traitIndex = errorIndex;
-                questionnaire.TraitIndex = traitIndex;
                 
                 errorMessages.Add("You must select at least one trait.");
                 errorIndex ++;
 
             }
 
-            // If there are any error messages, set ViewBag and return the view with model
-            if (errorMessages.Count != 0)
-            {
-                ViewBag.ErrorMessages = errorMessages;
-                return View("QuestionnaireIndex", questionnaire);
-            }
+ 
             
             // Redirects with validation errors
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || errorMessages.Count != 0)
             {
                 // Create new questionnaire with default values
-                Questionnaire questionnaire2 = new Questionnaire();
+                Questionnaire questionnaire2 = new Questionnaire
+                {
+                    TraitIndex = traitIndex,
+                    GoalIndex = goalIndex,
+                    DayIndex = dayIndex
+                };
+
+                ViewBag.ErrorMessages = errorMessages;
                 
                 return View("QuestionnaireIndex",questionnaire2);
             }
