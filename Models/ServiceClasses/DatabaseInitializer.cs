@@ -37,8 +37,8 @@ namespace DrivePal.Models.ServiceClasses
                     FirstName = "John",
                     LastName = "Smith",
                     City = "Glasgow",
-                    Street = "Renfield Street",
-                    PostCode = "G11AA",
+                    Street = "West Graham Street",
+                    PostCode = "G4 9LH",
                     DOB = new DateOnly(1994, 7, 22),
                     EmailConfirmed = true,
                 };
@@ -56,8 +56,8 @@ namespace DrivePal.Models.ServiceClasses
                     FirstName = "David",
                     LastName = "Jones",
                     City = "Glasgow",
-                    Street = "Buchanan Street",
-                    PostCode = "G13 2YH",
+                    Street = "Victoria Street",
+                    PostCode = "G73 1DT",
                     DOB = new DateOnly(1996, 5, 10),
                     Gender = Gender.Male,
                     TotalRating = 4,
@@ -88,7 +88,7 @@ namespace DrivePal.Models.ServiceClasses
                     LastName = "Doe",
                     City = "Hamilton",
                     Street = "Main Street",
-                    PostCode = "ML3 6AA",
+                    PostCode = "ML3 0NA",
                     DOB = new DateOnly(1990, 8, 15),
                     Gender = Gender.Male,
                     TotalRating = 4,
@@ -119,7 +119,7 @@ namespace DrivePal.Models.ServiceClasses
                     LastName = "Smith",
                     City = "Clarkston",
                     Street = "High Street",
-                    PostCode = "G76 7AA",
+                    PostCode = "G76 8DQ",
                     DOB = new DateOnly(1985, 10, 25),
                     Gender = Gender.Female,
                     TotalRating = 4,
@@ -150,7 +150,7 @@ namespace DrivePal.Models.ServiceClasses
                     LastName = "Johnson",
                     City = "Glasgow",
                     Street = "Argyle Street",
-                    PostCode = "G2 8AH",
+                    PostCode = "G3 8TJ",
                     DOB = new DateOnly(1980, 6, 15),
                     Gender = Gender.Male,
                     TotalRating = 3,
@@ -181,7 +181,7 @@ namespace DrivePal.Models.ServiceClasses
                     LastName = "Wilson",
                     City = "Glasgow",
                     Street = "Sauchiehall Street",
-                    PostCode = "G2 3AL",
+                    PostCode = "G2 3JW",
                     DOB = new DateOnly(1992, 8, 21),
                     Gender = Gender.Female,
                     TotalRating = 5,
@@ -212,7 +212,7 @@ namespace DrivePal.Models.ServiceClasses
                     LastName = "Brown",
                     City = "East Kilbride",
                     Street = "Main Street",
-                    PostCode = "G74 1AA",
+                    PostCode = "G75 0BX",
                     DOB = new DateOnly(1983, 4, 30),
                     Gender = Gender.Male,
                     TotalRating = 4,
@@ -242,8 +242,8 @@ namespace DrivePal.Models.ServiceClasses
                     FirstName = "Marek",
                     LastName = "Kowalski",
                     City = "Glasgow",
-                    Street = "Pollokshaws Road",
-                    PostCode = "G41 2PY",
+                    Street = "Springhill Gardens",
+                    PostCode = "G41 2EX",
                     DOB = new DateOnly(1985, 9, 17),
                     Gender = Gender.Male,
                     TotalRating = 4,
@@ -274,7 +274,7 @@ namespace DrivePal.Models.ServiceClasses
                     LastName = "Osei",
                     City = "Glasgow",
                     Street = "Great Western Road",
-                    PostCode = "G12 8RE",
+                    PostCode = "G15 6NB",
                     DOB = new DateOnly(1980, 6, 25),
                     Gender = Gender.Male,
                     TotalRating = 4,
@@ -304,8 +304,8 @@ namespace DrivePal.Models.ServiceClasses
                     FirstName = "Sophia",
                     LastName = "Papadopoulos",
                     City = "Glasgow",
-                    Street = "Argyle Street",
-                    PostCode = "G2 8DR",
+                    Street = "Gallowgate",
+                    PostCode = "G1 5DY",
                     DOB = new DateOnly(1992, 9, 15),
                     Gender = Gender.Female,
                     TotalRating = 4,
@@ -336,7 +336,7 @@ namespace DrivePal.Models.ServiceClasses
                     LastName = "Abdullah",
                     City = "East Kilbride",
                     Street = "Hamilton Road",
-                    PostCode = "G75 8ED",
+                    PostCode = "G75 9EL",
                     DOB = new DateOnly(1985, 6, 23),
                     Gender = Gender.Male,
                     TotalRating = 3,
@@ -367,7 +367,7 @@ namespace DrivePal.Models.ServiceClasses
                     LastName = "Williams",
                     City = "Glasgow",
                     Street = "Bath Street",
-                    PostCode = "G1 1AA",
+                    PostCode = "G2 4HG",
                     DOB = new DateOnly(1997, 3, 13),
                     Gender = Gender.Female,
                     EmailConfirmed = true,
@@ -386,8 +386,8 @@ namespace DrivePal.Models.ServiceClasses
                     FirstName = "Jack",
                     LastName = "Smith",
                     City = "Glasgow",
-                    Street = "Sauchiehall Street",
-                    PostCode = "G2 3HL",
+                    Street = "Renfrew Street",
+                    PostCode = "G3 6TT",
                     DOB = new DateOnly(1995, 8, 17),
                     Gender = Gender.Male,
                     EmailConfirmed = true,
@@ -407,7 +407,7 @@ namespace DrivePal.Models.ServiceClasses
                     LastName = "Thomas",
                     City = "Glasgow",
                     Street = "Mitchell Street",
-                    PostCode = "G1 3HL",
+                    PostCode = "G1 3LA",
                     DOB = new DateOnly(1967, 3, 26),
                     EmailConfirmed = true,
                 };
@@ -424,8 +424,8 @@ namespace DrivePal.Models.ServiceClasses
                     FirstName = "Aisha",
                     LastName = "Khan",
                     City = "Glasgow",
-                    Street = "Great Western Road",
-                    PostCode = "G4 9AB",
+                    Street = "Ruskin Terrace",
+                    PostCode = "G12 8DY",
                     DOB = new DateOnly(1998, 2, 25),
                     Gender = Gender.Female,
                     EmailConfirmed = true,
@@ -445,7 +445,7 @@ namespace DrivePal.Models.ServiceClasses
                     LastName = "Al-Farsi",
                     City = "Glasgow",
                     Street = "Shettleston Road",
-                    PostCode = "G32 7AD",
+                    PostCode = "G32 7BW",
                     DOB = new DateOnly(1996, 9, 12),
                     Gender = Gender.Male,
                     EmailConfirmed = true,
@@ -465,7 +465,7 @@ namespace DrivePal.Models.ServiceClasses
                     LastName = "Garcia",
                     City = "East Kilbride",
                     Street = "Maxwellton Avenue",
-                    PostCode = "G75 8DR",
+                    PostCode = "G74 3DY",
                     DOB = new DateOnly(1997, 5, 18),
                     Gender = Gender.Female,
                     EmailConfirmed = true,
@@ -474,6 +474,61 @@ namespace DrivePal.Models.ServiceClasses
                 await userManager.CreateAsync(learnerUser6, "pass123");
                 await userManager.AddToRoleAsync(learnerUser6, "Learner");
             }
+
+            var instructor2 = context.Instructors.Where(r => r.Email == "instructor2@example.com").FirstOrDefault();
+
+            int numberOfLessons = 5; 
+
+          
+            for (int i = 0; i < numberOfLessons; i++)
+            {
+                var lesson = new DrivingClass
+                {
+                    DrivingClassStart = DateTime.UtcNow.AddHours(i),
+                    DrivingClassEnd = DateTime.UtcNow.AddHours(i + 1),
+                    InstructorId = instructor2.Id,
+                    Price = 22,
+                    IsReserved = false,
+                };
+
+                context.DrivingClasses.Add(lesson);
+            }
+            context.SaveChanges();
+
+            var instructor3 = context.Instructors.Where(r => r.Email == "instructor3@example.com").FirstOrDefault();
+
+            for (int i = 0; i < numberOfLessons; i++)
+            {
+                var lesson = new DrivingClass
+                {
+                    DrivingClassStart = DateTime.UtcNow.AddHours(i),
+                    DrivingClassEnd = DateTime.UtcNow.AddHours(i + 1),
+                    InstructorId = instructor3.Id,
+                    Price = 22,
+                    IsReserved = false,
+                };
+
+                context.DrivingClasses.Add(lesson);
+            }
+            context.SaveChanges();
+
+            var instructor4= context.Instructors.Where(r => r.Email == "instructor4@example.com").FirstOrDefault();
+
+            for (int i = 0; i < numberOfLessons; i++)
+            {
+                var lesson = new DrivingClass
+                {
+                    DrivingClassStart = DateTime.UtcNow.AddHours(i+25),
+                    DrivingClassEnd = DateTime.UtcNow.AddHours(i + 26),
+                    InstructorId = instructor4.Id,
+                    Price = 22,
+                    IsReserved = false,
+                };
+
+                context.DrivingClasses.Add(lesson);
+            }
+            context.SaveChanges();
+
 
         }
 
