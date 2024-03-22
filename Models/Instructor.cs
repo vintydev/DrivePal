@@ -42,10 +42,7 @@ namespace DrivePal.Models
 
         public int[] InstructorLessonDuration { get; set; }
 
-        public decimal InstructorLessonAverage { get; set; }
-
-        
-        
+        public decimal InstructorLessonAverage { get; set; }               
 
         //navigational property
         public virtual ICollection<Review>? Reviews { get; set; }

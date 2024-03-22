@@ -46,10 +46,10 @@ namespace DrivePal.Models.ServiceClasses
                 await userManager.AddToRoleAsync(adminUser, "Admin");
             }
 
-            // Create instructor users if they do not exist
+            // Instructor 1
             if (!context.Users.Any(u => u.UserName == "instructor@example.com"))
             {
-                var instructorUser = new Instructor
+                var instructorUser1 = new Instructor
                 {
                     UserName = "instructor@example.com",
                     Email = "instructor@example.com",
@@ -59,22 +59,23 @@ namespace DrivePal.Models.ServiceClasses
                     Street = "Buchanan Street",
                     PostCode = "G13 2YH",
                     DOB = new DateOnly(1996, 5, 10),
+                    Gender = Gender.Male,
                     TotalRating = 4,
                     EmailConfirmed = true,
                     LicenceNumber = "1234567812345678",
                     isApproved = true,
                     isBlocked = false,
                     InstructorDrivingStatus = DrivingStatus.Experienced,
-                    InstructorTeachingTraits = ["Assertive", "Experienced"],
-                    InstructorDrivingGoals = ["Pass quickly"],
-                    InstructorTeachingType = ["Manual", "Automatic"],
-                    InstructorAvailableDaysOf = ["Monday", "Tuesday", "Saturday"],
-                    InstructorTimeOfDay = ["Morning", "Afternoon"],
-                    InstructorLessonDuration = [60],
+                    InstructorTeachingTraits = new List<string> { "Assertive", "Experienced" },
+                    InstructorDrivingGoals = new List<string> { "Pass quickly" },
+                    InstructorTeachingType = new List<string> { "Manual", "Automatic" },
+                    InstructorAvailableDaysOf = new List<string> { "Monday", "Tuesday", "Saturday" },
+                    InstructorTimeOfDay = new List<string> { "Morning", "Afternoon" },
+                    InstructorLessonDuration = new int[] { 60 },
                     InstructorLessonAverage = 60
                 };
-                await userManager.CreateAsync(instructorUser, "pass123");
-                await userManager.AddToRoleAsync(instructorUser, "Instructor");
+                await userManager.CreateAsync(instructorUser1, "pass123");
+                await userManager.AddToRoleAsync(instructorUser1, "Instructor");
             }
 
             if (!context.Users.Any(u => u.UserName == "instructor2@example.com"))
@@ -83,60 +84,91 @@ namespace DrivePal.Models.ServiceClasses
                 {
                     UserName = "instructor2@example.com",
                     Email = "instructor2@example.com",
-                    FirstName = "Michael",
-                    LastName = "Taylor",
-                    City = "Glasgow",
-                    Street = "Maryhill Street",
-                    PostCode = "G71 8AW",
-                    DOB = new DateOnly(1997, 3, 11),
-                    TotalRating = 2,
+                    FirstName = "John",
+                    LastName = "Doe",
+                    City = "Hamilton",
+                    Street = "Main Street",
+                    PostCode = "ML3 6AA",
+                    DOB = new DateOnly(1990, 8, 15),
+                    Gender = Gender.Male,
+                    TotalRating = 4,
                     EmailConfirmed = true,
-                    LicenceNumber = "8765432187654321",
+                    LicenceNumber = "1234567812345678",
                     isApproved = true,
                     isBlocked = false,
-                    InstructorDrivingStatus = DrivingStatus.Inexperienced,
-                    InstructorTeachingTraits = ["Patient", "Calm"],
-                    InstructorDrivingGoals = ["Gain driving confidence"],
-                    InstructorTeachingType = ["Manual"],
-                    InstructorAvailableDaysOf = ["Wednesday", "Thursday", "Friday"],
-                    InstructorTimeOfDay = ["Afternoon", "Evening"],
-                    InstructorLessonDuration = [90],
-                    InstructorLessonAverage = 75
+                    InstructorDrivingStatus = DrivingStatus.Experienced,
+                    InstructorTeachingTraits = new List<string> { "Patient", "Experienced" },
+                    InstructorDrivingGoals = new List<string> { "Pass quickly" },
+                    InstructorTeachingType = new List<string> { "Manual", "Automatic" },
+                    InstructorAvailableDaysOf = new List<string> { "Monday", "Wednesday", "Friday" },
+                    InstructorTimeOfDay = new List<string> { "Morning", "Afternoon" },
+                    InstructorLessonDuration = new int[] { 60 },
+                    InstructorLessonAverage = 60
                 };
                 await userManager.CreateAsync(instructorUser2, "pass123");
                 await userManager.AddToRoleAsync(instructorUser2, "Instructor");
             }
 
-            //seeding instructor non approved
+            if (!context.Users.Any(u => u.UserName == "instructor3@example.com"))
+            {
+                var instructorUser3 = new Instructor
+                {
+                    UserName = "instructor3@example.com",
+                    Email = "instructor3@example.com",
+                    FirstName = "Emma",
+                    LastName = "Smith",
+                    City = "Clarkston",
+                    Street = "High Street",
+                    PostCode = "G76 7AA",
+                    DOB = new DateOnly(1985, 10, 25),
+                    Gender = Gender.Female,
+                    TotalRating = 4,
+                    EmailConfirmed = true,
+                    LicenceNumber = "9876543219876543",
+                    isApproved = true,
+                    isBlocked = false,
+                    InstructorDrivingStatus = DrivingStatus.Experienced,
+                    InstructorTeachingTraits = new List<string> { "Patient", "Experienced" },
+                    InstructorDrivingGoals = new List<string> { "Gain driving confidence", "Pass quickly" },
+                    InstructorTeachingType = new List<string> { "Manual" },
+                    InstructorAvailableDaysOf = new List<string> { "Tuesday", "Thursday", "Saturday" },
+                    InstructorTimeOfDay = new List<string> { "Afternoon", "Evening" },
+                    InstructorLessonDuration = new int[] { 90 },
+                    InstructorLessonAverage = 75
+                };
+                await userManager.CreateAsync(instructorUser3, "pass123");
+                await userManager.AddToRoleAsync(instructorUser3, "Instructor");
+            }
+
             if (!context.Users.Any(u => u.UserName == "instructor4@example.com"))
             {
                 var instructorUser4 = new Instructor
                 {
                     UserName = "instructor4@example.com",
                     Email = "instructor4@example.com",
-                    FirstName = "Lando",
-                    LastName = "Norris",
+                    FirstName = "Michael",
+                    LastName = "Johnson",
                     City = "Glasgow",
-                    Street = "2 Maryhill Street",
-                    PostCode = "G203AA",
-                    DOB = new DateOnly(1997, 3, 11),
-                    TotalRating = 0,
+                    Street = "Argyle Street",
+                    PostCode = "G2 8AH",
+                    DOB = new DateOnly(1980, 6, 15),
+                    Gender = Gender.Male,
+                    TotalRating = 3,
                     EmailConfirmed = true,
-                    LicenceNumber = "8765412187654321",
-                    isApproved = false,
+                    LicenceNumber = "6543219876543219",
+                    isApproved = true,
                     isBlocked = false,
                     InstructorDrivingStatus = DrivingStatus.Experienced,
-                    InstructorTeachingTraits = ["Assertive", "Empathetic"],
-                    InstructorDrivingGoals = ["Gain driving confidence", "Pass quickly"],
-                    InstructorTeachingType = ["Manual", "Automatic"],
-                    InstructorAvailableDaysOf = ["Friday", "Saturday", "Sunday"],
-                    InstructorTimeOfDay = ["Morning", "Afternoon", "Evening"],
-                    InstructorLessonDuration = [60],
-                    InstructorLessonAverage = 70
+                    InstructorTeachingTraits = new List<string> { "Patient", "Calm" },
+                    InstructorDrivingGoals = new List<string> { "Gain driving confidence" },
+                    InstructorTeachingType = new List<string> { "Manual" },
+                    InstructorAvailableDaysOf = new List<string> { "Monday", "Wednesday", "Friday" },
+                    InstructorTimeOfDay = new List<string> { "Morning", "Afternoon" },
+                    InstructorLessonDuration = new int[] { 60, 90 },
+                    InstructorLessonAverage = 75
                 };
                 await userManager.CreateAsync(instructorUser4, "pass123");
                 await userManager.AddToRoleAsync(instructorUser4, "Instructor");
-
             }
 
             if (!context.Users.Any(u => u.UserName == "instructor5@example.com"))
@@ -145,32 +177,186 @@ namespace DrivePal.Models.ServiceClasses
                 {
                     UserName = "instructor5@example.com",
                     Email = "instructor5@example.com",
-                    FirstName = "Lewis",
-                    LastName = "Shamilton",
+                    FirstName = "Sophie",
+                    LastName = "Wilson",
                     City = "Glasgow",
-                    Street = "2 Maryhill Street",
-                    PostCode = "G203AA",
-                    DOB = new DateOnly(1997, 3, 11),
-                    TotalRating = 0,
+                    Street = "Sauchiehall Street",
+                    PostCode = "G2 3AL",
+                    DOB = new DateOnly(1992, 8, 21),
+                    Gender = Gender.Female,
+                    TotalRating = 5,
                     EmailConfirmed = true,
-                    LicenceNumber = "8765412187654323",
-                    isApproved = false,
+                    LicenceNumber = "7894561237894561",
+                    isApproved = true,
                     isBlocked = false,
                     InstructorDrivingStatus = DrivingStatus.Experienced,
-                    InstructorTeachingTraits = ["Assertive", "Empathetic"],
-                    InstructorDrivingGoals = ["Gain driving confidence", "Pass quickly"],
-                    InstructorTeachingType = ["Manual", "Automatic"],
-                    InstructorAvailableDaysOf = ["Friday", "Saturday", "Sunday"],
-                    InstructorTimeOfDay = ["Morning", "Afternoon", "Evening"],
-                    InstructorLessonDuration = [60],
-                    InstructorLessonAverage = 70
+                    InstructorTeachingTraits = new List<string> { "Assertive", "Experienced" },
+                    InstructorDrivingGoals = new List<string> { "Pass quickly" },
+                    InstructorTeachingType = new List<string> { "Automatic" },
+                    InstructorAvailableDaysOf = new List<string> { "Tuesday", "Thursday", "Saturday" },
+                    InstructorTimeOfDay = new List<string> { "Afternoon", "Evening" },
+                    InstructorLessonDuration = new int[] { 60 },
+                    InstructorLessonAverage = 60
                 };
                 await userManager.CreateAsync(instructorUser5, "pass123");
                 await userManager.AddToRoleAsync(instructorUser5, "Instructor");
-
             }
 
-            // Create an admin user if it does not exist
+            if (!context.Users.Any(u => u.UserName == "instructor6@example.com"))
+            {
+                var instructorUser6 = new Instructor
+                {
+                    UserName = "instructor6@example.com",
+                    Email = "instructor6@example.com",
+                    FirstName = "John",
+                    LastName = "Brown",
+                    City = "East Kilbride",
+                    Street = "Main Street",
+                    PostCode = "G74 1AA",
+                    DOB = new DateOnly(1983, 4, 30),
+                    Gender = Gender.Male,
+                    TotalRating = 4,
+                    EmailConfirmed = true,
+                    LicenceNumber = "1237894561237894",
+                    isApproved = true,
+                    isBlocked = false,
+                    InstructorDrivingStatus = DrivingStatus.Experienced,
+                    InstructorTeachingTraits = new List<string> { "Patient", "Calm" },
+                    InstructorDrivingGoals = new List<string> { "Gain driving confidence", "Pass quickly" },
+                    InstructorTeachingType = new List<string> { "Manual" },
+                    InstructorAvailableDaysOf = new List<string> { "Monday", "Wednesday", "Friday" },
+                    InstructorTimeOfDay = new List<string> { "Morning", "Afternoon" },
+                    InstructorLessonDuration = new int[] { 60, 90 },
+                    InstructorLessonAverage = 75
+                };
+                await userManager.CreateAsync(instructorUser6, "pass123");
+                await userManager.AddToRoleAsync(instructorUser6, "Instructor");
+            }
+
+            if (!context.Users.Any(u => u.UserName == "instructor7@example.com"))
+            {
+                var instructorUser7 = new Instructor
+                {
+                    UserName = "instructor7@example.com",
+                    Email = "instructor7@example.com",
+                    FirstName = "Marek",
+                    LastName = "Kowalski",
+                    City = "Glasgow",
+                    Street = "Pollokshaws Road",
+                    PostCode = "G41 2PY",
+                    DOB = new DateOnly(1985, 9, 17),
+                    Gender = Gender.Male,
+                    TotalRating = 4,
+                    EmailConfirmed = true,
+                    LicenceNumber = "9876543219876543",
+                    isApproved = true,
+                    isBlocked = false,
+                    InstructorDrivingStatus = DrivingStatus.Experienced,
+                    InstructorTeachingTraits = new List<string> { "Patient", "Calm" },
+                    InstructorDrivingGoals = new List<string> { "Gain driving confidence", "Pass quickly" },
+                    InstructorTeachingType = new List<string> { "Automatic" },
+                    InstructorAvailableDaysOf = new List<string> { "Monday", "Thursday", "Saturday" },
+                    InstructorTimeOfDay = new List<string> { "Morning", "Afternoon" },
+                    InstructorLessonDuration = new int[] { 60, 90 },
+                    InstructorLessonAverage = 75
+                };
+                await userManager.CreateAsync(instructorUser7, "pass123");
+                await userManager.AddToRoleAsync(instructorUser7, "Instructor");
+            }
+
+            if (!context.Users.Any(u => u.UserName == "instructor8@example.com"))
+            {
+                var instructorUser8 = new Instructor
+                {
+                    UserName = "instructor8@example.com",
+                    Email = "instructor8@example.com",
+                    FirstName = "Kwame",
+                    LastName = "Osei",
+                    City = "Glasgow",
+                    Street = "Great Western Road",
+                    PostCode = "G12 8RE",
+                    DOB = new DateOnly(1980, 6, 25),
+                    Gender = Gender.Male,
+                    TotalRating = 4,
+                    EmailConfirmed = true,
+                    LicenceNumber = "8765432198765432",
+                    isApproved = true,
+                    isBlocked = false,
+                    InstructorDrivingStatus = DrivingStatus.Experienced,
+                    InstructorTeachingTraits = new List<string> { "Patient", "Calm" },
+                    InstructorDrivingGoals = new List<string> { "Gain driving confidence", "Pass quickly" },
+                    InstructorTeachingType = new List<string> { "Manual", "Automatic" },
+                    InstructorAvailableDaysOf = new List<string> { "Wednesday", "Friday", "Sunday" },
+                    InstructorTimeOfDay = new List<string> { "Afternoon", "Evening" },
+                    InstructorLessonDuration = new int[] { 60 },
+                    InstructorLessonAverage = 60
+                };
+                await userManager.CreateAsync(instructorUser8, "pass123");
+                await userManager.AddToRoleAsync(instructorUser8, "Instructor");
+            }
+
+            if (!context.Users.Any(u => u.UserName == "instructor9@example.com"))
+            {
+                var instructorUser9 = new Instructor
+                {
+                    UserName = "instructor9@example.com",
+                    Email = "instructor9@example.com",
+                    FirstName = "Sophia",
+                    LastName = "Papadopoulos",
+                    City = "Glasgow",
+                    Street = "Argyle Street",
+                    PostCode = "G2 8DR",
+                    DOB = new DateOnly(1992, 9, 15),
+                    Gender = Gender.Female,
+                    TotalRating = 4,
+                    EmailConfirmed = true,
+                    LicenceNumber = "1234567890123456",
+                    isApproved = true,
+                    isBlocked = false,
+                    InstructorDrivingStatus = DrivingStatus.Experienced,
+                    InstructorTeachingTraits = new List<string> { "Patient", "Calm" },
+                    InstructorDrivingGoals = new List<string> { "Gain driving confidence", "Pass quickly" },
+                    InstructorTeachingType = new List<string> { "Manual", "Automatic" },
+                    InstructorAvailableDaysOf = new List<string> { "Thursday", "Saturday", "Sunday" },
+                    InstructorTimeOfDay = new List<string> { "Morning", "Afternoon" },
+                    InstructorLessonDuration = new int[] { 60 },
+                    InstructorLessonAverage = 60
+                };
+                await userManager.CreateAsync(instructorUser9, "pass123");
+                await userManager.AddToRoleAsync(instructorUser9, "Instructor");
+            }
+
+            if (!context.Users.Any(u => u.UserName == "instructor10@example.com"))
+            {
+                var instructorUser10 = new Instructor
+                {
+                    UserName = "instructor10@example.com",
+                    Email = "instructor10@example.com",
+                    FirstName = "Musa",
+                    LastName = "Abdullah",
+                    City = "East Kilbride",
+                    Street = "Hamilton Road",
+                    PostCode = "G75 8ED",
+                    DOB = new DateOnly(1985, 6, 23),
+                    Gender = Gender.Male,
+                    TotalRating = 3,
+                    EmailConfirmed = true,
+                    LicenceNumber = "1098765432109876",
+                    isApproved = true,
+                    isBlocked = false,
+                    InstructorDrivingStatus = DrivingStatus.Experienced,
+                    InstructorTeachingTraits = new List<string> { "Friendly", "Patient" },
+                    InstructorDrivingGoals = new List<string> { "Enhance driving skills", "Ensure safety" },
+                    InstructorTeachingType = new List<string> { "Manual" },
+                    InstructorAvailableDaysOf = new List<string> { "Monday", "Wednesday", "Friday" },
+                    InstructorTimeOfDay = new List<string> { "Afternoon", "Evening" },
+                    InstructorLessonDuration = new int[] { 90 },
+                    InstructorLessonAverage = 75
+                };
+                await userManager.CreateAsync(instructorUser10, "pass123");
+                await userManager.AddToRoleAsync(instructorUser10, "Instructor");
+            }
+
             if (!context.Users.Any(u => u.UserName == "learner@example.com"))
             {
                 var learnerUser = new Learner
@@ -197,13 +383,15 @@ namespace DrivePal.Models.ServiceClasses
                 {
                     UserName = "learner2@example.com",
                     Email = "learner2@example.com",
-                    FirstName = "Sophie",
-                    LastName = "Brown",
+                    FirstName = "Jack",
+                    LastName = "Smith",
                     City = "Glasgow",
-                    Street = "Hope Street",
-                    PostCode = "G15AA",
-                    DOB = new DateOnly(1994, 4, 11),
+                    Street = "Sauchiehall Street",
+                    PostCode = "G2 3HL",
+                    DOB = new DateOnly(1995, 8, 17),
+                    Gender = Gender.Male,
                     EmailConfirmed = true,
+                    LicenceNumber = "87654321"
                 };
                 await userManager.CreateAsync(learnerUser2, "pass123");
                 await userManager.AddToRoleAsync(learnerUser2, "Learner");
@@ -226,11 +414,70 @@ namespace DrivePal.Models.ServiceClasses
                 await userManager.CreateAsync(learnerUser3, "pass123");
                 await userManager.AddToRoleAsync(learnerUser3, "Learner");
             }
+
+            if (!context.Users.Any(u => u.UserName == "learner4@example.com"))
+            {
+                var learnerUser4 = new Learner
+                {
+                    UserName = "learner4@example.com",
+                    Email = "learner4@example.com",
+                    FirstName = "Aisha",
+                    LastName = "Khan",
+                    City = "Glasgow",
+                    Street = "Great Western Road",
+                    PostCode = "G4 9AB",
+                    DOB = new DateOnly(1998, 2, 25),
+                    Gender = Gender.Female,
+                    EmailConfirmed = true,
+                    LicenceNumber = "65432100"
+                };
+                await userManager.CreateAsync(learnerUser4, "pass123");
+                await userManager.AddToRoleAsync(learnerUser4, "Learner");
+            }
+
+            if (!context.Users.Any(u => u.UserName == "learner5@example.com"))
+            {
+                var learnerUser5 = new Learner
+                {
+                    UserName = "learner5@example.com",
+                    Email = "learner5@example.com",
+                    FirstName = "Mohammed",
+                    LastName = "Al-Farsi",
+                    City = "Glasgow",
+                    Street = "Shettleston Road",
+                    PostCode = "G32 7AD",
+                    DOB = new DateOnly(1996, 9, 12),
+                    Gender = Gender.Male,
+                    EmailConfirmed = true,
+                    LicenceNumber = "12365400"
+                };
+                await userManager.CreateAsync(learnerUser5, "pass123");
+                await userManager.AddToRoleAsync(learnerUser5, "Learner");
+            }
+
+            if (!context.Users.Any(u => u.UserName == "learner6@example.com"))
+            {
+                var learnerUser6 = new Learner
+                {
+                    UserName = "learner6@example.com",
+                    Email = "learner6@example.com",
+                    FirstName = "Leila",
+                    LastName = "Garcia",
+                    City = "East Kilbride",
+                    Street = "Maxwellton Avenue",
+                    PostCode = "G75 8DR",
+                    DOB = new DateOnly(1997, 5, 18),
+                    Gender = Gender.Female,
+                    EmailConfirmed = true,
+                    LicenceNumber = "98765432"
+                };
+                await userManager.CreateAsync(learnerUser6, "pass123");
+                await userManager.AddToRoleAsync(learnerUser6, "Learner");
+            }
+
         }
 
-    
-
-    //private static async Task SeedChatMessages(DrivePalDbContext context, UserManager<User> userManager)
+        //private static async Task SeedChatMessages(DrivePalDbContext context, UserManager<User> userManager)
         //{
         //    var learner = await userManager.FindByNameAsync("learner@example.com");
         //    var instructor = await userManager.FindByNameAsync("instructor@example.com");
@@ -253,6 +500,7 @@ namespace DrivePal.Models.ServiceClasses
         //        }
         //    }
         //}
+    }
 }
 
 
