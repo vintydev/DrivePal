@@ -62,7 +62,7 @@ namespace DrivePal.Models.ServiceClasses
                     Gender = Gender.Male,
                     TotalRating = 4,
                     EmailConfirmed = true,
-                    LicenceNumber = "1234567812345678",
+                    LicenceNumber = "JONES960510G1H2F",
                     isApproved = true,
                     isBlocked = false,
                     InstructorDrivingStatus = DrivingStatus.Experienced,
@@ -93,7 +93,7 @@ namespace DrivePal.Models.ServiceClasses
                     Gender = Gender.Male,
                     TotalRating = 4,
                     EmailConfirmed = true,
-                    LicenceNumber = "1234567812345678",
+                    LicenceNumber = "DOE900815Q3W4E",
                     isApproved = true,
                     isBlocked = false,
                     InstructorDrivingStatus = DrivingStatus.Experienced,
@@ -124,7 +124,7 @@ namespace DrivePal.Models.ServiceClasses
                     Gender = Gender.Female,
                     TotalRating = 4,
                     EmailConfirmed = true,
-                    LicenceNumber = "9876543219876543",
+                    LicenceNumber = "SMITH851025Q7W8E",
                     isApproved = true,
                     isBlocked = false,
                     InstructorDrivingStatus = DrivingStatus.Experienced,
@@ -155,7 +155,7 @@ namespace DrivePal.Models.ServiceClasses
                     Gender = Gender.Male,
                     TotalRating = 3,
                     EmailConfirmed = true,
-                    LicenceNumber = "6543219876543219",
+                    LicenceNumber = "JOHNS800615R6T7Y",
                     isApproved = true,
                     isBlocked = false,
                     InstructorDrivingStatus = DrivingStatus.Experienced,
@@ -186,7 +186,7 @@ namespace DrivePal.Models.ServiceClasses
                     Gender = Gender.Female,
                     TotalRating = 5,
                     EmailConfirmed = true,
-                    LicenceNumber = "7894561237894561",
+                    LicenceNumber = "WILSO920821G3H4J",
                     isApproved = true,
                     isBlocked = false,
                     InstructorDrivingStatus = DrivingStatus.Experienced,
@@ -217,7 +217,7 @@ namespace DrivePal.Models.ServiceClasses
                     Gender = Gender.Male,
                     TotalRating = 4,
                     EmailConfirmed = true,
-                    LicenceNumber = "1237894561237894",
+                    LicenceNumber = "BROWN830430G7B5X",
                     isApproved = true,
                     isBlocked = false,
                     InstructorDrivingStatus = DrivingStatus.Experienced,
@@ -248,7 +248,7 @@ namespace DrivePal.Models.ServiceClasses
                     Gender = Gender.Male,
                     TotalRating = 4,
                     EmailConfirmed = true,
-                    LicenceNumber = "9876543219876543",
+                    LicenceNumber = "KOWAL9876543219",
                     isApproved = true,
                     isBlocked = false,
                     InstructorDrivingStatus = DrivingStatus.Experienced,
@@ -279,7 +279,7 @@ namespace DrivePal.Models.ServiceClasses
                     Gender = Gender.Male,
                     TotalRating = 4,
                     EmailConfirmed = true,
-                    LicenceNumber = "8765432198765432",
+                    LicenceNumber = "OSEIK8765432198",
                     isApproved = true,
                     isBlocked = false,
                     InstructorDrivingStatus = DrivingStatus.Experienced,
@@ -310,7 +310,7 @@ namespace DrivePal.Models.ServiceClasses
                     Gender = Gender.Female,
                     TotalRating = 4,
                     EmailConfirmed = true,
-                    LicenceNumber = "1234567890123456",
+                    LicenceNumber = "PAPAD1234567890",
                     isApproved = true,
                     isBlocked = false,
                     InstructorDrivingStatus = DrivingStatus.Experienced,
@@ -341,7 +341,7 @@ namespace DrivePal.Models.ServiceClasses
                     Gender = Gender.Male,
                     TotalRating = 3,
                     EmailConfirmed = true,
-                    LicenceNumber = "1098765432109876",
+                    LicenceNumber = "ABDUL10987654321",
                     isApproved = true,
                     isBlocked = false,
                     InstructorDrivingStatus = DrivingStatus.Experienced,
@@ -371,7 +371,8 @@ namespace DrivePal.Models.ServiceClasses
                     DOB = new DateOnly(1997, 3, 13),
                     Gender = Gender.Female,
                     EmailConfirmed = true,
-                    LicenceNumber = "12345678"                };
+                    LicenceNumber = "WILLI12345678901"
+                };
                 await userManager.CreateAsync(learnerUser, "pass123");
                 await userManager.AddToRoleAsync(learnerUser, "Learner");
             }
@@ -390,7 +391,7 @@ namespace DrivePal.Models.ServiceClasses
                     DOB = new DateOnly(1995, 8, 17),
                     Gender = Gender.Male,
                     EmailConfirmed = true,
-                    LicenceNumber = "87654321"
+                    LicenceNumber = "SMITH54321987650"
                 };
                 await userManager.CreateAsync(learnerUser2, "pass123");
                 await userManager.AddToRoleAsync(learnerUser2, "Learner");
@@ -408,7 +409,9 @@ namespace DrivePal.Models.ServiceClasses
                     Street = "Mitchell Street",
                     PostCode = "G1 3LA",
                     DOB = new DateOnly(1967, 3, 26),
+                    Gender = Gender.Male,
                     EmailConfirmed = true,
+                    LicenceNumber = "THOMA87654321905"
                 };
                 await userManager.CreateAsync(learnerUser3, "pass123");
                 await userManager.AddToRoleAsync(learnerUser3, "Learner");
@@ -428,7 +431,7 @@ namespace DrivePal.Models.ServiceClasses
                     DOB = new DateOnly(1998, 2, 25),
                     Gender = Gender.Female,
                     EmailConfirmed = true,
-                    LicenceNumber = "65432100"
+                    LicenceNumber = "KHAN76543219876"
                 };
                 await userManager.CreateAsync(learnerUser4, "pass123");
                 await userManager.AddToRoleAsync(learnerUser4, "Learner");
@@ -448,7 +451,7 @@ namespace DrivePal.Models.ServiceClasses
                     DOB = new DateOnly(1996, 9, 12),
                     Gender = Gender.Male,
                     EmailConfirmed = true,
-                    LicenceNumber = "12365400"
+                    LicenceNumber = "ALFAR367321D9B5G1X"
                 };
                 await userManager.CreateAsync(learnerUser5, "pass123");
                 await userManager.AddToRoleAsync(learnerUser5, "Learner");
@@ -468,7 +471,7 @@ namespace DrivePal.Models.ServiceClasses
                     DOB = new DateOnly(1997, 5, 18),
                     Gender = Gender.Female,
                     EmailConfirmed = true,
-                    LicenceNumber = "98765432"
+                    LicenceNumber = "LEILA268431X8D2B9X"
                 };
                 await userManager.CreateAsync(learnerUser6, "pass123");
                 await userManager.AddToRoleAsync(learnerUser6, "Learner");

@@ -1,4 +1,9 @@
-﻿@model DrivePal.Models.Learner
+﻿@model DrivePal.Models.User
+
+@{
+    var isInstructor = Model is DrivePal.Models.Instructor;
+    var instructor = Model as DrivePal.Models.Instructor;
+}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -71,7 +76,6 @@
                         <td><input type="date" id="dob" name="dob" value="@Model.DOB.ToString("yyyy-MM-dd")" required></td>
                     </tr>
 
-
                     <tr>
                         <td><label for="gender">Gender:</label></td>
                         <td>
@@ -84,15 +88,18 @@
                         </td>
                     </tr>
 
-
                     <tr>
                         <td><label for="isBlocked">Account Blocked?</label></td>
                         <td><input type="checkbox" id="isBlocked" name="isBlocked" @(Model.isBlocked == true ? "checked" : "")></td>
                     </tr>
-                    <tr>
-                        <td><label for="isExperienced">Experienced?</label></td>
-                        <td><input type="checkbox" id="isExperienced" name="isExperienced" @(Model.isExperienced == true ? "checked" : "")></td>
-                    </tr>
+
+                    @if (isInstructor)
+                    {
+                        <tr>
+                            <td><label for="licenceNumber">License Number:</label></td>
+                            <td><input type="text" id="licenceNumber" name="licenceNumber" value="@instructor.LicenceNumber" required></td>
+                        </tr>
+                    }
                 </table>
 
                 <button type="submit" class="button">Save Changes</button>

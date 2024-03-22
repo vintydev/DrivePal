@@ -250,7 +250,7 @@ namespace DrivePal.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveProfileChanges(Learner updatedProfile, IFormFile profilePicture)
+        public async Task<IActionResult> SaveProfileChanges(User updatedProfile, IFormFile profilePicture)
         {
             if (ModelState.IsValid)
             {
@@ -277,7 +277,17 @@ namespace DrivePal.Controllers
                 user.DOB = updatedProfile.DOB;
                 user.Gender = updatedProfile.Gender;
                 user.isBlocked = updatedProfile.isBlocked;
-                user.isExperienced = updatedProfile.isExperienced;
+
+                if (updatedProfile is Learner updatedLearner)
+                {
+                    var learner = user as Learner;
+                    learner.isExperienced = updatedLearner.isExperienced;
+                }
+                else if (updatedProfile is Instructor updatedInstructor)
+                {
+                    var instructor = user as Instructor;
+                    instructor.isApproved = updatedInstructor.isApproved;
+                }
 
                 await _userManager.UpdateAsync(user);
 
@@ -286,6 +296,7 @@ namespace DrivePal.Controllers
 
             return View("EditProfile", updatedProfile);
         }
+
 
         [Authorize] // Ensure the user is logged in
         public async Task<IActionResult> GetUserPostcode()
