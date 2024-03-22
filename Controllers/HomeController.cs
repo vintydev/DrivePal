@@ -85,6 +85,7 @@ namespace DrivePal.Controllers
 
             if (selectedDays.Count == 0)
             {
+   
                 dayIndex = errorIndex;
                 questionnaire.DayIndex = dayIndex;
                 errorMessages.Add("You must select at least one day");
@@ -130,47 +131,14 @@ namespace DrivePal.Controllers
 
 
             
-            // Querying instructors based on filtering criteria
-            var matchingInstructors = await FilterInstructors(questionnaire, teachingTraits, selectedGoals, selectedDays);
-
-            // Return the list of matching instructors to the view
-            return View("SeeAllInstructors",matchingInstructors);
-            
+            // Temp redirection
+            return Redirect("Index");
         }
 
-        private async Task <List<InstructorsDetailsViewModel>> FilterInstructors(Questionnaire questionnaire,
-            List<string> teachingTraits, List<string> selectedGoals, List<string> selectedDays)
-        {
-            // Filter instructors that contain any match
-            var matchingInstructorsDetailsViewModel = _context.Instructors
-                .Where(instructor =>
-                    instructor.InstructorLessonAverage >= questionnaire.MinPrice &&
-                    instructor.InstructorLessonAverage <= questionnaire.MaxPrice &&
-                    instructor.InstructorDrivingStatus == questionnaire.DrivingStatus &&
-                    instructor.isApproved == true && instructor.isBlocked == false &&
-                    (
-                        instructor.InstructorTeachingTraits.Any(trait => teachingTraits.Contains(trait)) ||
-                        instructor.InstructorDrivingGoals.Any(goal => selectedGoals.Contains(goal)) ||
-                        instructor.InstructorTeachingType.Any(type => questionnaire.TeachingType.Contains(type)) ||
-                        instructor.InstructorAvailableDaysOf.Any(day => selectedDays.Contains(day)) ||
-                        instructor.InstructorTimeOfDay.Any(time => questionnaire.TimeOfDay.Contains(time)) ||
-                        instructor.InstructorLessonDuration.Any(duration => questionnaire.LessonDuration.Contains(duration))
-                    ))
-                .Select(instructor => new InstructorsDetailsViewModel()
-                {
-                    Id = instructor.Id,
-                    FirstName = instructor.FirstName,
-                    LastName = instructor.LastName,
-                    PostCode = instructor.PostCode,
-                    TotalRating = instructor.TotalRating,
-                    InstructorDaysAvailable = instructor.InstructorAvailableDaysOf,
-                    InstructorTimeAvaiable = instructor.InstructorTimeOfDay,
-                    AveragePrice = instructor.InstructorLessonAverage
-                })
-                .ToListAsync();
-
-            return await matchingInstructorsDetailsViewModel;
-        }
+        // public Task<IActionResult> SeeRecommendedInstructors()
+        // {
+        //     return Task.FromResult<IActionResult>(View());
+        // }
 
 
         public async Task<IActionResult> SeeAllInstructors()
@@ -188,8 +156,6 @@ namespace DrivePal.Controllers
                 .ToListAsync();
 
             return View(instructors);
-            
-            
         }
 
         public IActionResult Instructors()

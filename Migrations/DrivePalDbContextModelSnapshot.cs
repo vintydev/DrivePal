@@ -58,34 +58,6 @@ namespace DrivePal.Migrations
                     b.ToTable("Bookings");
                 });
 
-            modelBuilder.Entity("DrivePal.Models.ChatMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RecipientId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SenderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("SentAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ChatMessages");
-                });
-
             modelBuilder.Entity("DrivePal.Models.DrivingClass", b =>
                 {
                     b.Property<int>("DrivingClassId")
@@ -507,22 +479,8 @@ namespace DrivePal.Migrations
                 {
                     b.HasBaseType("DrivePal.Models.User");
 
-                    b.Property<string>("InstructorAvailableDaysOf")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InstructorDrivingGoals")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("InstructorDrivingStatus")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("InstructorLessonAverage")
+                    b.Property<decimal>("AveragePricePerLesson")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("Gender")
-                        .HasColumnType("int");
 
                     b.Property<string>("LicenceNumber")
                         .IsRequired()
