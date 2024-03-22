@@ -130,7 +130,13 @@ namespace DrivePal.Controllers
             }
             
             // Redirects with validation errors
-            if (!ModelState.IsValid) return View("QuestionnaireIndex",questionnaire);
+            if (!ModelState.IsValid)
+            {
+                // Create new questionnaire with default values
+                Questionnaire questionnaire2 = new Questionnaire();
+                
+                return View("QuestionnaireIndex",questionnaire2);
+            }
             
             // Add properties
             questionnaire.IsFinished = true;
