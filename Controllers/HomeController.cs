@@ -1,21 +1,21 @@
-using DrivePal.Data;
-using DrivePal.Extensions;
 using DrivePal.Models;
-using DrivePal.Models.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using DrivePal.Data;
+using DrivePal.Extensions;
+using DrivePal.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DrivePal.Controllers
 {
@@ -38,7 +38,7 @@ namespace DrivePal.Controllers
         {
             return View();
         }
-
+        
         public ActionResult QuestionnaireIndex(string? id)
         {
             var model = new Questionnaire();
@@ -66,66 +66,131 @@ namespace DrivePal.Controllers
             return View(model);
         }
 
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]  
         public async Task<IActionResult> CreateQuestionnaire([Bind("QuestionnaireId,MinPrice,MaxPrice,DrivingStatus,TeachingTraits,DrivingGoals,TeachingType," +
                                                                    "AvailableDaysOf,TimeOfDay,LessonDuration,IsFinished,DateCompleted,LearnerId,Learner")]
-            Questionnaire questionnaire, List<string> teachingTraits, List<string> selectedGoals, List<string> selectedDays)
+            Questionnaire questionnaire, List<string> teachingTraits, List <string>selectedGoals, List<string> selectedDays)
         {
+            
+            // Get user
             var userName = User.Identity?.Name;
+
             var learner = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName) as Learner;
+            
+            // Assign learner
             questionnaire.Learner = learner;
+            
             questionnaire.LearnerId = learner?.Id;
 
+            // Collect error messages list initialisation
             List<string> errorMessages = new List<string>(3);
             int errorIndex = 0;
             int? dayIndex;
             int? goalIndex;
             int? traitIndex;
-
+            
+            // Add the error messages to the list
             if (selectedDays.Count == 0)
             {
                 dayIndex = errorIndex;
                 questionnaire.DayIndex = dayIndex;
+                
                 errorMessages.Add("You must select at least one day");
                 errorIndex++;
             }
-
+            
             if (selectedGoals.Count == 0)
             {
                 goalIndex = errorIndex;
+                
                 questionnaire.GoalIndex = goalIndex;
+                
                 errorMessages.Add("You must select at least one goal.");
-                errorIndex++;
+                errorIndex ++;
+
             }
 
             if (teachingTraits.Count == 0)
             {
                 traitIndex = errorIndex;
                 questionnaire.TraitIndex = traitIndex;
+                
                 errorMessages.Add("You must select at least one trait.");
-                errorIndex++;
+                errorIndex ++;
+
             }
 
+            // If there are any error messages, set ViewBag and return the view with model
             if (errorMessages.Count != 0)
             {
                 ViewBag.ErrorMessages = errorMessages;
                 return View("QuestionnaireIndex", questionnaire);
             }
-
-            if (!ModelState.IsValid) return View("QuestionnaireIndex", questionnaire);
-
+            
+            // Redirects with validation errors
+            if (!ModelState.IsValid) return View("QuestionnaireIndex",questionnaire);
+            
+            // Add properties
             questionnaire.IsFinished = true;
+                
             questionnaire.DateCompleted = DateTime.Now;
+
             questionnaire.AvailableDaysOf = selectedDays;
+            
             questionnaire.DrivingGoals = selectedGoals;
+            
             questionnaire.TeachingTraits = teachingTraits;
 
+            // Add questionnaire to db, save changes, redirect to Index action
             await _context.AddAsync(questionnaire);
-            await _context.SaveChangesAsync();
 
-            return Redirect("Index");
+            await _context.SaveChangesAsync();
+            
+            // Querying instructors based on filtering criteria
+            var matchingInstructors = await FilterInstructors(questionnaire, teachingTraits, selectedGoals, selectedDays);
+
+            // Return the list of matching instructors to the view
+            return View("SeeAllInstructors",matchingInstructors);
+            
         }
+
+        private async Task <List<InstructorsDetailsViewModel>> FilterInstructors(Questionnaire questionnaire,
+            List<string> teachingTraits, List<string> selectedGoals, List<string> selectedDays)
+        {
+            // Filter instructors that contain any match
+            var matchingInstructorsDetailsViewModel = _context.Instructors
+                .Where(instructor =>
+                    instructor.InstructorLessonAverage >= questionnaire.MinPrice &&
+                    instructor.InstructorLessonAverage <= questionnaire.MaxPrice &&
+                    instructor.InstructorDrivingStatus == questionnaire.DrivingStatus &&
+                    instructor.isApproved == true && instructor.isBlocked == false &&
+                    (
+                        instructor.InstructorTeachingTraits.Any(trait => teachingTraits.Contains(trait)) ||
+                        instructor.InstructorDrivingGoals.Any(goal => selectedGoals.Contains(goal)) ||
+                        instructor.InstructorTeachingType.Any(type => questionnaire.TeachingType.Contains(type)) ||
+                        instructor.InstructorAvailableDaysOf.Any(day => selectedDays.Contains(day)) ||
+                        instructor.InstructorTimeOfDay.Any(time => questionnaire.TimeOfDay.Contains(time)) ||
+                        instructor.InstructorLessonDuration.Any(duration => questionnaire.LessonDuration.Contains(duration))
+                    ))
+                .Select(instructor => new InstructorsDetailsViewModel()
+                {
+                    Id = instructor.Id,
+                    FirstName = instructor.FirstName,
+                    LastName = instructor.LastName,
+                    PostCode = instructor.PostCode,
+                    TotalRating = instructor.TotalRating,
+                    InstructorDaysAvailable = instructor.InstructorAvailableDaysOf,
+                    InstructorTimeAvaiable = instructor.InstructorTimeOfDay,
+                    AveragePrice = instructor.InstructorLessonAverage
+                })
+                .ToListAsync();
+
+            return await matchingInstructorsDetailsViewModel;
+        }
+
+ 
 
         public async Task<IActionResult> SeeAllInstructors()
         {
@@ -214,6 +279,7 @@ namespace DrivePal.Controllers
 
             return View("EditProfile", updatedProfile);
         }
+
 
         public IActionResult Error()
         {

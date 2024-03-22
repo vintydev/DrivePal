@@ -100,12 +100,13 @@ namespace DrivePal.Models.ServiceClasses
                     InstructorTeachingType = ["Manual"],
                     InstructorAvailableDaysOf = ["Wednesday", "Thursday", "Friday"],
                     InstructorTimeOfDay = ["Afternoon", "Evening"],
-                    InstructorLessonDuration = [90] ,
+                    InstructorLessonDuration = [90],
                     InstructorLessonAverage = 75
                 };
                 await userManager.CreateAsync(instructorUser2, "pass123");
                 await userManager.AddToRoleAsync(instructorUser2, "Instructor");
             }
+
             //seeding instructor non approved
             if (!context.Users.Any(u => u.UserName == "instructor4@example.com"))
             {
@@ -137,6 +138,7 @@ namespace DrivePal.Models.ServiceClasses
                 await userManager.AddToRoleAsync(instructorUser4, "Instructor");
 
             }
+
             if (!context.Users.Any(u => u.UserName == "instructor5@example.com"))
             {
                 var instructorUser5 = new Instructor
@@ -170,65 +172,65 @@ namespace DrivePal.Models.ServiceClasses
 
             // Create an admin user if it does not exist
             if (!context.Users.Any(u => u.UserName == "learner@example.com"))
+            {
+                var learnerUser = new Learner
                 {
-                    var learnerUser = new Learner
-                    {
-                        UserName = "learner@example.com",
-                        Email = "learner@example.com",
-                        FirstName = "Emma",
-                        LastName = "Williams",
-                        City = "Glasgow",
-                        Street = "Bath Street",
-                        PostCode = "G1 1AA",
-                        DOB = new DateOnly(1997, 3, 13),
-                        Gender = Gender.Female,
-                        EmailConfirmed = true,
-                        LicenceNumber = "12345678"
-                    };
-                    await userManager.CreateAsync(learnerUser, "pass123");
-                    await userManager.AddToRoleAsync(learnerUser, "Learner");
-                }
+                    UserName = "learner@example.com",
+                    Email = "learner@example.com",
+                    FirstName = "Emma",
+                    LastName = "Williams",
+                    City = "Glasgow",
+                    Street = "Bath Street",
+                    PostCode = "G1 1AA",
+                    DOB = new DateOnly(1997, 3, 13),
+                    Gender = Gender.Female,
+                    EmailConfirmed = true,
+                    LicenceNumber = "12345678"
+                };
+                await userManager.CreateAsync(learnerUser, "pass123");
+                await userManager.AddToRoleAsync(learnerUser, "Learner");
+            }
 
-                if (!context.Users.Any(u => u.UserName == "learner2@example.com"))
+            if (!context.Users.Any(u => u.UserName == "learner2@example.com"))
+            {
+                var learnerUser2 = new Learner
                 {
-                    var learnerUser2 = new Learner
-                    {
-                        UserName = "learner2@example.com",
-                        Email = "learner2@example.com",
-                        FirstName = "Sophie",
-                        LastName = "Brown",
-                        City = "Glasgow",
-                        Street = "Hope Street",
-                        PostCode = "G15AA",
-                        DOB = new DateOnly(1994, 4, 11),
-                        EmailConfirmed = true,
-                    };
-                    await userManager.CreateAsync(learnerUser2, "pass123");
-                    await userManager.AddToRoleAsync(learnerUser2, "Learner");
-                }
+                    UserName = "learner2@example.com",
+                    Email = "learner2@example.com",
+                    FirstName = "Sophie",
+                    LastName = "Brown",
+                    City = "Glasgow",
+                    Street = "Hope Street",
+                    PostCode = "G15AA",
+                    DOB = new DateOnly(1994, 4, 11),
+                    EmailConfirmed = true,
+                };
+                await userManager.CreateAsync(learnerUser2, "pass123");
+                await userManager.AddToRoleAsync(learnerUser2, "Learner");
+            }
 
-                if (!context.Users.Any(u => u.UserName == "learner3@example.com"))
+            if (!context.Users.Any(u => u.UserName == "learner3@example.com"))
+            {
+                var learnerUser3 = new Learner
                 {
-                    var learnerUser3 = new Learner
-                    {
-                        UserName = "learner3@example.com",
-                        Email = "learner3@example.com",
-                        FirstName = "James",
-                        LastName = "Thomas",
-                        City = "Glasgow",
-                        Street = "Mitchell Street",
-                        PostCode = "G1 3HL",
-                        DOB = new DateOnly(1967, 3, 26),
-                        EmailConfirmed = true,
-                    };
-                    await userManager.CreateAsync(learnerUser3, "pass123");
-                    await userManager.AddToRoleAsync(learnerUser3, "Learner");
-                }
+                    UserName = "learner3@example.com",
+                    Email = "learner3@example.com",
+                    FirstName = "James",
+                    LastName = "Thomas",
+                    City = "Glasgow",
+                    Street = "Mitchell Street",
+                    PostCode = "G1 3HL",
+                    DOB = new DateOnly(1967, 3, 26),
+                    EmailConfirmed = true,
+                };
+                await userManager.CreateAsync(learnerUser3, "pass123");
+                await userManager.AddToRoleAsync(learnerUser3, "Learner");
+            }
         }
 
-        }
+    
 
-        //private static async Task SeedChatMessages(DrivePalDbContext context, UserManager<User> userManager)
+    //private static async Task SeedChatMessages(DrivePalDbContext context, UserManager<User> userManager)
         //{
         //    var learner = await userManager.FindByNameAsync("learner@example.com");
         //    var instructor = await userManager.FindByNameAsync("instructor@example.com");
