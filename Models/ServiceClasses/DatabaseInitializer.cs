@@ -205,7 +205,19 @@ namespace DrivePal.Models.ServiceClasses
                     await userManager.CreateAsync(learnerUser2, "pass123");
                     await userManager.AddToRoleAsync(learnerUser2, "Learner");
                 }
-       
+            var instructor2 = context.Instructors.Where(r => r.Email == "instructor2@example.com").FirstOrDefault();
+            var lesson = new DrivingClass
+            {
+                DrivingClassStart = DateTime.UtcNow,
+                DrivingClassEnd = DateTime.UtcNow.AddHours(1),
+                InstructorId = instructor2.Id,
+                Price = 22,
+                IsReserved = false,
+
+
+            };
+            context.DrivingClasses.Add(lesson);
+            context.SaveChanges();
 
         }
 
