@@ -14,68 +14,53 @@ document.addEventListener("DOMContentLoaded", function () {
     let map;
     let circle;
     let markers = []; // Array to store markers
+    let defaultPostcode = "@Model.PostCode"; // Store user's postcode if available
 
     async function initMap() {
-        // Try to get the user's current position using Geolocation API
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                // Success callback
-                function (position) {
-                    // Get the user's current coordinates
-                    const userLocation = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
+        // Try to get the user's postcode from the backend
+        try {
+            const response = await fetch('/api/user/postcode');
+            const data = await response.json();
+            defaultPostcode = data.postcode;
 
-                    // Initialize the map with the user's current location as the center
-                    map = new google.maps.Map(document.getElementById("map"), {
-                        zoom: 10,
-                        center: userLocation,
-                        mapId: "DEMO_MAP_ID",
-                        mapTypeControl: false,
-                        mapTypeId: 'terrain',
-                        fullscreenControl: false,
-                        streetViewControl: false
-                    });
-                    console.log("Map set to user location.");
+            // Initialize the map with the user's postcode if available
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 10,
+                center: defaultPostcode ? await getCoordinates(defaultPostcode) : { lat: 55.8642, lng: -4.2518 }, // Glasgow coordinates
+                mapId: "DEMO_MAP_ID",
+                mapTypeControl: false,
+                mapTypeId: 'terrain',
+                fullscreenControl: false,
+                streetViewControl: false
+            });
 
-                    // Add a radius circle centered around the user's location
-                    circle = new google.maps.Circle({
-                        map: map,
-                        center: userLocation,
-                        radius: 11000,
-                        strokeColor: "#FFFFFF",
-                        strokeOpacity: 1,
-                        strokeWeight: 3,
-                        fillColor: "#0F52BA",
-                        fillOpacity: 0.2,
-                    });
+            // Add a radius circle centered around the default location (Glasgow)
+            circle = new google.maps.Circle({
+                map: map,
+                center: defaultPostcode ? await getCoordinates(defaultPostcode) : { lat: 55.8642, lng: -4.2518 }, // Glasgow coordinates
+                radius: 11000,
+                strokeColor: "#FFFFFF",
+                strokeOpacity: 1,
+                strokeWeight: 3,
+                fillColor: "#0F52BA",
+                fillOpacity: 0.2,
+            });
 
-                    // Continue with other map initialization logic (e.g., slider, markers)
-                    initializeMapFeatures();
-                },
-                // Error callback
-                function (error) {
-                    console.error("Error getting user location:", error);
-                    // If getting user location fails, fallback to default location (London)
-                    initializeMapWithDefaultLocation();
-                }
-            );
-        } else {
-            // If Geolocation API is not supported, fallback to default location (London)
+            // Continue with other map initialization logic (e.g., slider, markers)
+            initializeMapFeatures();
+
+        } catch (error) {
+            console.error("Error getting user postcode:", error);
+            // If getting user postcode fails, fallback to default location (Glasgow)
             initializeMapWithDefaultLocation();
-            console.log("Error getting user location, defaulting to London.");
         }
     }
 
     function initializeMapWithDefaultLocation() {
-        // Initialize the map with default location (London)
+        // Initialize the map with default location (Glasgow)
         map = new google.maps.Map(document.getElementById("map"), {
             zoom: 10,
-            center: {
-                lat: 51.5074,
-                lng: 0.1278
-            },
+            center: { lat: 55.8642, lng: -4.2518 }, // Glasgow coordinates
             mapId: "DEMO_MAP_ID",
             mapTypeControl: false,
             mapTypeId: 'terrain',
@@ -83,13 +68,10 @@ document.addEventListener("DOMContentLoaded", function () {
             streetViewControl: false
         });
 
-        // Add a radius circle centered around the default location (London)
+        // Add a radius circle centered around the default location (Glasgow)
         circle = new google.maps.Circle({
             map: map,
-            center: {
-                lat: 51.5074,
-                lng: 0.1278
-            },
+            center: { lat: 55.8642, lng: -4.2518 }, // Glasgow coordinates
             radius: 11000,
             strokeColor: "#FFFFFF",
             strokeOpacity: 1,
@@ -120,7 +102,45 @@ document.addEventListener("DOMContentLoaded", function () {
             // Call a function to fetch instructor data from the table and place markers on the map
             placeMarkersForInstructors();
         });
-        
+
+        // Add event listener to the "Find My Location" button
+        const userLocationBtn = document.getElementById("userLocationBtn");
+        userLocationBtn.addEventListener("click", function () {
+            // Try to get the user's current position using Geolocation API
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    // Success callback
+                    async function (position) {
+                        // Get the user's current coordinates
+                        const userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+
+                        // Set the map center to the user's current location
+                        map.setCenter(userLocation);
+                        circle.setCenter(userLocation);
+                        // Update markers visibility based on new circle radius
+                        updateMarkersVisibility(circle, markers);
+
+                        // Reverse geocode the user's current coordinates to get the postcode
+                        const postcode = await getPostcodeFromCoordinates(userLocation);
+                        if (postcode) {
+                            // Update the radius value span with the user's postcode
+                            document.getElementById("radiusValue").textContent = postcode;
+                        } else {
+                            console.error("Unable to retrieve postcode for user location.");
+                        }
+                    },
+                    // Error callback
+                    function (error) {
+                        console.error("Error getting user location:", error);
+                    }
+                );
+            } else {
+                console.error("Geolocation is not supported by this browser.");
+            }
+        });
     }
 
     async function placeMarkersForInstructors() {
@@ -153,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Process the instructor data and place markers on the map
             createMarkersForInstructors(instructors);
-            
+
         } catch (error) {
             console.error("Error placing markers for instructors:", error.message);
         }
@@ -243,8 +263,43 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    // Function to get coordinates from postcode using Geocoding API
+    async function getCoordinates(postcode) {
+        return new Promise((resolve, reject) => {
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address: postcode }, (results, status) => {
+                if (status === google.maps.GeocoderStatus.OK && results[0]) {
+                    resolve(results[0].geometry.location);
+                } else {
+                    reject('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        });
+    }
 
+    // Function to get postcode from coordinates using Geocoding API
+    async function getPostcodeFromCoordinates(coordinates) {
+        return new Promise((resolve, reject) => {
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ location: coordinates }, (results, status) => {
+                if (status === google.maps.GeocoderStatus.OK && results[0]) {
+                    // Check if any address components contain postcode
+                    const addressComponents = results[0].address_components;
+                    addressComponents.forEach(component => {
+                        if (component.types.includes('postal_code')) {
+                            resolve(component.long_name);
+                        }
+                    });
+                    // If no postcode found, reject with an error message
+                    reject('No postcode found for the given coordinates.');
+                } else {
+                    reject('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        });
+    }
 
     // Call the initMap function to initialize the map
     initMap();
 });
+
