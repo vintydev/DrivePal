@@ -475,6 +475,61 @@ namespace DrivePal.Models.ServiceClasses
                 await userManager.AddToRoleAsync(learnerUser6, "Learner");
             }
 
+            var instructor2 = context.Instructors.Where(r => r.Email == "instructor2@example.com").FirstOrDefault();
+
+            int numberOfLessons = 5; 
+
+          
+            for (int i = 0; i < numberOfLessons; i++)
+            {
+                var lesson = new DrivingClass
+                {
+                    DrivingClassStart = DateTime.UtcNow.AddHours(i),
+                    DrivingClassEnd = DateTime.UtcNow.AddHours(i + 1),
+                    InstructorId = instructor2.Id,
+                    Price = 22,
+                    IsReserved = false,
+                };
+
+                context.DrivingClasses.Add(lesson);
+            }
+            context.SaveChanges();
+
+            var instructor3 = context.Instructors.Where(r => r.Email == "instructor3@example.com").FirstOrDefault();
+
+            for (int i = 0; i < numberOfLessons; i++)
+            {
+                var lesson = new DrivingClass
+                {
+                    DrivingClassStart = DateTime.UtcNow.AddHours(i),
+                    DrivingClassEnd = DateTime.UtcNow.AddHours(i + 1),
+                    InstructorId = instructor3.Id,
+                    Price = 22,
+                    IsReserved = false,
+                };
+
+                context.DrivingClasses.Add(lesson);
+            }
+            context.SaveChanges();
+
+            var instructor4= context.Instructors.Where(r => r.Email == "instructor4@example.com").FirstOrDefault();
+
+            for (int i = 0; i < numberOfLessons; i++)
+            {
+                var lesson = new DrivingClass
+                {
+                    DrivingClassStart = DateTime.UtcNow.AddHours(i+25),
+                    DrivingClassEnd = DateTime.UtcNow.AddHours(i + 26),
+                    InstructorId = instructor4.Id,
+                    Price = 22,
+                    IsReserved = false,
+                };
+
+                context.DrivingClasses.Add(lesson);
+            }
+            context.SaveChanges();
+
+
         }
 
         //private static async Task SeedChatMessages(DrivePalDbContext context, UserManager<User> userManager)
