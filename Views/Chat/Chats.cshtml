@@ -1,0 +1,16 @@
+﻿@model List<Chat>
+
+<div class="container">
+    <h1>Your Chats</h1>
+    <ul>
+        @foreach (var chat in Model)
+        {
+            <li>
+                <a href="@Url.Action("Index", "Chat", new { id = chat.UserId })">@chat.FirstName @chat.LastName</a>
+                <p>Last message: @chat.LastMessage</p>
+                <p>Unread messages: @chat.UnreadCount</p>
+            </li>
+        }
+    </ul>
+</div>
+

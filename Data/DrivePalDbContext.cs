@@ -33,5 +33,7 @@ namespace DrivePal.Data
         
         public DbSet<Questionnaire> Questionnaires { get; set; }
         //public DbSet <Basket> Baskets { get; set; }
+
+        public DbSet<Message> Messages { get; set; }
     }
 }

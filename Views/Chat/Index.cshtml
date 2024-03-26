@@ -1,0 +1,25 @@
+﻿@page
+<div class="container chat-page" id="chatContainer" data-receiverid="@ViewBag.ReceiverId">
+    <h2 id="userFullName" data-fullname="@ViewBag.FullName">@ViewBag.FullName</h2>
+    <div style="height: 400px; overflow-y: scroll;">
+        <ul id="messagesList" class="list-unstyled">
+            @foreach (var message in ViewBag.Messages)
+            {
+                <li id="message@message.Id" class="p-3 mb-2 rounded @((message.SenderId == ViewBag.UserId) ? "bg-primary text-white" : "bg-light")">
+                    <strong>@((message.SenderId == ViewBag.UserId) ? "You" : @message.SenderName)</strong>
+                    <p>@message.Text</p>
+                    <small>@message.Timestamp.ToString("HH:mm")</small>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="p-1 d-flex">
+        <input type="text" class="flex-grow-1" id="messageInput" />
+        <input type="button" id="sendButton" value="Send Message" />
+    </div>
+</div>
+<link rel="stylesheet" href="/css/style.css">
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/chat.js"></script>
+
+
