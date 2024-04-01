@@ -171,7 +171,7 @@ namespace DrivePal.Controllers
                 .Where(instructor =>
                     instructor.InstructorLessonAverage >= questionnaire.MinPrice &&
                     instructor.InstructorLessonAverage <= questionnaire.MaxPrice &&
-                    instructor.InstructorDrivingStatus == questionnaire.DrivingStatus &&
+                    // instructor.InstructorDrivingStatus == questionnaire.DrivingStatus && (fix later, redundant rn)
                     instructor.isApproved == true && instructor.isBlocked == false &&
                     (
                         instructor.InstructorTeachingTraits.Any(trait => teachingTraits.Contains(trait)) ||

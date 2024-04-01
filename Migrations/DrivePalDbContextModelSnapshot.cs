@@ -101,6 +101,9 @@ namespace DrivePal.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("Read")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ReceiverId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -118,7 +121,7 @@ namespace DrivePal.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("messages");
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("DrivePal.Models.Payment", b =>
