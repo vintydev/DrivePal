@@ -21,6 +21,10 @@ namespace DrivePal.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             var fullName = user.FirstName + " " + user.LastName;
+            var receiver = await _userManager.FindByIdAsync(id);
+            var receiverName = receiver.FirstName + " " + receiver.LastName;
+
+            ViewBag.ReceiverName = receiverName;
 
             var messages = _context.Messages
         .Where(m => (m.SenderId == user.Id && m.ReceiverId == id) || (m.SenderId == id && m.ReceiverId == user.Id))
