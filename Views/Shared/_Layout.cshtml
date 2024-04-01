@@ -23,14 +23,14 @@
                 {
                     if (User.IsInRole("Learner"))
                     {
-                        <li><a href="/Booking/ShowOwnBookings">See your booked classes</a></li>
+                        <li><a href="/Booking/MyBookings">See your booked classes</a></li>
                         <li><a href="/DrivingClass/Index">See all classes</a></li>
                         <li><a href="/Chat/Chats">Inbox</a></li>
 
                     }
                     if (User.IsInRole("Instructor"))
                     {
-                        <li><a href="/DrivingClass/OwnDrivingClasses">Manage Classes</a></li>
+                        <li><a href="/DrivingClass/Calendar">Manage Classes</a></li>
                         <li><a href="/Booking/ShowBookedClasses">Booked Classes</a></li>
                         <li><a href="/Chat/Chats">Inbox</a></li>
                     }
@@ -56,6 +56,7 @@
             &copy; 2024 - DrivePal - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    <script src="~/js/index.global.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -6,6 +6,7 @@ namespace DrivePal.Models
     {
         public int DrivingClassId { get; set; }
 
+
         public DateTime DrivingClassStart { get; set; }
         public DateTime DrivingClassEnd { get; set; }
         public decimal Price { get; set; }

@@ -9,7 +9,9 @@
     ViewData["Title"] = "Select Class";
 }
 
-<h1>Select Class</h1>
+<h1>Confirm the Lesson</h1>
+
+
 
 <div>
     <h2>Class Details</h2>
@@ -24,4 +26,7 @@
 <form asp-controller="Booking" asp-action="CheckOut" >
     <input type="hidden" name="Id" value="@Model.DrivingClassId" />
     <input type="submit" value="Reserve this class" class="btn btn-success" />
+
+    <a class="btn btn-danger" asp-controller="DrivingClass" asp-action="Availability" asp-route-id="@Model.InstructorId">Back</a>
+
 </form>

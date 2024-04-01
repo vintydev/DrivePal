@@ -1,0 +1,38 @@
+﻿
+<html lang='en'>
+<head>
+    <meta charset='utf-8' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                timeZone: 'UTC',
+                initialView: 'dayGridWeek',
+                // Assuming ViewData["Lessons"] is a JSON array of event objects
+                events: @Html.Raw(ViewData["Lessons"]),
+                headerToolbar: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'dayGridWeek,dayGridDay'
+                },
+                editable: true,
+                eventClick: function (info) {
+                    // Simple alert to show event title and description
+                    alert('Event: ' + info.event.title + '\nDescription: ' + (info.event.extendedProps.description || 'No description'));
+                },
+                firstDay:1
+            });
+
+            calendar.render();
+        });
+    </script>
+
+
+</script>
+</head>
+<body>
+    <div id='calendar'></div>
+</body>
+</html>

@@ -8,6 +8,9 @@ using DrivePal.Models.ViewModels;
 using Stripe.Checkout;
 using DrivePal.Models.ServiceClasses;
 using Stripe;
+using DrivePal.Helpers;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 
 
 
@@ -174,6 +177,8 @@ namespace DrivePal.Controllers
             {
                 return NotFound();
             }
+            drivingClass.IsReserved = true;
+            
 
             var learnerId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Assuming you're using ASP.NET Core Identity
             var learner = await _context.Users
@@ -187,6 +192,8 @@ namespace DrivePal.Controllers
                 // Redirect to an error page or return an error view
                 return View("Error");
             }
+            drivingClass.Learner = learner;
+            
 
 
             var booking = new Booking
@@ -209,7 +216,9 @@ namespace DrivePal.Controllers
                 PaymentDate = DateTime.Now,
             };
             _context.Payments.Add(payment);
+            _context.DrivingClasses.Update(drivingClass);
             await _context.SaveChangesAsync();
+          
 
 
             // Prepare the email content
@@ -272,7 +281,37 @@ namespace DrivePal.Controllers
 
             return View(viewModel);
         }
+        public  async Task<IActionResult> MyBookings()
+        {
+            var learnerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            var bookings = await _context.Bookings
+                .Where(b => b.LearnerId == learnerId)
+                .Include(b => b.DrivingClass) // Include DrivingClass to access its properties
+                .Include(b => b.Instructor) // Include Instructor to access its properties
+                .Select(b => new BookingDetail
+                {
+                    BookingId = b.BookingId,
+                    BookingDate = b.BookingDate,
+                    Price = b.Price,
+                    DrivingClassStart = b.DrivingClass.DrivingClassStart,
+                    DrivingClassEnd = b.DrivingClass.DrivingClassEnd,
+                    InstructorFirstName = b.Instructor.FirstName,
+                    InstructorLastName = b.Instructor.LastName // Projecting the instructor's last name
+                })
+                .ToListAsync();
+
+            var viewModel = new LearnerBookingsViewModel
+            {
+                Bookings = bookings
+            };
+
+
+
+            ViewData["Bookings"] = JSONListHelper.GetBookingListJSONString(viewModel);
+            return View();
+
+        }
         public async Task<IActionResult> ShowOwnBookings()
         {
             var learnerId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -288,6 +327,7 @@ namespace DrivePal.Controllers
                     Price = b.Price,
                     DrivingClassStart = b.DrivingClass.DrivingClassStart,
                     DrivingClassEnd = b.DrivingClass.DrivingClassEnd,
+                    InstructorFirstName= b.Instructor.FirstName,
                     InstructorLastName = b.Instructor.LastName // Projecting the instructor's last name
                 })
                 .ToListAsync();

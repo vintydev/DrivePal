@@ -109,7 +109,9 @@
                                 {
                                     <a href="@Url.Action("Create", "Reviews", new { id = instructor.Id })" class="button">Write a Review</a>
                                     <a href="@Url.Action("ViewReviews", "Reviews", new { id = instructor.Id })" class="button">View all Reviews</a>
-                                    <a class="btn btn-primary" asp-controller="DrivingClass" asp-action="ShowClassesForThisInstructor" asp-route-instructorId="@instructor.Id">See Classes for This Instructor</a>
+                                    
+                                    <a class="btn btn-primary" asp-controller="DrivingClass" asp-action="Availability" asp-route-id="@instructor.Id">View Availability</a>
+                                    
                                     <a class="btn btn-primary" asp-controller="Chat" asp-action="Index" asp-route-id="@instructor.Id">Chat</a>
                                 }
                             </td>

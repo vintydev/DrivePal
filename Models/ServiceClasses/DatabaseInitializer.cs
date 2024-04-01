@@ -45,6 +45,43 @@ namespace DrivePal.Models.ServiceClasses
                 await userManager.CreateAsync(adminUser, "pass123");
                 await userManager.AddToRoleAsync(adminUser, "Admin");
             }
+            if (!context.Users.Any(u => u.UserName == "staff1@example.com"))
+            {
+                var staffUser = new Staff
+                {
+                    UserName = "staff1@example.com",
+                    Email = "staff1@example.com",
+                    FirstName = "Steve",
+                    LastName = "Buscemi",
+                    City = "Glasgow",
+                    Street = "9 Luaf Street",
+                    PostCode = "G52 9LH",
+                    DOB = new DateOnly(1994, 7, 22),
+                    EmailConfirmed = true,
+                    WorkType=WorkType.FullTime,
+                };
+                await userManager.CreateAsync(staffUser, "pass123");
+                await userManager.AddToRoleAsync(staffUser, "Staff");
+            }
+            if (!context.Users.Any(u => u.UserName == "staff2@example.com"))
+            {
+                var staffUser = new Staff
+                {
+                    UserName = "staff2@example.com",
+                    Email = "staff2@example.com",
+                    FirstName = "Rowan",
+                    LastName = "Devers",
+                    City = "Glasgow",
+                    Street = "9 Luaf Street",
+                    PostCode = "G52 9LH",
+                    DOB = new DateOnly(1998, 11, 07),
+                    EmailConfirmed = true,
+                    WorkType=WorkType.PartTime,
+                };
+                await userManager.CreateAsync(staffUser, "pass123");
+                await userManager.AddToRoleAsync(staffUser, "Staff");
+            }
+
 
             // Instructor 1
             if (!context.Users.Any(u => u.UserName == "instructor@example.com"))

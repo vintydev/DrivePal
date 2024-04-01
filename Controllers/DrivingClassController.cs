@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using DrivePal.Helpers;
 
 namespace DrivePal.Controllers
 {
@@ -35,6 +36,38 @@ namespace DrivePal.Controllers
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
+        [Authorize]
+        public IActionResult Calendar()
+        {
+            var user = GetUserId();
+            var drivingClasses = _context.DrivingClasses
+                                        .Include(i => i.Instructor)
+                                        .Include(d => d.Learner) // Include the Learner navigation property
+                                        .Where(d => d.Instructor.Id == user ).ToList();
+
+          
+            
+            ViewData["Lessons"] = JSONListHelper.GetDrivingClassListJSONString(drivingClasses);
+            return View();
+        
+        }
+
+        public IActionResult Availability(string id) // shows an instructors available lessons
+        {
+            
+            var drivingClasses = _context.DrivingClasses
+                                        .Include(i => i.Instructor)
+                                        .Include(d => d.Learner) 
+                                        .Where(d => d.Instructor.Id == id && d.IsReserved == false).ToList();
+
+
+
+            ViewData["Lessons"] = JSONListHelper.GetDrivingClassListJSONString(drivingClasses);
+            return View();
+
+        }
+
+
 
         public async Task<IActionResult> OwnDrivingClasses()
         {
@@ -89,6 +122,58 @@ namespace DrivePal.Controllers
                 return RedirectToAction(nameof(OwnDrivingClasses));
             }
             return View(drivingClass);
+        }
+        public IActionResult GenerateLessons()
+        {
+            return View();
+        }
+        [HttpPost]
+
+        [HttpPost]
+        public async Task<IActionResult> GenerateLessons(string[] workingDays, string startTime, string endTime, decimal price)
+        {
+            var instructorId=GetUserId();
+            var startTimeSpan = TimeSpan.Parse(startTime);
+            var endTimeSpan = TimeSpan.Parse(endTime);
+
+            List<DrivingClass> lessons = new List<DrivingClass>();
+
+            foreach (var day in workingDays)
+            {
+                var currentDate = DateTime.Today;
+                // Find the next date that matches the day of the week
+                while (currentDate.DayOfWeek.ToString() != day)
+                {
+                    currentDate = currentDate.AddDays(1);
+                }
+
+                var lessonStartTime = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, startTimeSpan.Hours, startTimeSpan.Minutes, 0);
+                var lessonEndTime = lessonStartTime.AddHours(1);
+
+                while (lessonEndTime.TimeOfDay <= endTimeSpan)
+                {
+                    lessons.Add(new DrivingClass
+                    {
+                        DrivingClassStart = lessonStartTime,
+                        DrivingClassEnd = lessonEndTime,
+                        Price = price,
+                        IsReserved = false,
+                        InstructorId = instructorId
+                        
+                    });
+
+                    // Move to the next slot
+                    lessonStartTime = lessonEndTime;
+                    lessonEndTime = lessonStartTime.AddHours(1);
+                }
+            }
+
+            // Process lessons list, e.g., save to database
+            _context.AddRange(lessons);
+             await _context.SaveChangesAsync();
+
+            // Redirect or return view as appropriate
+            return RedirectToAction("Calendar"); // or return View() with a confirmation message
         }
 
 
