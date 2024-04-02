@@ -1,6 +1,7 @@
 ﻿@page
 <div class="container chat-page" id="chatContainer" data-receiverid="@ViewBag.ReceiverId">
-    <h2 id="userFullName" data-fullname="@ViewBag.FullName">@ViewBag.FullName</h2>
+    <h2 id="receiverFullName" data-fullname="@ViewBag.ReceiverName">@ViewBag.ReceiverName</h2>
+    <h2 id="userFullName" data-fullname="@ViewBag.FullName" style="display:none;">@ViewBag.FullName</h2>
     <div style="height: 400px; overflow-y: scroll;">
         <ul id="messagesList" class="list-unstyled">
             @foreach (var message in ViewBag.Messages)
