@@ -130,56 +130,61 @@ namespace DrivePal.Controllers
         [HttpPost]
 
         [HttpPost]
-        public async Task<IActionResult> GenerateLessons(string[] workingDays, string startTime, string endTime, decimal price)
+        public async Task<IActionResult> GenerateLessons(string[] workingDays, string startTime, string endTime, decimal price, int weeks)
         {
-            var instructorId=GetUserId();
+            var instructorId = GetUserId();
             var startTimeSpan = TimeSpan.Parse(startTime);
             var endTimeSpan = TimeSpan.Parse(endTime);
+
+            // Validate weeks parameter to ensure it's within 1 to 4
+            weeks = Math.Max(1, Math.Min(weeks, 4));
 
             List<DrivingClass> lessons = new List<DrivingClass>();
 
             foreach (var day in workingDays)
             {
-                var currentDate = DateTime.Today;
-                // Find the next date that matches the day of the week
-                while (currentDate.DayOfWeek.ToString() != day)
+                for (int week = 0; week < weeks; week++)
                 {
-                    currentDate = currentDate.AddDays(1);
-                }
-
-                var lessonStartTime = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, startTimeSpan.Hours, startTimeSpan.Minutes, 0);
-                var lessonEndTime = lessonStartTime.AddHours(1);
-
-                while (lessonEndTime.TimeOfDay <= endTimeSpan)
-                {
-                    lessons.Add(new DrivingClass
+                    var currentDate = DateTime.Today.AddDays(7 * week);
+                    // Find the next date that matches the day of the week
+                    while (currentDate.DayOfWeek.ToString() != day) // uses .net day of the week property to match the strings of days
                     {
-                        DrivingClassStart = lessonStartTime,
-                        DrivingClassEnd = lessonEndTime,
-                        Price = price,
-                        IsReserved = false,
-                        InstructorId = instructorId
-                        
-                    });
+                        currentDate = currentDate.AddDays(1);
+                    }
 
-                    // Move to the next slot
-                    lessonStartTime = lessonEndTime;
-                    lessonEndTime = lessonStartTime.AddHours(1);
+                    var lessonStartTime = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, startTimeSpan.Hours, startTimeSpan.Minutes, 0);
+                    var lessonEndTime = lessonStartTime.AddHours(1);
+
+                    while (lessonEndTime.TimeOfDay <= endTimeSpan)
+                    {
+                        lessons.Add(new DrivingClass
+                        {
+                            DrivingClassStart = lessonStartTime,
+                            DrivingClassEnd = lessonEndTime,
+                            Price = price,
+                            IsReserved = false,
+                            InstructorId = instructorId
+
+                        });
+
+                        // Move to the next slot
+                        lessonStartTime = lessonEndTime;
+                        lessonEndTime = lessonStartTime.AddHours(1);
+                    }
                 }
             }
 
-            // Process lessons list, e.g., save to database
+            
             _context.AddRange(lessons);
-             await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
-            // Redirect or return view as appropriate
-            return RedirectToAction("Calendar"); // or return View() with a confirmation message
+           
+            return RedirectToAction("Calendar"); 
         }
 
 
-
-        // GET: DrivingClasses/Delete/5
-        [Authorize(Roles = "Instructor")]
+            // GET: DrivingClasses/Delete/5
+            [Authorize(Roles = "Instructor")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
