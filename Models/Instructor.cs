@@ -24,25 +24,25 @@ namespace DrivePal.Models
         
         
         // Questionnaire Metrics
-        public decimal AveragePricePerLesson { get; set; }
+        public decimal? AveragePricePerLesson { get; set; }
         
         // Questionnaire Metrics
         
-        public DrivingStatus InstructorDrivingStatus { get; set; }
+        public DrivingStatus? InstructorDrivingStatus { get; set; }
 
-        public List<string> InstructorTeachingTraits { get; set; }
+        public List<string>? InstructorTeachingTraits { get; set; }
 
-        public List<string> InstructorDrivingGoals { get; set; }
+        public List<string>? InstructorDrivingGoals { get; set; }
 
-        public List<string> InstructorTeachingType { get; set; }
+        public List<string>? InstructorTeachingType { get; set; }
 
-        public List<string> InstructorAvailableDaysOf { get; set; }
+        public List<string>? InstructorAvailableDaysOf { get; set; }
 
-        public List<string> InstructorTimeOfDay { get; set; }
+        public List<string>? InstructorTimeOfDay { get; set; }
 
-        public int[] InstructorLessonDuration { get; set; }
+        public int[]? InstructorLessonDuration { get; set; }
 
-        public decimal InstructorLessonAverage { get; set; }               
+        public decimal? InstructorLessonAverage { get; set; }               
 
         //navigational property
         public virtual ICollection<Review>? Reviews { get; set; }

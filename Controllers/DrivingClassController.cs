@@ -185,14 +185,14 @@ namespace DrivePal.Controllers
 
             // GET: DrivingClasses/Delete/5
             [Authorize(Roles = "Instructor")]
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Manage(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var drivingClass = await _context.DrivingClasses
+            var drivingClass = await _context.DrivingClasses.Include(d=>d.Learner)
                 .FirstOrDefaultAsync(m => m.DrivingClassId == id);
             if (drivingClass == null)
             {

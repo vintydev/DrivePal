@@ -20,8 +20,9 @@
                 },
                 editable: true,
                 eventClick: function (info) {
-                    // Simple alert to show event title and description
-                    alert('Event: ' + info.event.title + '\nDescription: ' + (info.event.extendedProps.description || 'No description'));
+                    var drivingClassId = info.event.id;
+                    var url = `/DrivingClass/Manage/${drivingClassId}`;
+                    window.location.href = url;
                 },
                 firstDay:1
             });

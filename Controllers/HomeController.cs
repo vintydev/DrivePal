@@ -225,7 +225,7 @@ namespace DrivePal.Controllers
         {
             return View();
         }
-
+        [Authorize]
         public IActionResult Resources()
         {
             return View();
