@@ -225,7 +225,7 @@ namespace DrivePal.Controllers
         {
             return View();
         }
-
+        [Authorize]
         public IActionResult Resources()
         {
             return View();
@@ -319,6 +319,10 @@ namespace DrivePal.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public IActionResult Calendar()
+        {
+            return View();
         }
     }
 }

@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8' />
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.css' rel="stylesheet" />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.js'></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl2 = document.getElementById('calendar2'); // Changed to 'calendar2'
+            var calendar2 = new FullCalendar.Calendar(calendarEl2, { // Changed variable to 'calendar2' for clarity
+                initialView: 'dayGridMonth',
+                events: @Html.Raw(ViewData["Bookings"]),
+            });
+
+            calendar2.render(); // Changed to 'calendar2'
+        });
+    </script>
+</head>
+<body>
+    <div id='calendar2'></div> <!-- Changed ID to 'calendar2' -->
+</body>
+</html>

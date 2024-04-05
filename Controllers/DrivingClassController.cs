@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using DrivePal.Helpers;
 
 namespace DrivePal.Controllers
 {
@@ -35,6 +36,38 @@ namespace DrivePal.Controllers
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
+        [Authorize]
+        public IActionResult Calendar()
+        {
+            var user = GetUserId();
+            var drivingClasses = _context.DrivingClasses
+                                        .Include(i => i.Instructor)
+                                        .Include(d => d.Learner) // Include the Learner navigation property
+                                        .Where(d => d.Instructor.Id == user ).ToList();
+
+          
+            
+            ViewData["Lessons"] = JSONListHelper.GetDrivingClassListJSONString(drivingClasses);
+            return View();
+        
+        }
+
+        public IActionResult Availability(string id) // shows an instructors available lessons
+        {
+            
+            var drivingClasses = _context.DrivingClasses
+                                        .Include(i => i.Instructor)
+                                        .Include(d => d.Learner) 
+                                        .Where(d => d.Instructor.Id == id && d.IsReserved == false).ToList();
+
+
+
+            ViewData["Lessons"] = JSONListHelper.GetDrivingClassListJSONString(drivingClasses);
+            return View();
+
+        }
+
+
 
         public async Task<IActionResult> OwnDrivingClasses()
         {
@@ -90,19 +123,76 @@ namespace DrivePal.Controllers
             }
             return View(drivingClass);
         }
+        public IActionResult GenerateLessons()
+        {
+            return View();
+        }
+        [HttpPost]
+
+        [HttpPost]
+        public async Task<IActionResult> GenerateLessons(string[] workingDays, string startTime, string endTime, decimal price, int weeks)
+        {
+            var instructorId = GetUserId();
+            var startTimeSpan = TimeSpan.Parse(startTime);
+            var endTimeSpan = TimeSpan.Parse(endTime);
+
+            // Validate weeks parameter to ensure it's within 1 to 4
+            weeks = Math.Max(1, Math.Min(weeks, 4));
+
+            List<DrivingClass> lessons = new List<DrivingClass>();
+
+            foreach (var day in workingDays)
+            {
+                for (int week = 0; week < weeks; week++)
+                {
+                    var currentDate = DateTime.Today.AddDays(7 * week);
+                    // Find the next date that matches the day of the week
+                    while (currentDate.DayOfWeek.ToString() != day) // uses .net day of the week property to match the strings of days
+                    {
+                        currentDate = currentDate.AddDays(1);
+                    }
+
+                    var lessonStartTime = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, startTimeSpan.Hours, startTimeSpan.Minutes, 0);
+                    var lessonEndTime = lessonStartTime.AddHours(1);
+
+                    while (lessonEndTime.TimeOfDay <= endTimeSpan)
+                    {
+                        lessons.Add(new DrivingClass
+                        {
+                            DrivingClassStart = lessonStartTime,
+                            DrivingClassEnd = lessonEndTime,
+                            Price = price,
+                            IsReserved = false,
+                            InstructorId = instructorId
+
+                        });
+
+                        // Move to the next slot
+                        lessonStartTime = lessonEndTime;
+                        lessonEndTime = lessonStartTime.AddHours(1);
+                    }
+                }
+            }
+
+            
+            _context.AddRange(lessons);
+            await _context.SaveChangesAsync();
+
+           
+            return RedirectToAction("Calendar"); 
+        }
 
 
-
-        // GET: DrivingClasses/Delete/5
-        [Authorize(Roles = "Instructor")]
-        public async Task<IActionResult> Delete(int? id)
+            // GET: DrivingClasses/Delete/5
+            [Authorize(Roles = "Instructor")]
+        public async Task<IActionResult> Manage(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var drivingClass = await _context.DrivingClasses
+            var drivingClass = await _context.DrivingClasses.Include(d=>d.Learner)
                 .FirstOrDefaultAsync(m => m.DrivingClassId == id);
             if (drivingClass == null)
             {

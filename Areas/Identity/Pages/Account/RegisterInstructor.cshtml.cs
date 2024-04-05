@@ -266,10 +266,11 @@ namespace DrivePal.Areas.Identity.Pages.Account
                 instructor.DOB = Input.DOB;
                 instructor.LicenceNumber = Input.LicenceNumber;
                 instructor.isBlocked = false;
-                instructor.isApproved = true;
+                instructor.isApproved = false;
                 instructor.TotalRating = 0;
                 instructor.Email = Input.Email;
                 instructor.PhoneNumber = Input.PhoneNumber;
+               
 
                 return instructor;
             }
