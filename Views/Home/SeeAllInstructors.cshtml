@@ -52,9 +52,10 @@
                         <th>Name</th>
                         <th>Photo</th>
                         <th>Experience</th>
-                        <th>Post Code</th>
+                        <th>Postcode</th>
                         <th>Rating</th>
                         <th>Contact</th>
+                        <th>Lessons</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,7 +63,7 @@
                     {
                         <tr>
                             <td>@instructor.FirstName @instructor.LastName</td>
-                            <td>[Not yet implemented]</td>
+                            <td>@instructor.ProfilePicture</td>
                             <td>[Not yet implemented]</td>
                             <td>@instructor.PostCode</td>
                             <td>
@@ -107,10 +108,13 @@
                             <td>
                                 @if (User.Identity.IsAuthenticated && User.IsInRole("Learner"))
                                 {
-                                    <a href="@Url.Action("Create", "Reviews", new { id = instructor.Id })" class="button">Write a Review</a>
-                                    <a href="@Url.Action("ViewReviews", "Reviews", new { id = instructor.Id })" class="button">View all Reviews</a>
-                                    <a class="btn btn-primary" asp-controller="DrivingClass" asp-action="ShowClassesForThisInstructor" asp-route-instructorId="@instructor.Id">See Classes for This Instructor</a>
-                                    <a class="btn btn-primary" asp-controller="Chat" asp-action="Index" asp-route-id="@instructor.Id">Chat</a>
+                                    <a class="button" asp-controller="Chat" asp-action="Index" asp-route-id="@instructor.Id">Chat</a>
+                                }
+                            </td>
+                            <td>
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Learner"))
+                                {
+                                    <a class="button" asp-controller="DrivingClass" asp-action="ShowClassesForThisInstructor" asp-route-instructorId="@instructor.Id">View Lessons</a>
                                 }
                             </td>
                         </tr>
