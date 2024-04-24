@@ -1,13 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using DrivePal.Data
-@using DrivePal.Models;
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Microsoft.EntityFrameworkCore
-@using System.Web.Http.ModelBinding
-@{
-
-}
-<html lang="en">
+﻿<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,7 +13,7 @@
             <div class="row">
                 <!-- This row will contain all the info boxes -->
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <section class="info-box">
                         <div class="box-content">
                             <h2>Welcome to DrivePal</h2>
@@ -31,13 +22,13 @@
                             <br />
                             <br />
                             <br />
-                            
+
                             <img src="/img/wheel.png" width="100" alt="Wheel Image">
                         </div>
                     </section>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <section class="info-box">
                         <div class="box-content">
                             <h2>Comprehensive Test Preparation</h2>
@@ -63,7 +54,7 @@
                     </section>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <section class="info-box">
                         <div class="box-content">
                             <h2>Buying and Insuring Your First Car</h2>
@@ -71,7 +62,7 @@
                             <br />
                             <br />
                             <br />
-                            
+
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <a href="/Home/Resources">
@@ -88,7 +79,7 @@
                     </section>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <section class="info-box">
                         <div class="box-content">
                             <h2>Track Your Progress</h2>
@@ -114,7 +105,7 @@
                     </section>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <section class="info-box">
                         <div class="box-content">
                             <h2>View our Instructors</h2>
@@ -126,16 +117,23 @@
                             <br />
                             <br />
                             <br />
-                            
+                            @if (User.Identity.IsAuthenticated)
+                            {
                                 <a href="/Home/SeeAllInstructors">
                                     <img src="/img/instructorbox.png" width="100" alt="Instructor Image">
                                 </a>
-                            
+                            }
+                            else
+                            {
+                                <a href="/Identity/Account/Login?returnUrl=/Home/SeeAllInstructors">
+                                    <img src="/img/instructorbox.png" width="100" alt="Instructor Image">
+                                </a>
+                            }
                         </div>
                     </section>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <section class="info-box">
                         <div class="box-content">
                             <h2>Submit Questionnaire</h2>
@@ -167,39 +165,3 @@
     </script>
 </body>
 </html>
-
-<style>
-    .info-box .box-content h2 {
-        margin-top: 0;
-        margin-bottom: 10px; /* Adjust or reduce as necessary */
-    }
-
-    .info-box .box-content p {
-        margin-top: 0;
-        margin-bottom: 10px; /* Adjust or reduce as necessary */
-    }
-
-    .info-box .box-content {
-        padding: 15px; /* Adjust padding around the content inside each box */
-    }
-
-    .info-box .box-content {
-        line-height: 1.5; /* Adjust this value as needed */
-    }
-
-    .info-box .box-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Centers content horizontally */
-        justify-content: center; /* Adjust vertical alignment */
-        text-align: left;
-        
-    }
-
-    .info-box img {
-        width: 100px; /* or another appropriate size */
-        height: auto;
-        display: block;
-        margin: 0 auto 10px; /* Centers the image and adds space below */
-</style>
-
