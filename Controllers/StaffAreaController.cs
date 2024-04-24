@@ -20,6 +20,7 @@ using DrivePal.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DrivePal.Extensions;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace DrivePal.Controllers
 {
@@ -81,6 +82,18 @@ namespace DrivePal.Controllers
             ViewBag.Count = count;
 
             return View(reports);
+        }
+        public ActionResult ReportDetails(int id)
+        {
+
+
+            var report = _context.Reports.Include(r=>r.Review).Where(r => r.ReportId == id).FirstOrDefault();
+
+
+
+           
+
+            return View(report);
         }
 
         // GET: StaffAreaController/Create
