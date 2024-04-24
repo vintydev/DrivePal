@@ -43,7 +43,7 @@ namespace DrivePal.Controllers
             ViewBag.Name=instructor.FirstName+" "+instructor.LastName;
 
             var reviews = _context.Reviews
-            .Where(r => r.InstructorId == id)
+            .Where(r => r.InstructorId == id&& r.isFlagged==false)
             .Include(r => r.Learner)
             .Include(r => r.Instructor)
             .ToList();
@@ -200,7 +200,7 @@ namespace DrivePal.Controllers
 
         private decimal GetTotalInstructorRating(string id, decimal rating) // Gets total rating of Instructor
         {
-            var reviews =  _context.Reviews.Include(r => r.Instructor).Where(m => m.InstructorId == id).ToList(); //Gets all the reviews of instructor and adds to a list.
+            var reviews =  _context.Reviews.Include(r => r.Instructor).Where(m => m.InstructorId == id&& m.isFlagged==false).ToList(); //Gets all the reviews of instructor and adds to a list.
 
             decimal totalRating =0;
 

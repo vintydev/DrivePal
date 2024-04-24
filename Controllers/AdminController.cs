@@ -22,6 +22,7 @@ using DrivePal.Extensions;
 
 namespace DrivePal.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     { 
         //Global variables

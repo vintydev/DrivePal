@@ -51,5 +51,5 @@
     </div>
 </div>
 </div>
-<a asp-action="ReportDetails" asp-route-ReviewId="@Model.Review.ReviewId" asp-route-ReportId="@Model.ReportId" class="btn btn-danger">Details</a> |
-<a asp-action="ReportDetails" asp-route-id="" class="btn btn-danger">Details</a> |
+<a asp-action="FlagReview" asp-route-reviewId="@Model.Review.ReviewId" asp-route-reportId="@Model.ReportId" class="btn btn-danger">Flag Review</a> 
+<a asp-action="DismissReport" asp-route-id="@Model.ReportId" class="btn btn-primary">Dismiss Report</a> 

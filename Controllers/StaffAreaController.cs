@@ -24,6 +24,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DrivePal.Controllers
 {
+    [Authorize(Roles = "Staff,Admin")]
     public class StaffAreaController : Controller
     {
         //Global variables
@@ -87,7 +88,7 @@ namespace DrivePal.Controllers
         {
 
 
-            var report = _context.Reports.Include(r=>r.Review).Where(r => r.ReportId == id).FirstOrDefault();
+            var report = _context.Reports.Include(r=>r.Review).Include(r=>r.Instructor).Where(r => r.ReportId == id).FirstOrDefault();
 
 
 
@@ -95,6 +96,50 @@ namespace DrivePal.Controllers
 
             return View(report);
         }
+
+        public ActionResult FlagReview(int reviewId, int reportId)
+        {
+
+
+            var report = _context.Reports.Include(r => r.Review).Where(r => r.ReportId == reportId).FirstOrDefault();
+            var review = _context.Reviews.Where(r => r.ReviewId == reviewId).FirstOrDefault();
+            var instructor=_context.Instructors.Where(r=>r.Id==review.InstructorId).FirstOrDefault();
+           
+            review.isFlagged = true;
+            report.isProccessed=true;
+            _context.Update(review);
+            _context.Update(report);
+            
+            _context.SaveChanges();
+            var newRating = UpdateInstructorRatingAfterReviewRemoval(instructor.Id);
+
+            instructor.TotalRating = newRating;
+            _context.Update(instructor);
+            _context.SaveChanges();
+
+
+
+            return RedirectToAction("ViewReviews");
+        }
+        public ActionResult DismissReport(int id)
+        {
+
+
+            var report = _context.Reports.Include(r => r.Review).Where(r => r.ReportId == id).FirstOrDefault();
+            
+
+           
+            report.isProccessed = true;
+          
+            _context.Update(report);
+            _context.SaveChanges();
+
+
+
+            return RedirectToAction("ViewReviews");
+        }
+
+
 
         // GET: StaffAreaController/Create
         [HttpGet]
@@ -217,6 +262,26 @@ namespace DrivePal.Controllers
             {
                 return View();
             }
+        }
+        private decimal UpdateInstructorRatingAfterReviewRemoval(string instructorId)
+        {
+            var validReviews = _context.Reviews
+                                       .Where(r => r.InstructorId == instructorId && !r.isFlagged)
+                                       .ToList(); // Gets all unflagged reviews of the instructor.
+
+            decimal totalRating = 0;
+            foreach (var review in validReviews) // Loops through each valid review adding ratings together
+            {
+                totalRating += review.Rating;
+            }
+
+            decimal updatedAverageRating = 0;
+            if (validReviews.Any()) // Check if there are any valid reviews left
+            {
+                updatedAverageRating = totalRating / validReviews.Count; // Calculates the new average rating
+            }
+
+            return updatedAverageRating; // If no reviews left, average rating remains 0
         }
     }
 }

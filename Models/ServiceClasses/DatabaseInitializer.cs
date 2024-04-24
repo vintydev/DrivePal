@@ -515,8 +515,10 @@ namespace DrivePal.Models.ServiceClasses
             }
 
             var instructor2 = context.Instructors.Where(r => r.Email == "instructor2@example.com").FirstOrDefault();
+            var learner= context.Learners.Where(r => r.Email == "learner@example.com").FirstOrDefault();
 
-            int numberOfLessons = 5; 
+            int numberOfLessons = 5;
+       
 
           
             for (int i = 0; i < numberOfLessons; i++)
