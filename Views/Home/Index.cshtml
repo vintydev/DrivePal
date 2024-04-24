@@ -22,31 +22,27 @@
             <div class="row">
                 <!-- This row will contain all the info boxes -->
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <section class="info-box">
                         <div class="box-content">
                             <h2>Welcome to DrivePal</h2>
                             <p>DrivePal is your ultimate destination for connecting with experienced driving instructors to kickstart your journey towards becoming a skilled and confident driver.</p>
                             <br />
-                            <br />
-                            <br />
-                            <br />
+                          
                             
                             <img src="/img/wheel.png" width="100" alt="Wheel Image">
                         </div>
                     </section>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <section class="info-box">
                         <div class="box-content">
                             <h2>Comprehensive Test Preparation</h2>
                             <p>DrivePal offers a comprehensive range of resources to help you prepare for your driving tests, including theory and practical exam resources.</p>
                             <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
+                           
+                           
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <a href="/Home/Resources">
@@ -62,15 +58,13 @@
                         </div>
                     </section>
                 </div>
-
-                <div class="col-md-2">
+                <br />
+                <div class="col-md-4">
                     <section class="info-box">
                         <div class="box-content">
                             <h2>Buying and Insuring Your First Car</h2>
                             <p>Looking to buy your first car? DrivePal provides valuable information and tips about buying and insuring your first car, empowering you to make informed decisions.</p>
-                            <br />
-                            <br />
-                            <br />
+                           
                             
                             @if (User.Identity.IsAuthenticated)
                             {
@@ -87,17 +81,16 @@
                         </div>
                     </section>
                 </div>
+                <br />
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <section class="info-box">
                         <div class="box-content">
                             <h2>Track Your Progress</h2>
                             <p>Track your driving progress and view your improvement over time with DrivePal's intuitive progress tracking feature, available to all users.</p>
                             <br />
                             <br />
-                            <br />
-                            <br />
-                            <br />
+                          
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <a href="#" onclick="showPopup()">
@@ -114,7 +107,7 @@
                     </section>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <section class="info-box">
                         <div class="box-content">
                             <h2>View our Instructors</h2>
@@ -122,10 +115,7 @@
                             <br />
                             <br />
                             <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
+                        
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <a href="/Home/SeeAllInstructors">
@@ -142,7 +132,7 @@
                     </section>
                 </div>
 
-                <div class="col-md-2">
+                <div class="col-md-4">
                     <section class="info-box">
                         <div class="box-content">
                             <h2>Submit Questionnaire</h2>
@@ -176,6 +166,11 @@
 </html>
 
 <style>
+    .info-box {
+        padding-top: 50px; /* Adjust the value as needed */
+        padding-bottom: 50px; /* Adjust the value as needed */
+        margin: 30px;
+    }
     .info-box .box-content h2 {
         margin-top: 0;
         margin-bottom: 10px; /* Adjust or reduce as necessary */
