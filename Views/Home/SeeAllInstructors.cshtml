@@ -54,8 +54,16 @@
                         <th>Experience</th>
                         <th>Postcode</th>
                         <th>Rating</th>
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Learner"))
+                        {
                         <th>Contact</th>
                         <th>Lessons</th>
+                       
+                          <th>
+
+                          </th>
+                          <th></th>
+                        }
                     </tr>
                 </thead>
                 <tbody>

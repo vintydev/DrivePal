@@ -78,7 +78,7 @@ namespace DrivePal.Controllers
             
            
             var count = _context.Reports.Where(r => r.isProccessed.Equals(false)).Count();
-            ViewBag.Reviews = count;
+            ViewBag.Count = count;
 
             return View(reports);
         }
