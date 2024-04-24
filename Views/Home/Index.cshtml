@@ -126,18 +126,11 @@
                             <br />
                             <br />
                             <br />
-                            @if (User.Identity.IsAuthenticated)
-                            {
+                            
                                 <a href="/Home/SeeAllInstructors">
                                     <img src="/img/instructorbox.png" width="100" alt="Instructor Image">
                                 </a>
-                            }
-                            else
-                            {
-                                <a href="/Identity/Account/Login?returnUrl=/Home/SeeAllInstructors">
-                                    <img src="/img/instructorbox.png" width="100" alt="Instructor Image">
-                                </a>
-                            }
+                            
                         </div>
                     </section>
                 </div>
