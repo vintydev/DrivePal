@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Select the radius slider element
     const radiusSlider = document.getElementById("radiusSlider");
     // Set the initial value of the slider
-    radiusSlider.value = "11"; // Set the default value to 11
+    radiusSlider.value = "10"; // Set the default value to 11
 
     // Select the radius value span element
     const radiusValue = document.getElementById("radiusValue");
@@ -71,7 +71,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         });
     }
-
 
     function initializeMapWithDefaultLocation() {
         // Initialize the map with default location (Glasgow)
