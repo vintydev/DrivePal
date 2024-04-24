@@ -117,6 +117,14 @@
                                     <a class="button" asp-controller="DrivingClass" asp-action="ShowClassesForThisInstructor" asp-route-instructorId="@instructor.Id">View Lessons</a>
                                 }
                             </td>
+                            <td>
+                                @if (User.Identity.IsAuthenticated && User.IsInRole("Learner"))
+                                {
+                                    <a class="button" asp-controller="Reviews" asp-action="Create" asp-route-id="@instructor.Id">Write a Review</a>
+                                    <a class="button" asp-controller="Reviews" asp-action="ViewReviews" asp-route-id="@instructor.Id">View All Reviews</a>
+
+                                }
+                            </td>
                         </tr>
                     }
                 </tbody>

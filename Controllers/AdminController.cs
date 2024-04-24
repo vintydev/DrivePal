@@ -55,6 +55,21 @@ namespace DrivePal.Controllers
             var drivePalDbContext = _context.Staffs;
             return View( drivePalDbContext.ToList());
         }
+        public async Task<IActionResult> Learners()
+        {
+            var drivePalDbContext = _context.Learners;
+            return View(drivePalDbContext.ToList());
+        }
+        public async Task<IActionResult> Instructors()
+        {
+            var drivePalDbContext = _context.Instructors;
+            return View(drivePalDbContext.ToList());
+        }
+        public async Task<IActionResult> Bookings()
+        {
+            var drivePalDbContext = _context.Bookings;
+            return View(drivePalDbContext.ToList());
+        }
 
 
         public IActionResult RegisterStaff()

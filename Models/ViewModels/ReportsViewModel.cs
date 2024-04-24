@@ -1,16 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.Extensions.Hosting;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DrivePal.Models
+namespace DrivePal.Models.ViewModels
 {
-    public class Review
+    public class ReportsViewModel
     {
-        [Key]
-        //Product Properties
-        public int ReviewId { get; set; }
-
-     
-        [Required]
         [Display(Name = "Your Rating")]
         [Column(TypeName = "decimal(18,2)")]
         [Range(typeof(decimal), "0", "5.00")]
@@ -19,10 +14,16 @@ namespace DrivePal.Models
         [DataType(DataType.MultilineText)]
         [Display(Name = "Leave your review here")]
         public string? ReviewMessage { get; set; }
-    
+
         public DateTime? DateCreated { get; set; }
 
-        public bool isFlagged { get; set; }
+        [Required]
+        [DataType(DataType.MultilineText)]
+    
+        public string? ReportMessage { get; set; }
+        [Required]
+        public string ReportReason { get; set; }
+
 
 
 
@@ -32,12 +33,21 @@ namespace DrivePal.Models
 
         public virtual Instructor? Instructor { get; set; }
 
-        
+
         public string LearnerId { get; set; }
 
         public virtual Learner? Learner { get; set; }
 
-        //public virtual ICollection<Report?> Reports { get; set; }
+  
+
+       //navigation propertties
+        public int ReviewId { get; set; }
+        public Review Review { get; set; }
+
+       
+        public string ReporterId { get; set; }
+       
 
     }
 }
+  

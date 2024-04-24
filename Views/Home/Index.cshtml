@@ -7,148 +7,127 @@
 @{
 
 }
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/css/style.css" rel="stylesheet" asp-append-version="true" />
 </head>
-<p style="text-align:center">Click the image inside each info box to navigate!</p>
 <body>
-
-    <main class="main-container">
-        <div class="container">
-            <section class="info-box">
-                <div class="box-content">
-                    <h2>Welcome to DrivePal</h2>
-                    <p>DrivePal is your ultimate destination for connecting with experienced driving instructors to kickstart your journey towards becoming a skilled and confident driver.</p>
-                    <img src="/img/wheel.png" width="100" alt="Wheel Image">
-                </div>
-            </section>
-
-            <section class="info-box">
-                <div class="box-content">
-                    <h2>Comprehensive Test Preparation</h2>
-                    <p>DrivePal offers a comprehensive range of resources to help you prepare for your driving tests, including theory and practical exam resources.</p>
-
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <!-- If user is authenticated, direct them to the resources page -->
-                        <a href="/Home/Resources">
-                            <img src="/img/test.png" width="100" alt="Preparation Image">
-                        </a>
-                    }
-                    else
-                    {
-                        <!-- If user is not authenticated, direct them to login/signup page -->
-                        <a href="/Identity/Account/Login?returnUrl=/Home/Resources">
-                            <img src="/img/test.png" width="100" alt="Preparation Image">
-                        </a>
-                    }
-                </div>
-            </section>
-
-            <section class="info-box">
-                <div class="box-content">
-                    <h2>Buying and Insuring Your First Car</h2>
-                    <p>Looking to buy your first car? DrivePal provides valuable information and tips about buying and insuring your first car, empowering you to make informed decisions.</p>
-
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <!-- If user is authenticated, direct them to the resources page -->
-                        <a href="/Home/Resources">
-                            <img src="/img/keys.png" width="100" alt="Buying Image">
-                        </a>
-                    }
-                    else
-                    {
-                        <!-- If user is not authenticated, direct them to login/signup page -->
-                        <a href="/Identity/Account/Login?returnUrl=/Home/Resources">
-                            <img src="/img/keys.png" width="100" alt="Buying Image">
-                        </a>
-                    }
-                </div>
-            </section>
-
-            <section class="info-box">
-                <div class="box-content">
-                    <h2>Track Your Progress</h2>
-                    <p>Track your driving progress and view your improvement over time with DrivePal's intuitive progress tracking feature, available to all users.</p>
-
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <!-- If user is authenticated, display a message on image click -->
-                        <a href="#" onclick="showPopup()">
-                            <img src="/img/progress.png" width="100" alt="Progress Image">
-                        </a>
-                    }
-                    else
-                    {
-                        <!-- If user is not authenticated, direct them to login/signup page -->
-                        <a href="/Identity/Account/Login">
-                            <img src="/img/progress.png" width="100" alt="Progress Image">
-                        </a>
-                    }
-                </div>
-            </section>
-
-            <script>
-                function showPopup() {
-                    alert("Not yet implemented");
-                }
-            </script>
-
-
-            <section class="info-box">
-                <div class="box-content">
-                    <h2>View our Instructors</h2>
-                    <p>Use our map to view and contact all of the instructors in your area. Tweak the map to suit your preferences.</p>
-
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <!-- If user is authenticated, direct them to the instructors page -->
-                        <a href="/Home/SeeAllInstructors">
-                            <img src="/img/instructorbox.png" width="100" alt="Instructor Image">
-                        </a>
-                    }
-                    else
-                    {
-                        <!-- If user is not authenticated, direct them to login/signup page -->
-                        <a href="/Identity/Account/Login?returnUrl=/Home/SeeAllInstructors">
-                            <img src="/img/instructorbox.png" width="100" alt="Instructor Image">
-                        </a>
-                    }
-                </div>
-            </section>
-            
-            <section class="info-box">
-                <div class="box-content">
-                    <h2>Submit Questionnaire</h2>
-                    <p>Our industry-leading questionnaire matches learners with instructors who meet their specific needs and preferences, ensuring personalised instruction tailored to your learning style.</p>
-
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <!-- If user is authenticated, direct them to the questionnaire -->
-                        <a href="/Home/QuestionnaireIndex">
-                            <img src="/img/questionnaire.png" width="100" alt="Questionnaire Image">
-                        </a>
-                    }
-                    else
-                    {
-                        <!-- If user is not authenticated, direct them to login/signup page -->
-                        <a href="/Identity/Account/Login?returnUrl=/Home/QuestionnaireIndex">
-                            <img src="/img/questionnaire.png" width="100" alt="Questionnaire Image">
-                        </a>
-                    }
-                </div>
-            </section>
-
-            
+    <p style="text-align:center">Click the image inside each info box to navigate!</p>
+    <main class="container">
+        <div class="row">
+        
+            <div class="col-sm-4 col-md-2">
+                <section class="info-box">
+                    <div class="box-content">
+                        <h2>Welcome to DrivePal</h2>
+                        <p>DrivePal is your ultimate destination for connecting with experienced driving instructors...</p>
+                        <br />
+                        <img src="/img/wheel.png" width="100" alt="Wheel Image">
+                    </div>
+                </section>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <section class="info-box">
+                    <div class="box-content">
+                        <h2>Test Preparation</h2>
+                        <p>DrivePal offers comprehensive resources to help you prepare for your driving tests...</p>
+                        <br />
+                        <br />
+                        <img src="/img/test.png" width="100" alt="Preparation Image">
+                    </div>
+                </section>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <section class="info-box">
+                    <div class="box-content">
+                        <h2>First Car</h2>
+                        <p>Looking to buy your first car? DrivePal provides valuable information and tips...</p>
+                        <br />
+                        <br />
                         
-            
+                        
+                        <img src="/img/keys.png" width="100" alt="Buying Image">
+                    </div>
+                </section>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <section class="info-box">
+                    <div class="box-content">
+                        <h2>Track Progress</h2>
+                        <p>Track your driving progress and view your improvement over time with DrivePal...</p>
+                        <br />
+                        <br />
+                        
+                        
+                        <img src="/img/progress.png" width="100" alt="Progress Image">
+                    </div>
+                </section>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <section class="info-box">
+                    <div class="box-content">
+                        <h2>Instructors</h2>
+                        <p>Use our map to view and contact all of the instructors in your area...</p>
+                        <br />
+                        <br />
+                        <br />
+                        
+                        
+                        <img src="/img/instructorbox.png" width="100" alt="Instructor Image">
+                    </div>
+                </section>
+            </div>
+            <div class="col-sm-4 col-md-2">
+                <section class="info-box">
+                    <div class="box-content">
+                        <h2>Questionnaire</h2>
+                        <p>Our industry-leading questionnaire matches learners with instructors...</p>
+                        <br />
+                        <br />
+                        <img src="/img/questionnaire.png" width="100" alt="Questionnaire Image">
+                    </div>
+                </section>
+            </div>
         </div>
-
     </main>
-
 </body>
+</html>
+<style>
+    .info-box .box-content h2 {
+        margin-top: 0;
+        margin-bottom: 10px; /* Adjust or reduce as necessary */
+    }
+
+    .info-box .box-content p {
+        margin-top: 0;
+        margin-bottom: 10px; /* Adjust or reduce as necessary */
+    }
+
+    .info-box .box-content {
+        padding: 15px; /* Adjust padding around the content inside each box */
+    }
+
+    .info-box .box-content {
+        line-height: 1.5; /* Adjust this value as needed */
+    }
+
+    .info-box .box-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Centers content horizontally */
+        justify-content: center; /* Adjust vertical alignment */
+        text-align: left;
+        
+    }
+
+    .info-box img {
+        width: 100px; /* or another appropriate size */
+        height: auto;
+        display: block;
+        margin: 0 auto 10px; /* Centers the image and adds space below */
+</style>
 

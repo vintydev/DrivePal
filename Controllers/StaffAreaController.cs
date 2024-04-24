@@ -50,8 +50,10 @@ namespace DrivePal.Controllers
         {
             var drivePalDbContext = _context.Instructors.Where(r=>r.isApproved.Equals(false)).ToList();
             var count= drivePalDbContext.Count();
+            var reportCount = _context.Reports.Where(r => r.isProccessed.Equals(false)).Count();
             ViewBag.Count=count;
-          
+            ViewBag.ReportCount = reportCount;
+            
 
             return View(drivePalDbContext.ToList());
         }
@@ -69,11 +71,16 @@ namespace DrivePal.Controllers
         // GET: StaffAreaController/Details/5
         public ActionResult ViewReviews()
         {
-            var reviews = _context.Reviews.Where(r => r.isFlagged.Equals(true)).ToList();
-            var count = _context.Reviews.Where(r => r.isFlagged.Equals(true)).Count();
+          
+            
+             var reports = _context.Reports.Where(r => r.isProccessed == false).ToList();
+           
+            
+           
+            var count = _context.Reports.Where(r => r.isProccessed.Equals(false)).Count();
             ViewBag.Reviews = count;
 
-            return View(reviews.ToList());
+            return View(reports);
         }
 
         // GET: StaffAreaController/Create
