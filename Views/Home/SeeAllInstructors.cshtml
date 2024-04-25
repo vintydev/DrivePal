@@ -44,7 +44,7 @@
         </div>
 
         <section>
-            <h2>Instructors</h2>
+            <h4>Instructors</h2>
 
             <table>
                 <thead>
@@ -54,10 +54,12 @@
                         <th>Experience</th>
                         <th>Postcode</th>
                         <th>Rating</th>
+                        <th>Average Price</th>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Learner"))
                         {
                         <th>Contact</th>
                         <th>Lessons</th>
+                       
                        
                           <th>
 
@@ -114,6 +116,7 @@
                                     <span>No reviews left yet!</span>
                                 }
                             </td>
+                             <td>£@instructor.AveragePrice</td>
                             <td>
                                 @if (User.Identity.IsAuthenticated && User.IsInRole("Learner"))
                                 {
@@ -123,7 +126,7 @@
                             <td>
                                 @if (User.Identity.IsAuthenticated && User.IsInRole("Learner"))
                                 {
-                                    <a class="button" asp-controller="DrivingClass" asp-action="Availability" asp-route-id="@instructor.Id">View Available Lessons</a>
+                                    <a class="button" asp-controller="DrivingClass" asp-action="Availability" asp-route-id="@instructor.Id">View</a>
                                 }
                             </td>
                             <td>
@@ -139,7 +142,10 @@
                 </tbody>
             </table>
         </section>
-
+ @if (Model.Count == 0)
+        {
+            <p class="text-danger" style="text-align: center" >Error: No instructors found matching that criteria. Please try again.</p>
+        }
     </main>
 </body>
 
