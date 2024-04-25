@@ -1,14 +1,14 @@
 ﻿@model DrivePal.Models.ViewModels.LearnerBookingsViewModel
 
 @{
-    ViewData["Title"] = "Booked Classes";
+    ViewData["Title"] = "Booked Lessons";
 }
 
 @{
-    ViewData["Title"] = "Your Booked Classes";
+    ViewData["Title"] = "Your Booked Lessons";
 }
 
-<h2>Your Booked Classes</h2>
+<h3>Your Booked Lessons</h3>
 
 @if (Model.Bookings.Any())
 {
@@ -18,8 +18,8 @@
                 <th>Booking ID</th>
                 <th>Booking Date</th>
                 <th>Price</th>
-                <th>Class Start</th>
-                <th>Class End</th>
+                <th>Lesson Start</th>
+                <th>Lesson End</th>
                 <th>Learner</th>
             </tr>
         </thead>
@@ -40,5 +40,5 @@
 }
 else
 {
-    <p>You have no booked classes.</p>
+    <p>You have no booked lessons.</p>
 }

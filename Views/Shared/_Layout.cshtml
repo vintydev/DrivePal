@@ -23,15 +23,15 @@
                 {
                     if (User.IsInRole("Learner"))
                     {
-                        <li><a href="/Booking/MyBookings">See your booked classes</a></li>
-                        <li><a href="/DrivingClass/Index">See all classes</a></li>
+                        <li><a href="/Booking/MyBookings">See your booked lessons</a></li>
+                        <li><a href="/DrivingClass/Index">See all lessons</a></li>
                         <li><a href="/Chat/Chats">Inbox</a></li>
 
                     }
                     if (User.IsInRole("Instructor"))
                     {
-                        <li><a href="/DrivingClass/Calendar">Manage Classes</a></li>
-                        <li><a href="/Booking/ShowBookedClasses">Booked Classes</a></li>
+                        <li><a href="/DrivingClass/Calendar">Manage Lessons</a></li>
+                        <li><a href="/Booking/ShowBookedClasses">Booked Lessons</a></li>
                         <li><a href="/Chat/Chats">Inbox</a></li>
                     }
                     if (User.IsInRole("Admin"))

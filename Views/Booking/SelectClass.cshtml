@@ -6,7 +6,7 @@
 @model DrivePal.Models.DrivingClass
 
 @{
-    ViewData["Title"] = "Select Class";
+    ViewData["Title"] = "Select Lesson";
 }
 
 <h1>Confirm the Lesson</h1>
@@ -14,7 +14,7 @@
 
 
 <div>
-    <h2>Class Details</h2>
+    <h4>Lesson Details</h2>
     <div>Date/Time: @Model.DrivingClassStart - @Model.DrivingClassEnd</div>
     <div>Price: @Model.Price</div>
     <div>Instructor: @Model.Instructor.LastName</div>

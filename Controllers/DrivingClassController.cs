@@ -74,7 +74,7 @@ namespace DrivePal.Controllers
             // Assuming GetUserId() retrieves the current logged-in instructor's ID.
             string currentInstructorId = GetUserId();
 
-            // Now, filter the driving classes to include only those that match the instructor ID.
+            // Now, filter the driving Lessons to include only those that match the instructor ID.
             var drivingClasses = _context.DrivingClasses
                                         .Include(i => i.Instructor)
                                         .Include(d => d.Learner) // Include the Learner navigation property
