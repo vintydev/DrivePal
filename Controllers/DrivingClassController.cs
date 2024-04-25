@@ -136,6 +136,17 @@ namespace DrivePal.Controllers
             var startTimeSpan = TimeSpan.Parse(startTime);
             var endTimeSpan = TimeSpan.Parse(endTime);
 
+            var availDays = new List<string>();
+            
+            // Update days available for the instructor
+            foreach(var day in workingDays)
+            {
+                // add days
+                availDays.Add(day);
+                // For that instructor
+                _context.Instructors.FirstOrDefault(i => i.Id == instructorId)!.InstructorAvailableDaysOf = availDays;
+            }
+
             // Validate weeks parameter to ensure it's within 1 to 4
             weeks = Math.Max(1, Math.Min(weeks, 4));
 

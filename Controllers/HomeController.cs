@@ -209,7 +209,9 @@ namespace DrivePal.Controllers
                     FirstName = i.FirstName,
                     LastName = i.LastName,
                     PostCode = i.PostCode,
-                    TotalRating = i.TotalRating
+                    TotalRating = i.TotalRating,
+                    ProfilePicture= i.ProfilePicture,
+                   
                 })
                 .ToListAsync();
 
@@ -276,20 +278,23 @@ namespace DrivePal.Controllers
                 user.PostCode = updatedProfile.PostCode;
                 user.DOB = updatedProfile.DOB;
                 user.Gender = updatedProfile.Gender;
-                user.isBlocked = updatedProfile.isBlocked;
+             
 
-                if (updatedProfile is Learner updatedLearner)
+                if (user is Learner updatedLearner)
                 {
                     var learner = user as Learner;
                     learner.isExperienced = updatedLearner.isExperienced;
+                    await _userManager.UpdateAsync(learner);
                 }
-                else if (updatedProfile is Instructor updatedInstructor)
+                else if (user is Instructor updatedInstructor)
                 {
                     var instructor = user as Instructor;
                     instructor.isApproved = updatedInstructor.isApproved;
+                    instructor.LicenceNumber= updatedInstructor.LicenceNumber;
+                    await _userManager.UpdateAsync(instructor);
                 }
 
-                await _userManager.UpdateAsync(user);
+              
 
                 return RedirectToAction("Profile");
             }

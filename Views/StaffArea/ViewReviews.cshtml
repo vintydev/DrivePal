@@ -1,32 +1,25 @@
-﻿@model IEnumerable<DrivePal.Models.Review>
+﻿@model IEnumerable<DrivePal.Models.Report>
 
 @{
     ViewData["Title"] = "Reported Views";
 }
 
-<h1>ViewReviews</h1>
+<h1>Reported Reviews (@ViewBag.Count)</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Rating)
+            Report Reason
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReviewMessage)
+              Report Additional Information
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateCreated)
+              Date Created
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.isFlagged)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Instructor)
-            </th>
+         
             <th></th>
         </tr>
     </thead>
@@ -34,24 +27,19 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Rating)
+                @Html.DisplayFor(modelItem => item.ReportReason)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ReviewMessage)
+                @Html.DisplayFor(modelItem => item.ReportMessage)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateCreated)
             </td>
+         
             <td>
-                @Html.DisplayFor(modelItem => item.isFlagged)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Instructor.Email)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ReviewId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ReviewId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ReviewId">Delete</a>
+               
+                <a asp-action="ReportDetails" asp-route-id="@item.ReviewId" class="btn btn-danger">Details</a> |
+               
             </td>
         </tr>
 }

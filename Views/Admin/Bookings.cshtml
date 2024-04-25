@@ -1,0 +1,39 @@
+﻿@model IEnumerable<DrivePal.Models.Booking>
+@{
+
+}
+
+
+<h3>All Bookings</h3>
+
+<a class="btn btn-primary" asp-controller="Admin" asp-action="Index">Back to Menu</a>
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Booking Date</th>
+            <th>Learner</th>
+            <th>Instructor</th>
+
+
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var b in Model)
+        {
+            <tr>
+                <td>@b.BookingDate</td>
+                <td>@b.Learner.FirstName @b.Learner.LastName</td>
+                <td>@b.Instructor.FirstName @b.Instructor.LastName</td>
+                <td>@b.Price</td>
+                <td>
+                  
+                    <a class="btn btn-primary" asp-controller="Admin" asp-action="EditUser" asp-route-userId="@b.BookingId">View Booking Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -140,7 +140,7 @@ namespace DrivePal.Models.ServiceClasses
                     InstructorAvailableDaysOf = new List<string> { "Monday", "Wednesday", "Friday" },
                     InstructorTimeOfDay = new List<string> { "Morning", "Afternoon" },
                     InstructorLessonDuration = new int[] { 60 },
-                    InstructorLessonAverage = 60
+                    InstructorLessonAverage = 90
                 };
                 await userManager.CreateAsync(instructorUser2, "pass123");
                 await userManager.AddToRoleAsync(instructorUser2, "Instructor");
@@ -171,7 +171,7 @@ namespace DrivePal.Models.ServiceClasses
                     InstructorAvailableDaysOf = new List<string> { "Tuesday", "Thursday", "Saturday" },
                     InstructorTimeOfDay = new List<string> { "Afternoon", "Evening" },
                     InstructorLessonDuration = new int[] { 90 },
-                    InstructorLessonAverage = 75
+                    InstructorLessonAverage = 80
                 };
                 await userManager.CreateAsync(instructorUser3, "pass123");
                 await userManager.AddToRoleAsync(instructorUser3, "Instructor");
@@ -202,7 +202,7 @@ namespace DrivePal.Models.ServiceClasses
                     InstructorAvailableDaysOf = new List<string> { "Monday", "Wednesday", "Friday" },
                     InstructorTimeOfDay = new List<string> { "Morning", "Afternoon" },
                     InstructorLessonDuration = new int[] { 60, 90 },
-                    InstructorLessonAverage = 75
+                    InstructorLessonAverage = 90
                 };
                 await userManager.CreateAsync(instructorUser4, "pass123");
                 await userManager.AddToRoleAsync(instructorUser4, "Instructor");
@@ -264,7 +264,7 @@ namespace DrivePal.Models.ServiceClasses
                     InstructorAvailableDaysOf = new List<string> { "Monday", "Wednesday", "Friday" },
                     InstructorTimeOfDay = new List<string> { "Morning", "Afternoon" },
                     InstructorLessonDuration = new int[] { 60, 90 },
-                    InstructorLessonAverage = 75
+                    InstructorLessonAverage = 80
                 };
                 await userManager.CreateAsync(instructorUser6, "pass123");
                 await userManager.AddToRoleAsync(instructorUser6, "Instructor");
@@ -326,7 +326,7 @@ namespace DrivePal.Models.ServiceClasses
                     InstructorAvailableDaysOf = new List<string> { "Wednesday", "Friday", "Sunday" },
                     InstructorTimeOfDay = new List<string> { "Afternoon", "Evening" },
                     InstructorLessonDuration = new int[] { 60 },
-                    InstructorLessonAverage = 60
+                    InstructorLessonAverage = 80
                 };
                 await userManager.CreateAsync(instructorUser8, "pass123");
                 await userManager.AddToRoleAsync(instructorUser8, "Instructor");
@@ -357,7 +357,7 @@ namespace DrivePal.Models.ServiceClasses
                     InstructorAvailableDaysOf = new List<string> { "Thursday", "Saturday", "Sunday" },
                     InstructorTimeOfDay = new List<string> { "Morning", "Afternoon" },
                     InstructorLessonDuration = new int[] { 60 },
-                    InstructorLessonAverage = 60
+                    InstructorLessonAverage = 70
                 };
                 await userManager.CreateAsync(instructorUser9, "pass123");
                 await userManager.AddToRoleAsync(instructorUser9, "Instructor");
@@ -388,7 +388,7 @@ namespace DrivePal.Models.ServiceClasses
                     InstructorAvailableDaysOf = new List<string> { "Monday", "Wednesday", "Friday" },
                     InstructorTimeOfDay = new List<string> { "Afternoon", "Evening" },
                     InstructorLessonDuration = new int[] { 90 },
-                    InstructorLessonAverage = 75
+                    InstructorLessonAverage = 80
                 };
                 await userManager.CreateAsync(instructorUser10, "pass123");
                 await userManager.AddToRoleAsync(instructorUser10, "Instructor");
@@ -515,8 +515,10 @@ namespace DrivePal.Models.ServiceClasses
             }
 
             var instructor2 = context.Instructors.Where(r => r.Email == "instructor2@example.com").FirstOrDefault();
+            var learner= context.Learners.Where(r => r.Email == "learner@example.com").FirstOrDefault();
 
-            int numberOfLessons = 5; 
+            int numberOfLessons = 5;
+       
 
           
             for (int i = 0; i < numberOfLessons; i++)

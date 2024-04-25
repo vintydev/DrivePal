@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Select the radius slider element
     const radiusSlider = document.getElementById("radiusSlider");
     // Set the initial value of the slider
-    radiusSlider.value = "11"; // Set the default value to 11
+    radiusSlider.value = "10"; // Set the default value to 11
 
     // Select the radius value span element
     const radiusValue = document.getElementById("radiusValue");
@@ -71,7 +71,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             }
         });
     }
-
 
     function initializeMapWithDefaultLocation() {
         // Initialize the map with default location (Glasgow)
@@ -209,47 +208,53 @@ document.addEventListener("DOMContentLoaded", async function () {
                 if (status === google.maps.GeocoderStatus.OK && results[0]) {
                     const location = results[0].geometry.location;
 
-                    // Calculate the scaled size based on the current zoom level
-                    const currentZoomLevel = map.getZoom();
-                    const scaleFactor = currentZoomLevel / 10; // Adjust the scale factor as needed
-                    const scaledSize = new google.maps.Size(16 * scaleFactor, 16 * scaleFactor);
+                    // Calculate the distance between the location and the circle's center
+                    const distance = google.maps.geometry.spherical.computeDistanceBetween(location, circle.getCenter());
 
-                    // Create a marker for the instructor at the location
-                    const marker = new google.maps.Marker({
-                        position: location,
-                        map: map,
-                        title: `${instructor.name} - Rating: ${instructor.rating}/5`, // Set instructor name as marker title
-                        animation: google.maps.Animation.DROP, // Add animation to marker
-                        icon: {
-                            url: '/img/mapcar.png', // Custom marker named "mapcar.png"
-                            scaledSize: scaledSize // Set the scaled size of the custom marker icon
-                        }
-                    });
+                    // Only create the marker if the location is within the circle's radius
+                    if (distance <= circle.getRadius()) {
+                        // Calculate the scaled size based on the current zoom level
+                        const currentZoomLevel = map.getZoom();
+                        const scaleFactor = currentZoomLevel / 10; // Adjust the scale factor as needed
+                        const scaledSize = new google.maps.Size(16 * scaleFactor, 16 * scaleFactor);
 
-                    // Add event listener for marker click
-                    marker.addListener('click', function () {
-                        // Handle marker click event
-                        // Get the corresponding table row
-                        const rows = document.querySelectorAll('tbody tr');
-                        rows.forEach(row => {
-                            const cells = row.querySelectorAll('td');
-                            if (cells.length >= 3) {
-                                const name = cells[0].textContent.trim();
-                                if (name === instructor.name) {
-                                    // Change the background color of the row
-                                    row.style.backgroundColor = 'palegreen';
-                                } else {
-                                    row.style.backgroundColor = 'white';
-                                }
+                        // Create a marker for the instructor at the location
+                        const marker = new google.maps.Marker({
+                            position: location,
+                            map: map,
+                            title: `${instructor.name} - Rating: ${instructor.rating}/5`, // Set instructor name as marker title
+                            animation: google.maps.Animation.DROP, // Add animation to marker
+                            icon: {
+                                url: '/img/mapcar.png', // Custom marker named "mapcar.png"
+                                scaledSize: scaledSize // Set the scaled size of the custom marker icon
                             }
                         });
-                    });
 
-                    // Add the marker to the markers array
-                    markers.push(marker);
+                        // Add event listener for marker click
+                        marker.addListener('click', function () {
+                            // Handle marker click event
+                            // Get the corresponding table row
+                            const rows = document.querySelectorAll('tbody tr');
+                            rows.forEach(row => {
+                                const cells = row.querySelectorAll('td');
+                                if (cells.length >= 3) {
+                                    const name = cells[0].textContent.trim();
+                                    if (name === instructor.name) {
+                                        // Change the background color of the row
+                                        row.style.backgroundColor = 'palegreen';
+                                    } else {
+                                        row.style.backgroundColor = 'white';
+                                    }
+                                }
+                            });
+                        });
 
-                    // Log a message indicating that the marker was successfully placed
-                    console.log("Marker placed for instructor:", instructor.name, instructor.rating);
+                        // Add the marker to the markers array
+                        markers.push(marker);
+
+                        // Log a message indicating that the marker was successfully placed
+                        console.log("Marker placed for instructor:", instructor.name, instructor.rating);
+                    }
                 } else {
                     // Log a message indicating that the geocoding service couldn't find coordinates for the postcode
                     console.error("Geocode was not successful for postcode:", instructor.postcode, "Reason:", status);

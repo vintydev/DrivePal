@@ -20,9 +20,11 @@ using DrivePal.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DrivePal.Extensions;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace DrivePal.Controllers
 {
+    [Authorize(Roles = "Staff,Admin")]
     public class StaffAreaController : Controller
     {
         //Global variables
@@ -50,8 +52,10 @@ namespace DrivePal.Controllers
         {
             var drivePalDbContext = _context.Instructors.Where(r=>r.isApproved.Equals(false)).ToList();
             var count= drivePalDbContext.Count();
+            var reportCount = _context.Reports.Where(r => r.isProccessed.Equals(false)).Count();
             ViewBag.Count=count;
-          
+            ViewBag.ReportCount = reportCount;
+            
 
             return View(drivePalDbContext.ToList());
         }
@@ -66,15 +70,85 @@ namespace DrivePal.Controllers
             return View(drivePalDbContext.ToList());
         }
 
+        public ActionResult AllLeaners()// view of all instructors
+        {
+            var leaners= _context.Learners.ToList();
+       
+      
+
+            return View(leaners);
+        }
+
         // GET: StaffAreaController/Details/5
         public ActionResult ViewReviews()
         {
-            var reviews = _context.Reviews.Where(r => r.isFlagged.Equals(true)).ToList();
-            var count = _context.Reviews.Where(r => r.isFlagged.Equals(true)).Count();
-            ViewBag.Reviews = count;
+          
+            
+             var reports = _context.Reports.Where(r => r.isProccessed == false).ToList();
+           
+            
+           
+            var count = _context.Reports.Where(r => r.isProccessed.Equals(false)).Count();
+            ViewBag.Count = count;
 
-            return View(reviews.ToList());
+            return View(reports);
         }
+        public ActionResult ReportDetails(int id)
+        {
+
+
+            var report = _context.Reports.Include(r=>r.Review).Include(r=>r.Instructor).Where(r => r.ReportId == id).FirstOrDefault();
+
+
+
+           
+
+            return View(report);
+        }
+
+        public ActionResult FlagReview(int reviewId, int reportId)
+        {
+
+            //gets the report and review and associated instructor through the route
+            var report = _context.Reports.Include(r => r.Review).Where(r => r.ReportId == reportId).FirstOrDefault();
+            var review = _context.Reviews.Where(r => r.ReviewId == reviewId).FirstOrDefault();
+            var instructor=_context.Instructors.Where(r=>r.Id==review.InstructorId).FirstOrDefault();
+           
+            review.isFlagged = true; //changing the review to isflagged so no longer visible
+            report.isProccessed=true;
+            _context.Update(review);
+            _context.Update(report);
+            
+            _context.SaveChanges();
+            var newRating = UpdateInstructorRatingAfterReviewRemoval(instructor.Id); //removing the rating from the associated review
+            //updating and saving changes
+            instructor.TotalRating = newRating;
+            _context.Update(instructor);
+            _context.SaveChanges();
+            
+
+
+            return RedirectToAction("ViewReviews");
+        }
+        public ActionResult DismissReport(int id)
+        {
+
+            //gets report
+            var report = _context.Reports.Include(r => r.Review).Where(r => r.ReportId == id).FirstOrDefault();
+            
+            //nothing wrong with the report so is dismissed.
+          
+            report.isProccessed = true;
+          
+            _context.Update(report);
+            _context.SaveChanges();
+
+
+
+            return RedirectToAction("ViewReviews");
+        }
+
+
 
         // GET: StaffAreaController/Create
         [HttpGet]
@@ -197,6 +271,26 @@ namespace DrivePal.Controllers
             {
                 return View();
             }
+        }
+        private decimal UpdateInstructorRatingAfterReviewRemoval(string instructorId)
+        {
+            var validReviews = _context.Reviews
+                                       .Where(r => r.InstructorId == instructorId && !r.isFlagged)
+                                       .ToList(); // Gets all unflagged reviews of the instructor.
+
+            decimal totalRating = 0;
+            foreach (var review in validReviews) // Loops through each valid review adding ratings together
+            {
+                totalRating += review.Rating;
+            }
+
+            decimal updatedAverageRating = 0;
+            if (validReviews.Any()) // Check if there are any valid reviews left
+            {
+                updatedAverageRating = totalRating / validReviews.Count; // Calculates the new average rating
+            }
+
+            return updatedAverageRating; // If no reviews left, average rating remains 0
         }
     }
 }
