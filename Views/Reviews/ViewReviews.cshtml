@@ -48,8 +48,8 @@
                 <div class="review-date">@Html.DisplayFor(modelItem => item.Learner.FirstName) @Html.DisplayFor(modelItem => item.Learner.LastName)  @Html.DisplayFor(modelItem => item.DateCreated)</div>
             <div class="review-actions">
                 @if (item.LearnerId==ViewBag.UserId) {
-                    <a class="action-link" asp-action="Delete" asp-route-reviewId="@item.ReviewId">Delete</a> 
-                      
+                    <a class="action-link" asp-action="Delete" onclick="return confirmDelete()" asp-route-reviewId="@item.ReviewId">Delete</a>
+
                 }
                 &nbsp;
                 <a class="action-link" asp-controller="Reports" asp-action="Report" asp-route-id="@item.ReviewId">Report</a>
@@ -58,3 +58,9 @@
         }
     </div>
 </div>
+<script>
+function confirmDelete() {
+    var response = confirm("Are you sure you want to delete?");
+    return response; // This will be true if the user clicked "OK", and false if they clicked "Cancel"
+}
+</script>

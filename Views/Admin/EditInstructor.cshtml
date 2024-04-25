@@ -56,7 +56,7 @@
     <div class="form-group">
         <input type="submit" value="Save" class="btn btn-primary" />
 
-            <a  class="btn btn-danger" asp-route-id="@ViewBag.id" asp-action="Delete">Delete</a>
+            <a class="btn btn-danger" onclick="return confirmDelete()" asp-route-id="@ViewBag.id" asp-action="Delete">Delete</a>
     </div>
        
 </form>
@@ -64,3 +64,9 @@
     <div>
         <a asp-action="Instructors">Back to List</a>
     </div>
+    <script>
+        function confirmDelete() {
+            var response = confirm("Are you sure you want to delete?");
+            return response; // This will be true if the user clicked "OK", and false if they clicked "Cancel"
+        }
+    </script>
