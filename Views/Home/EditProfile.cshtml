@@ -1,6 +1,7 @@
 ﻿@model DrivePal.Models.User
 
 @{
+    ViewData["Title"] = "Edit Profile";
     var isInstructor = Model is DrivePal.Models.Instructor;
     var instructor = Model as DrivePal.Models.Instructor;
 }
@@ -16,7 +17,6 @@
         function displayDefaultPicture() {
             var input = document.getElementById('profilePicture');
             var img = document.querySelector('.profile-picture');
-
             if (!input.files || !input.files[0]) {
                 img.src = "/img/profilepictures/defaultprofile.png";
             }
@@ -46,54 +46,61 @@
                             <input type="file" id="profilePicture" name="profilePicture" accept="image/*" onchange="displayDefaultPicture()">
                         </td>
                     </tr>
-
+                    <!-- Non-editable fields as display-only -->
                     <tr>
-                        <td><label for="email">Email:</label></td>
-                        <td><input type="email" id="email" name="email" value="@Model.Email" required></td>
+                        <td>Email:</td>
+                        <td><input type="text" id="email" name="email" value="@Model.Email" readonly></td>
                     </tr>
                     <tr>
-                        <td><label for="firstName">First Name:</label></td>
-                        <td><input type="text" id="firstName" name="firstName" value="@Model.FirstName" required></td>
+                        <td>First Name:</td>
+                        <td><input type="text" id="firstName" name="firstName" value="@Model.FirstName" readonly></td>
                     </tr>
                     <tr>
-                        <td><label for="lastName">Last Name:</label></td>
-                        <td><input type="text" id="lastName" name="lastName" value="@Model.LastName" required></td>
+                        <td>Last Name:</td>
+                        <td><input type="text" id="lastName" name="lastName" value="@Model.LastName" readonly></td>
                     </tr>
                     <tr>
-                        <td><label for="street">Street:</label></td>
-                        <td><input type="text" id="street" name="street" value="@Model.Street" required></td>
+                        <td>Date of Birth:</td>
+                        <td><input type="text" id="dob" name="dob" value="@Model.DOB.ToString("yyyy-MM-dd")" readonly></td>
                     </tr>
                     <tr>
-                        <td><label for="city">City:</label></td>
-                        <td><input type="text" id="city" name="city" value="@Model.City" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="postCode">PostCode:</label></td>
-                        <td><input type="text" id="postCode" name="postCode" value="@Model.PostCode" required></td>
-                    </tr>
-                    <tr>
-                        <td><label for="dob">Date of Birth:</label></td>
-                        <td><input type="date" id="dob" name="dob" value="@Model.DOB.ToString("yyyy-MM-dd")" required></td>
-                    </tr>
-
-                    <tr>
-                        <td><label for="gender">Gender:</label></td>
+                        <td>Gender:</td>
                         <td>
-                            <select id="gender" name="gender">
-                                <option value="Male" selected="@((Model.Gender == DrivePal.Models.Gender.Male) ? "selected" : null)">Male</option>
-                                <option value="Female" selected="@((Model.Gender == DrivePal.Models.Gender.Female) ? "selected" : null)">Female</option>
-                                <option value="PreferNotToSay" selected="@((Model.Gender == DrivePal.Models.Gender.PreferNotToSay) ? "selected" : null)">Prefer Not To Say</option>
-                                <option value="NonBinary" selected="@((Model.Gender == DrivePal.Models.Gender.NonBinary) ? "selected" : null)">Non-Binary</option>
-                            </select>
+                            <input type="text" id="gender" name="gender" value="@Model.Gender.ToString()" readonly>
                         </td>
                     </tr>
-
+                    <!-- Editable fields -->
+                    <tr>
+                        <td>Street:</td>
+                        <td><input type="text" id="street" name="street" value="@Model.Street"></td>
+                    </tr>
+                    <tr>
+                        <td>City:</td>
+                        <td><input type="text" id="city" name="city" value="@Model.City"></td>
+                    </tr>
+                    <tr>
+                        <td>Post Code:</td>
+                        <td><input type="text" id="postCode" name="postCode" value="@Model.PostCode"></td>
+                    </tr>
+                    <!-- Add editable phone number field as required -->
+                    <!-- Phone Number with validation -->
+                    <tr>
+                        <td><label for="phoneNumber">Phone Number:</label></td>
+                        <td>
+                            <input type="tel" id="phoneNumber" name="phoneNumber" value="@Model.PhoneNumber"
+                                   required
+                                   maxlength="13"
+                                   pattern="^\+447\d{9}$"
+                                   title="The Phone Number must start with +44 and contain only numbers and must be exactly 13 characters."
+                                   class="form-control" /> <!-- Add your existing classes if necessary -->
+                        </td>
+                    </tr>
 
                     @if (isInstructor)
                     {
                         <tr>
-                            <td><label for="licenceNumber">License Number:</label></td>
-                            <td><input type="text" id="licenceNumber" name="licenceNumber" value="@instructor.LicenceNumber" required></td>
+                            <td>License Number:</td>
+                            <td><input type="text" id="licenseNumber" name="licenseNumber" value="@instructor.LicenceNumber" readonly></td>
                         </tr>
                     }
                 </table>
@@ -103,6 +110,9 @@
             </form>
         </div>
     </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 
 </body>
 </html>
