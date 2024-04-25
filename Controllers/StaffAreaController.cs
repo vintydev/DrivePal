@@ -70,7 +70,71 @@ namespace DrivePal.Controllers
             return View(drivePalDbContext.ToList());
         }
 
-        public ActionResult AllLeaners()// view of all instructors
+        public ActionResult InstructorDetails(string id)// Gets specific instructor details and sends to view
+        {
+            var instructor = _context.Instructors.Where(r=>r.Id==id).FirstOrDefault();
+            ViewBag.Name = instructor.FirstName + " " + instructor.LastName;
+            return View(instructor);
+       
+        }
+        public ActionResult LearnerDetails(string id)// Gets specific instructor details and sends to view
+        {
+            var learner = _context.Learners.Where(r => r.Id == id).FirstOrDefault();
+            ViewBag.Name = learner.FirstName + " " + learner.LastName;
+            return View(learner);
+
+        }
+
+        public ActionResult Block(string id)
+        {
+            var user=_context.Users.Where(r=>r.Id == id).FirstOrDefault();
+
+            user.isBlocked=true;
+            _context.Update(user);
+            _context.SaveChanges();
+
+            if (user is Learner)
+            {
+                return RedirectToAction("AllLearners");
+            }
+
+            if (user is Instructor)
+            {
+                return RedirectToAction("AllInstructors");
+            }
+            //error 
+            return View(user);
+
+
+
+        }
+        public ActionResult Unblock(string id)
+        {
+            var user = _context.Users.Where(r => r.Id == id).FirstOrDefault();
+
+            user.isBlocked = false;
+            _context.Update(user);
+            _context.SaveChanges();
+
+            if (user is Learner)
+            {
+                return RedirectToAction("AllLearners");
+            }
+
+            if (user is Instructor)
+            {
+                return RedirectToAction("AllInstructors");
+            }
+            //error 
+            return View(user);
+
+
+
+        }
+
+
+
+        public ActionResult AllLearners()// view of all instructors
         {
             var leaners= _context.Learners.ToList();
        
