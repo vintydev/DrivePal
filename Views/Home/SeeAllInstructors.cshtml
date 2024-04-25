@@ -126,7 +126,7 @@
                             <td>
                                 @if (User.Identity.IsAuthenticated && User.IsInRole("Learner"))
                                 {
-                                    <a class="button" asp-controller="DrivingClass" asp-action="Availability" asp-route-id="@instructor.Id">View Available Lessons</a>
+                                    <a class="button" asp-controller="DrivingClass" asp-action="Availability" asp-route-id="@instructor.Id">View</a>
                                 }
                             </td>
                             <td>
