@@ -47,7 +47,8 @@ namespace DrivePal.Controllers
             .Include(r => r.Learner)
             .Include(r => r.Instructor)
             .ToList();
-
+            var loggedInUser = GetUserId();
+            ViewBag.UserId=loggedInUser;
 
             if (reviews == null)
             {
@@ -165,38 +166,34 @@ namespace DrivePal.Controllers
         }
 
         // GET: Reviews/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? reviewId)
         {
-            if (id == null)
+            if (reviewId == null)
             {
                 return NotFound();
             }
 
             var review = await _context.Reviews
                 .Include(r => r.Instructor)
-                .FirstOrDefaultAsync(m => m.ReviewId == id);
+                .FirstOrDefaultAsync(m => m.ReviewId == reviewId);
             if (review == null)
             {
                 return NotFound();
             }
+            var instructor = await _context.Instructors.Where(r => r.Id == review.InstructorId).FirstOrDefaultAsync();
+            _context.Reviews.Remove(review);
+            await _context.SaveChangesAsync();
+            var newRating = UpdateInstructorRatingAfterReviewRemoval(instructor.Id);
+            instructor.TotalRating = newRating;
+            _context.Instructors.Update(instructor);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ViewReviews",new { id=instructor.Id });
+        
 
-            return View(review);
+
         }
 
         // POST: Reviews/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var review = await _context.Reviews.FindAsync(id);
-            if (review != null)
-            {
-                _context.Reviews.Remove(review);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
         private decimal GetTotalInstructorRating(string id, decimal rating) // Gets total rating of Instructor
         {
@@ -234,6 +231,26 @@ namespace DrivePal.Controllers
 
             // Return the user ID
             return userId;
+        }
+        private decimal UpdateInstructorRatingAfterReviewRemoval(string instructorId)
+        {
+            var validReviews = _context.Reviews
+                                       .Where(r => r.InstructorId == instructorId && !r.isFlagged)
+                                       .ToList(); // Gets all unflagged reviews of the instructor.
+
+            decimal totalRating = 0;
+            foreach (var review in validReviews) // Loops through each valid review adding ratings together
+            {
+                totalRating += review.Rating;
+            }
+
+            decimal updatedAverageRating = 0;
+            if (validReviews.Any()) // Check if there are any valid reviews left
+            {
+                updatedAverageRating = totalRating / validReviews.Count; // Calculates the new average rating
+            }
+
+            return updatedAverageRating; // If no reviews left, average rating remains 0
         }
     }
 }
