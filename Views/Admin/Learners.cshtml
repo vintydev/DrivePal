@@ -2,14 +2,12 @@
 @{
 
 }
-<h1>Main Menu</h1>
-<hr />
 
-<h3>ALl Staff Members</h3>
+
+<h3>All Learners</h3>
 
 <a class="btn btn-primary" asp-controller="Admin" asp-action="Index">Back to Menu</a>
-<a class="btn btn-success" asp-controller="Admin" asp-action="AllUsersPDF">All Learners</a>
-<a class="btn btn-success" asp-controller="Warehouse" asp-action="Index">All Instructors</a>
+
 
 <table class="table table-striped">
     <thead>
@@ -33,7 +31,7 @@
                
                 <td>
                   
-                    <a class="btn btn-primary" asp-controller="Admin" asp-action="EditUser" asp-route-userId="@user.Id">Edit Account Details</a>
+                    <a class="btn btn-primary" asp-controller="Admin" asp-action="EditLearner" asp-route-id="@user.Id">Manage Account Details</a>
                 </td>
             </tr>
         }

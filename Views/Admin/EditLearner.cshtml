@@ -1,0 +1,59 @@
+﻿@model DrivePal.Models.ViewModels.LearnerEditOwnDetails
+
+@{
+    ViewData["Title"] = "Edit Your Details";
+}
+
+<h4>Manage Learner Details</h2>
+
+<form asp-action="EditLearner">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="Email" />
+        <div class="form-group">
+            <label asp-for="FirstName" class="control-label"></label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="LastName" class="control-label"></label>
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DOB" class="control-label"></label>
+            <input asp-for="DOB" type="date" class="form-control" />
+            <span asp-validation-for="DOB" class="text-danger"></span>
+        </div>
+
+    <div class="form-group">
+        <label asp-for="Street" class="control-label"></label>
+        <input asp-for="Street" class="form-control" />
+        <span asp-validation-for="Street" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PostCode" class="control-label"></label>
+        <input asp-for="PostCode" class="form-control" />
+        <span asp-validation-for="PostCode" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="City" class="control-label"></label>
+        <input asp-for="City" class="form-control" />
+        <span asp-validation-for="City" class="text-danger"></span>
+    </div>
+    <br />
+
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+
+            <a class="btn btn-danger" asp-route-id="@ViewBag.id" asp-action="Delete">Delete</a>
+        </div>
+</form>
+
+<div>
+    <a asp-action="Learners">Back to List</a>
+</div>

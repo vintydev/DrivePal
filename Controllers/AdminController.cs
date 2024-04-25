@@ -19,6 +19,8 @@ using DrivePal.Data;
 using DrivePal.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DrivePal.Extensions;
+using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace DrivePal.Controllers
 {
@@ -61,11 +63,181 @@ namespace DrivePal.Controllers
             var drivePalDbContext = _context.Learners;
             return View(drivePalDbContext.ToList());
         }
-        public async Task<IActionResult> Instructors()
+        [HttpGet]
+        public async Task<IActionResult> EditLearner(string id)
+        {
+            var user = _context.Learners.Where(r => r.Id == id).FirstOrDefault();
+            ViewBag.id = id;
+
+            if (user is Learner learner)
+            {
+                var viewModel = new LearnerEditOwnDetails
+                {
+                    Email = learner.Email,
+                    FirstName = learner.FirstName,
+                    LastName = learner.LastName,
+                    Street = learner.Street,
+                    PostCode = learner.PostCode,
+                    DOB = learner.DOB,
+                    City = learner.City,
+                    LicenceNumber = learner.LicenceNumber
+                    // Populate other properties as needed
+                };
+
+                return View(viewModel);
+            }
+
+            return RedirectToAction("Error", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditLearner([Bind("Email, FirstName, LastName, Street, PostCode, DOB, City, LicenceNumber")] LearnerEditOwnDetails model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user is Learner learner)
+                {
+                    // Map the properties from the ViewModel to the Learner entity
+                    learner.FirstName = model.FirstName;
+                    learner.LastName = model.LastName;
+                    learner.Street = model.Street;
+                    learner.PostCode = model.PostCode;
+                    learner.DOB = model.DOB;
+                    learner.City = model.City;
+                    learner.LicenceNumber = model.LicenceNumber;
+                    // Map other properties as needed
+
+                    // Update the Learner entity
+                    IdentityResult result = await _userManager.UpdateAsync(learner);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Learners");
+                    }
+                    // Handle the errors if update is not successful
+                }
+            }
+
+            // If model state is not valid or update failed, show the form again with validation messages
+            return View(model);
+        }
+
+        public async Task<IActionResult> Delete(string id)
+        {
+            {
+                var user = await _context.Users
+                                         .Where(u => u.Id == id)
+                                         .FirstOrDefaultAsync();
+
+                if (user == null)
+                {
+                   
+                    return RedirectToAction("ErrorPage", "Home"); 
+                }
+
+                // Remove user from any roles they might be in
+                var roles = await _userManager.GetRolesAsync(user);
+                if (roles.Count > 0)
+                {
+                    var result = await _userManager.RemoveFromRolesAsync(user, roles);
+                    if (!result.Succeeded)
+                    {
+                        // Handle the case where removing the roles fails
+                        // Log the errors or display to the user
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                // Attempt to delete the user
+                IdentityResult resultDelete = await _userManager.DeleteAsync(user);
+                if (resultDelete.Succeeded)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                // If deletion wasn't successful, handle errors here
+                foreach (var error in resultDelete.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+
+                // You could return to a view that shows these errors or logs them
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+            public async Task<IActionResult> Instructors()
         {
             var drivePalDbContext = _context.Instructors;
             return View(drivePalDbContext.ToList());
         }
+        [HttpGet]
+        public async Task<IActionResult> EditInstructor(string id)
+        {
+         var user=_context.Instructors.Where(r=>r.Id == id).FirstOrDefault();
+            ViewBag.id = id;
+
+            if (user is Instructor instructor)
+            {
+                var viewModel = new InstructorEditOwnDetails
+                {
+                    Email = instructor.Email,
+                    FirstName = instructor.FirstName,
+                    LastName = instructor.LastName,
+                    City = instructor.City,
+                    Street = instructor.Street,
+                    PostCode = instructor.PostCode,
+                    DOB = instructor.DOB,
+                    LicenceNumber = instructor.LicenceNumber,
+                    Gender = instructor.Gender,
+                    isBlocked = instructor.isBlocked,
+                    isApproved = instructor.isApproved,
+                };
+
+                return View(viewModel);
+            }
+
+            return RedirectToAction("Error", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditInstructor([Bind("Email, FirstName, LastName, Street, PostCode, DOB, City, LicenceNumber, isBlocked, isApproved, TotalRating")] InstructorEditOwnDetails model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user is Instructor instructor)
+                {
+                    // Map the properties from the ViewModel to the Learner entity
+                    instructor.FirstName = model.FirstName;
+                    instructor.LastName = model.LastName;
+                    instructor.Street = model.Street;
+                    instructor.PostCode = model.PostCode;
+                    instructor.DOB = model.DOB;
+                    instructor.City = model.City;
+                    instructor.LicenceNumber = model.LicenceNumber;
+                    instructor.Gender = model.Gender;
+                    instructor.isBlocked = model.isBlocked;
+                    instructor.isApproved = model.isApproved;
+                    instructor.TotalRating = model.TotalRating;
+
+                    IdentityResult result = await _userManager.UpdateAsync(instructor);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Instructors");
+                    }
+                    // Handle the errors if update is not successful
+                }
+            }
+
+            // If model state is not valid or update failed, show the form again with validation messages
+            return View(model);
+        }
+
         public async Task<IActionResult> Bookings()
         {
             var drivePalDbContext = _context.Bookings;
@@ -166,10 +338,82 @@ namespace DrivePal.Controllers
             // If ModelState is invalid, redisplay the form
             return View();
         }
+        public async Task<IActionResult> EditStaff(string id)
+        {
+            var user = _context.Staffs.Where(r => r.Id == id).FirstOrDefault();
+            ViewBag.id = id;
+            var workTypes = Enum.GetValues(typeof(DrivePal.Models.ViewModels.WorkType))
+                               .Cast<Models.ViewModels.WorkType>()
+                               .Select(e => new SelectListItem
+                               {
+                                   Value = ((int)e).ToString(), // Storing the enum integer value as the value (optional)
+                                   Text = e.GetDisplayName() // Assuming you use the same extension method to get the display name
+                               })
+                               .ToList();
 
-       
+            ViewBag.WorkTypeSelectList = new SelectList(workTypes, "Value", "Text");
 
-       
+
+            if (user is Staff staff)
+            {
+                var viewModel = new EditStaffViewModel
+                {
+                    Email=user.Email,
+                    FirstName =user.FirstName,
+                    LastName = user.LastName,
+                    Street = user.Street,
+                    PostCode = user.PostCode,
+                    DOB = user.DOB,
+                    City = user.City,
+                    WorkType= (Models.ViewModels.WorkType)user.WorkType
+                   
+                   
+                };
+
+                return View(viewModel);
+            }
+
+            return RedirectToAction("Error", "Home");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditStaff([Bind("Email, FirstName, LastName, Street, PostCode, DOB, City,WorkType")] EditStaffViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user is Staff staff)
+                {
+                    // Map the properties from the ViewModel to the staff entity
+                    staff.FirstName = model.FirstName;
+                    staff.LastName = model.LastName;
+                    staff.Street = model.Street;
+                    staff.PostCode = model.PostCode;
+                    staff.DOB = model.DOB;
+                    staff.City = model.City;
+                    staff.WorkType = (Models.WorkType)model.WorkType;
+                    
+                   
+                    // Map other properties as needed
+
+                    // Update the staff entity
+                    IdentityResult result = await _userManager.UpdateAsync(staff);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    // Handle the errors if update is not successful
+                }
+            }
+
+            // If model state is not valid or update failed, show the form again with validation messages
+            return View(model);
+        }
+
+
+
     }
     
 }
