@@ -201,9 +201,13 @@ namespace DrivePal.Controllers
         }
 
 
+        [Authorize]
         public async Task<IActionResult> SeeAllInstructors()
         {
-             var allInstructors = await _context.Instructors.ToListAsync();
+          
+            
+            
+            var allInstructors = await _context.Instructors.ToListAsync();
             
             var instructors = allInstructors
                 .Where(i => i.isApproved == true && i.isBlocked == false)
@@ -305,7 +309,7 @@ namespace DrivePal.Controllers
 
 
 
-        [Authorize] // Ensure the user is logged in
+        [Authorize(Roles = "Learner")]
         public async Task<IActionResult> GetUserPostcode()
         {
             // Get the currently logged in user
