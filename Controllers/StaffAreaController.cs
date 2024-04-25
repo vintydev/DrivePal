@@ -70,6 +70,15 @@ namespace DrivePal.Controllers
             return View(drivePalDbContext.ToList());
         }
 
+        public ActionResult AllLeaners()// view of all instructors
+        {
+            var leaners= _context.Learners.ToList();
+       
+      
+
+            return View(leaners);
+        }
+
         // GET: StaffAreaController/Details/5
         public ActionResult ViewReviews()
         {
@@ -100,23 +109,23 @@ namespace DrivePal.Controllers
         public ActionResult FlagReview(int reviewId, int reportId)
         {
 
-
+            //gets the report and review and associated instructor through the route
             var report = _context.Reports.Include(r => r.Review).Where(r => r.ReportId == reportId).FirstOrDefault();
             var review = _context.Reviews.Where(r => r.ReviewId == reviewId).FirstOrDefault();
             var instructor=_context.Instructors.Where(r=>r.Id==review.InstructorId).FirstOrDefault();
            
-            review.isFlagged = true;
+            review.isFlagged = true; //changing the review to isflagged so no longer visible
             report.isProccessed=true;
             _context.Update(review);
             _context.Update(report);
             
             _context.SaveChanges();
-            var newRating = UpdateInstructorRatingAfterReviewRemoval(instructor.Id);
-
+            var newRating = UpdateInstructorRatingAfterReviewRemoval(instructor.Id); //removing the rating from the associated review
+            //updating and saving changes
             instructor.TotalRating = newRating;
             _context.Update(instructor);
             _context.SaveChanges();
-
+            
 
 
             return RedirectToAction("ViewReviews");
@@ -124,11 +133,11 @@ namespace DrivePal.Controllers
         public ActionResult DismissReport(int id)
         {
 
-
+            //gets report
             var report = _context.Reports.Include(r => r.Review).Where(r => r.ReportId == id).FirstOrDefault();
             
-
-           
+            //nothing wrong with the report so is dismissed.
+          
             report.isProccessed = true;
           
             _context.Update(report);
