@@ -265,8 +265,7 @@ namespace DrivePal.Controllers
 
                 if (profilePicture != null)
                 {
-                    var fileName =
-                        $"{updatedProfile.FirstName}{updatedProfile.LastName}{Path.GetExtension(profilePicture.FileName)}";
+                    var fileName = $"{updatedProfile.FirstName}{updatedProfile.LastName}{Path.GetExtension(profilePicture.FileName)}";
                     var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "img/profilepictures", fileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
@@ -277,15 +276,13 @@ namespace DrivePal.Controllers
                     user.ProfilePicture = $"/img/profilepictures/{fileName}";
                 }
 
-                user.FirstName = updatedProfile.FirstName;
-                user.LastName = updatedProfile.LastName;
+                // Update the mutable fields
                 user.Street = updatedProfile.Street;
                 user.City = updatedProfile.City;
                 user.PostCode = updatedProfile.PostCode;
-                user.DOB = updatedProfile.DOB;
-                user.Gender = updatedProfile.Gender;
+                user.PhoneNumber = updatedProfile.PhoneNumber;  // Assuming User class has a PhoneNumber property
 
-
+                // Update only specific user types
                 if (user is Learner updatedLearner)
                 {
                     var learner = user as Learner;
@@ -300,12 +297,12 @@ namespace DrivePal.Controllers
                     await _userManager.UpdateAsync(instructor);
                 }
 
-
                 return RedirectToAction("Profile");
             }
 
             return View("EditProfile", updatedProfile);
         }
+
 
 
         [Authorize] // Ensure the user is logged in
