@@ -1,10 +1,10 @@
-﻿@model DrivePal.Models.ViewModels.InstructorSeeOwnDetails
+﻿@model DrivePal.Models.Instructor
 
 @{
     ViewData["Title"] = "Your Details";
 }
 
-<h4>@ViewData["Title"]</h2>
+<h2>@ViewBag.Name Detail</h2>
 
 <div class="row">
     <div class="col-md-4">
@@ -83,6 +83,13 @@
 </div>
 
 <div>
-    @Html.ActionLink("Edit", "InstructorEditOwnDetails", new { email = Model.Email }) |
-    <a asp-action="LearnerSeeOwnDetails">Back to List</a>
+    @if (Model.isBlocked==false||Model.isBlocked==null)
+    {
+        <a class="btn btn-danger" asp-controller="StaffArea" asp-route-id="@Model.Id" asp-action="Block">Block User</a>
+    }
+    else
+    {
+        <a class="btn btn-warning" asp-controller="StaffArea" asp-route-id="@Model.Id" asp-action="Unblock">Unblock User</a>
+    }
+    <a class="btn btn-success" asp-controller="StaffArea" asp-action="AllInstructors">Back to List</a>
 </div>

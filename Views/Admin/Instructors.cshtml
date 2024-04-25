@@ -5,11 +5,10 @@
 <h1>Main Menu</h1>
 <hr />
 
-<h3>ALl Staff Members</h3>
+<h3>All Instructors </h3>
 
-<a class="btn btn-primary" asp-controller="Admin" asp-action="RegisterStaff">Create New Staff Account</a>
-<a class="btn btn-success" asp-controller="Admin" asp-action="AllUsersPDF">All Learners</a>
-<a class="btn btn-success" asp-controller="Warehouse" asp-action="Index">All Instructors</a>
+
+<a class="btn btn-success" asp-controller="Admin" asp-action="Index">Back to Home</a>
 
 <table class="table table-striped">
     <thead>
@@ -34,7 +33,7 @@
                 </td>
                 <td>
                   
-                    <a class="btn btn-primary" asp-controller="Admin" asp-action="EditUser" asp-route-userId="@user.Id">Edit Account Details</a>
+                    <a class="btn btn-primary" asp-controller="Admin" asp-action="EditInstructor" asp-route-id="@user.Id">Manage Account Details</a>
                 </td>
             </tr>
         }

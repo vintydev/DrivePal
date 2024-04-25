@@ -1,10 +1,10 @@
-﻿@model DrivePal.Models.ViewModels.InstructorSeeOwnDetails
+﻿@model DrivePal.Models.Learner
 
 @{
     ViewData["Title"] = "Your Details";
 }
 
-<h4>@ViewData["Title"]</h2>
+<h2>@ViewBag.Name Details</h2>
 
 <div class="row">
     <div class="col-md-4">
@@ -78,11 +78,32 @@
             <dd class="col-sm-6">
                 @Html.DisplayFor(model => model.isBlocked)
             </dd>
+
+            <dt class="col-sm-6">
+                @Html.DisplayNameFor(model => model.isExperienced)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model.isExperienced)
+            </dd>
+
+            <dt class="col-sm-6">
+                @Html.DisplayNameFor(model => model.lessonCount)
+            </dt>
+            <dd class="col-sm-6">
+                @Html.DisplayFor(model => model.lessonCount)
+            </dd>
         </dl>
     </div>
 </div>
 
 <div>
-    @Html.ActionLink("Edit", "InstructorEditOwnDetails", new { email = Model.Email }) |
-    <a asp-action="LearnerSeeOwnDetails">Back to List</a>
+    @if (Model.isBlocked == false || Model.isBlocked == null)
+    {
+        <a class="btn btn-danger" asp-controller="StaffArea" asp-route-id="@Model.Id" asp-action="Block">Block User</a>
+    }
+    else
+    {
+        <a class="btn btn-warning" asp-controller="StaffArea" asp-route-id="@Model.Id" asp-action="Unblock">Unblock User</a>
+    }
+    <a class="btn btn-success" asp-controller="StaffArea" asp-action="AllInstructors">Back to List</a>
 </div>

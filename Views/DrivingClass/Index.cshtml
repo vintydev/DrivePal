@@ -9,7 +9,7 @@
         .OrderBy(g => g.Key);
 }
 
-<h2>All available classes</h2>
+<h4>All available lessons</h4>
 @if (User.Identity.IsAuthenticated && User.IsInRole("Instructor"))
 {
     <p>
@@ -19,15 +19,15 @@
 
 @foreach (var group in groupedClasses)
 {
-    <h3>@group.Key's Classes</h3>
+    <h4>Instructor: @group.Key</h4>
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.DrivingClassStart)
+                    Driving Lesson Start
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.DrivingClassEnd)
+                    Driving Lesson End
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Price)
@@ -40,18 +40,19 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DrivingClassStart)
+                        @item.DrivingClassStart.ToString("g")
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DrivingClassEnd)
+                        @item.DrivingClassEnd.ToString("g")
                     </td>
+
                     <td>
                         @Html.DisplayFor(modelItem => item.Price)
                     </td>
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Learner"))
                     {
                         <td>
-                            <a asp-controller="Booking" asp-action="SelectClass" asp-route-id="@item.DrivingClassId" class="btn btn-primary">Select this class</a>
+                            <a asp-controller="Booking" asp-action="SelectClass" asp-route-id="@item.DrivingClassId" class="btn btn-primary">Select this lesson</a>
                         </td>
                     }
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Instructor") && item.InstructorId == User.FindFirstValue(ClaimTypes.NameIdentifier))

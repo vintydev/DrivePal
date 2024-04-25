@@ -1,0 +1,79 @@
+﻿
+@model DrivePal.Models.ViewModels.EditStaffViewModel
+@{
+    
+
+}
+<h1>Manage Staff Details</h1>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditStaff" id="EditStaff"  method="post">
+            <h4>Edit account.</h2>
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                  
+                    <input asp-for="FirstName" class="form-control" />
+                    <label asp-for="FirstName" class="control-label"></label>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                   
+                    <input asp-for="LastName" class="form-control" />
+                    <label asp-for="LastName" class="control-label"></label>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <input type="hidden" asp-for="Email" />
+            <div class="form-floating mb-3">
+                <input asp-for="City" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="City">City</label>
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Street" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Street">Street</label>
+                <span asp-validation-for="Street" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="PostCode" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="PostCode">Post Code</label>
+                <span asp-validation-for="PostCode" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="DOB" class="form-control" autocomplete="off" aria-required="true" placeholder="dd/mm/yyyy" type="date" />
+                <label asp-for="DOB">Date of Birth</label>
+                <span asp-validation-for="DOB" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+            <select class="form-select" id="WorkType" aria-label="Work Type" asp-for="WorkType" asp-items="@ViewBag.WorkTypeSelectList">
+               
+            </select>
+            <label for="WorkType">Type of Employment</label>
+    </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+
+                    <a class="btn btn-danger" asp-route-id="@ViewBag.id" asp-action="Delete">Delete</a>
+                </div>
+            
+
+        </form>
+    </div>
+
+</div>
+<div>
+<a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
