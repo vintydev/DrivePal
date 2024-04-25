@@ -68,7 +68,6 @@ namespace DrivePal.Controllers
             ViewBag.FullName = fullName;
             ViewBag.ReceiverId = id;
             ViewBag.Messages = messages;
-            ViewBag.UserId = user.Id;
 
             return View();
         }

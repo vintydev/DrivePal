@@ -1,96 +1,26 @@
 ﻿@page
 <div class="container chat-page" id="chatContainer" data-receiverid="@ViewBag.ReceiverId">
-    <div class="chat-header">
-        <h2 id="receiverFullName" data-fullname="@ViewBag.ReceiverName">Chatting with @ViewBag.ReceiverName</h2>
-    </div>
-    @* <h2 id="receiverFullName" data-fullname="@ViewBag.ReceiverName">@ViewBag.ReceiverName</h2> *@
-    <div class="chat-body">
+    <h2 id="receiverFullName" data-fullname="@ViewBag.ReceiverName">@ViewBag.ReceiverName</h2>
     <h2 id="userFullName" data-fullname="@ViewBag.FullName" style="display:none;">@ViewBag.FullName</h2>
-    <div style="height: 400px; overflow-y: auto; scroll-behavior: smooth;">
+    <div style="height: 400px; overflow-y: scroll;">
         <ul id="messagesList" class="list-unstyled">
-                @foreach (var message in ViewBag.Messages)
-                {
-                    <li id="message@message.Id" class="p-3 mb-2 rounded @((message.SenderId == ViewBag.UserId) ? "sent-message text-white sent" : "bg-light received")">
-                        <strong>@((message.SenderId == ViewBag.UserId) ? "You" : @message.SenderName)</strong>
-                        <p>@message.Text</p>
-                        <small>@message.Timestamp.ToString("HH:mm")</small>
-                    </li>
-                }
+            @foreach (var message in ViewBag.Messages)
+            {
+                <li id="message@message.Id" class="p-3 mb-2 rounded @((message.SenderId == ViewBag.UserId) ? "bg-primary text-white" : "bg-light")">
+                    <strong>@((message.SenderId == ViewBag.UserId) ? "You" : @message.SenderName)</strong>
+                    <p>@message.Text</p>
+                    <small>@message.Timestamp.ToString("HH:mm")</small>
+                </li>
+            }
         </ul>
-    </div>
     </div>
     <div class="p-1 d-flex">
         <input type="text" class="flex-grow-1" id="messageInput" />
         <input type="button" id="sendButton" value="Send Message" />
     </div>
 </div>
-<style>
-    #chatContainer {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100%; /* Adjust this value as needed */
-    }
-
-    .rounded {
-        border-radius: 15px;
-    }
-
-    .chat-page {
-        max-width: 500px;
-        margin: 0 auto;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-top: 50px;
-    }
-
-
-    .chat-body {
-        padding: 10px;
-        height: 500px; /* Adjust as needed */
-        width: 500px; /* Adjust as needed */
-        border: 1px solid #000; /* Adjust border style as needed */
-        border-radius: 5px; /* Optional: to make the border corners rounded */
-    }
-
-        .chat-body ul {
-            padding: 0;
-        }
-
-    #messagesList {
-        padding: 10px; /* Add padding to give some space between the border and the messages */
-    }
-
-    .chat-body li {
-        border-radius: 5px;
-        margin-bottom: 10px;
-    }
-
-    .sent {
-        float: left;
-        clear: both;
-    }
-
-    .received {
-        float: right;
-        clear: both;
-    }
-
-    .chat-body li p {
-        margin: 0;
-    }
-
-</style>
-
-@* <link rel="stylesheet" href="/css/style.css"> *@
+<link rel="stylesheet" href="/css/style.css">
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/chat.js"></script>
-<script>
-    window.onload = function () {
-        document.getElementById("messageInput").focus();
-    };
-
-</script>
 
 
