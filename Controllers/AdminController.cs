@@ -69,6 +69,17 @@ namespace DrivePal.Controllers
             var user = _context.Learners.Where(r => r.Id == id).FirstOrDefault();
             ViewBag.id = id;
 
+            var genders = Enum.GetValues(typeof(DrivePal.Models.Gender))
+                                  .Cast<Models.Gender>()
+                                  .Select(e => new SelectListItem
+                                  {
+                                      Value = ((int)e).ToString(), // Storing the enum integer value as the value (optional)
+                                      Text = e.GetDisplayName() // Assuming you use the same extension method to get the display name
+                                  })
+                                  .ToList();
+
+            ViewBag.Gender = new SelectList(genders, "Value", "Text");
+
             if (user is Learner learner)
             {
                 var viewModel = new LearnerEditOwnDetails
@@ -179,6 +190,17 @@ namespace DrivePal.Controllers
          var user=_context.Instructors.Where(r=>r.Id == id).FirstOrDefault();
             ViewBag.id = id;
 
+            var genders = Enum.GetValues(typeof(DrivePal.Models.Gender))
+                                .Cast<Models.Gender>()
+                                .Select(e => new SelectListItem
+                                {
+                                    Value = ((int)e).ToString(), // Storing the enum integer value as the value (optional)
+                                    Text = e.GetDisplayName() // Assuming you use the same extension method to get the display name
+                                })
+                                .ToList();
+
+            ViewBag.Gender = new SelectList(genders, "Value", "Text");
+
             if (user is Instructor instructor)
             {
                 var viewModel = new InstructorEditOwnDetails
@@ -259,6 +281,16 @@ namespace DrivePal.Controllers
                                 .ToList();
 
             ViewBag.WorkTypeSelectList = new SelectList(workTypes, "Value", "Text");
+            var genders = Enum.GetValues(typeof(DrivePal.Models.Gender))
+                              .Cast<Models.Gender>()
+                              .Select(e => new SelectListItem
+                              {
+                                  Value = ((int)e).ToString(), // Storing the enum integer value as the value (optional)
+                                  Text = e.GetDisplayName() // Assuming you use the same extension method to get the display name
+                              })
+                              .ToList();
+
+            ViewBag.Gender = new SelectList(genders, "Value", "Text");
 
             return View(new RegisterStaffViewModel());
         }
@@ -278,6 +310,7 @@ namespace DrivePal.Controllers
                 staff.PostCode = model.PostCode;
                 staff.DOB=model.DOB;
                 staff.Email=model.Email;
+                staff.Gender = model.Gender;
 
                 // Setting the username for the user
                 await _userStore.SetUserNameAsync(staff, model.Email, CancellationToken.None);
@@ -351,7 +384,17 @@ namespace DrivePal.Controllers
                                })
                                .ToList();
 
+            var genders = Enum.GetValues(typeof(DrivePal.Models.Gender))
+                              .Cast<Models.Gender>()
+                              .Select(e => new SelectListItem
+                              {
+                                  Value = ((int)e).ToString(), // Storing the enum integer value as the value (optional)
+                                  Text = e.GetDisplayName() // Assuming you use the same extension method to get the display name
+                              })
+                              .ToList();
+
             ViewBag.WorkTypeSelectList = new SelectList(workTypes, "Value", "Text");
+            ViewBag.Gender = new SelectList(genders, "Value", "Text");
 
 
             if (user is Staff staff)
@@ -365,7 +408,8 @@ namespace DrivePal.Controllers
                     PostCode = user.PostCode,
                     DOB = user.DOB,
                     City = user.City,
-                    WorkType= (Models.ViewModels.WorkType)user.WorkType
+                    WorkType= (Models.ViewModels.WorkType)user.WorkType,
+                    Gender= (Gender)user.Gender
                    
                    
                 };
@@ -393,6 +437,7 @@ namespace DrivePal.Controllers
                     staff.DOB = model.DOB;
                     staff.City = model.City;
                     staff.WorkType = (Models.WorkType)model.WorkType;
+                    staff.Gender= (Gender)model.Gender;
                     
                    
                     // Map other properties as needed

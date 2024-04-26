@@ -49,7 +49,7 @@ namespace DrivePal.Controllers
             var drivingClasses = _context.DrivingClasses
                 .Include(i => i.Instructor)
                 .Include(d => d.Learner) // Include the Learner navigation property
-                .Where(d => d.Instructor.Id == user).ToList();
+                .Where(d => d.Instructor.Id == user && d.DrivingClassStart > DateTime.Now).ToList();
 
 
             ViewData["Lessons"] = JSONListHelper.GetDrivingClassListJSONString(drivingClasses);
@@ -61,7 +61,7 @@ namespace DrivePal.Controllers
             var drivingClasses = _context.DrivingClasses
                 .Include(i => i.Instructor)
                 .Include(d => d.Learner)
-                .Where(d => d.Instructor.Id == id && d.IsReserved == false).ToList();
+                .Where(d => d.Instructor.Id == id && d.IsReserved == false && d.DrivingClassStart>DateTime.Now).ToList();
 
 
             ViewData["Lessons"] = JSONListHelper.GetDrivingClassListJSONString(drivingClasses);
@@ -220,10 +220,10 @@ namespace DrivePal.Controllers
         }
 
         // POST: DrivingClasses/Delete/5
-        [HttpPost, ActionName("Delete")]
+      
         [Authorize(Roles = "Instructor")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult>Delete(int id)
         {
             var drivingClass = await _context.DrivingClasses.FindAsync(id);
             if (drivingClass != null)
@@ -232,7 +232,7 @@ namespace DrivePal.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Calendar");
         }
 
         [Authorize(Roles = "Learner")]

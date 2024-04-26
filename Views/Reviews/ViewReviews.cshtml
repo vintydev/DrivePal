@@ -11,6 +11,8 @@
 <div class="review-container">
     <h1 class="review-header">@ViewBag.Name's Reviews</h1>
 
+    <a class="btn btn-success" asp-controller="Home" asp-action="SeeAllInstructors">Back to List</a>
+
   
 
     <div class="reviews">
@@ -58,6 +60,7 @@
         }
     </div>
 </div>
+
 <script>
 function confirmDelete() {
     var response = confirm("Are you sure you want to delete?");

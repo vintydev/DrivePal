@@ -58,6 +58,12 @@
 
             <a class="btn btn-danger" onclick="return confirmDelete()" asp-route-id="@ViewBag.id" asp-action="Delete">Delete</a>
     </div>
+        <div class="form-floating mb-3">
+            <select class="form-select" id="Gender" aria-label="Gender" asp-for="Gender" asp-items="@ViewBag.Gender">
+            </select>
+            <label for="Gender">Gender</label>
+        </div>
+
        
 </form>
 

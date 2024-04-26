@@ -35,10 +35,15 @@
         </dd>
 
     </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="DrivingClassId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+
+
+    <a class="btn btn-danger" onclick="return confirmDelete()" asp-controller="DrivingClass" asp-route-id="@Model.DrivingClassId" asp-action="Delete">Delete</a> |
         <a class="btn btn-success" asp-action="Calendar">Back to List</a>
-    </form>
+    
 </div>
+<script>
+    function confirmDelete() {
+        var response = confirm("Are you sure you want to delete this lesson?");
+        return response; // This will be true if the user clicked "OK", and false if they clicked "Cancel"
+    }
+</script>

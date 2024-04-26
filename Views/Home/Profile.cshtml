@@ -43,10 +43,12 @@
                     <td><strong>Date of Birth:</strong></td>
                     <td>@Model.DOB</td>
                 </tr>
+                @if (User.IsInRole("Instructor")) { 
                 <tr>
                     <td><strong>Licence Number:</strong></td>
                     <td>@Model.LicenceNumber</td>
                 </tr>
+                }
                 <tr>
                     <td><strong>Gender:</strong></td>
                     <td>@Model.Gender</td>

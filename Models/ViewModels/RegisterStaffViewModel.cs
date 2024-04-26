@@ -72,6 +72,8 @@ namespace DrivePal.Models.ViewModels
         [Display(Name = "Type of Employment")]
         public WorkType WorkType { get; set; }
 
+        public Gender Gender { get; set; }
+
 
     }
 

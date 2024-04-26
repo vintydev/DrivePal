@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using DrivePal.Models;
+using DrivePal.Extensions;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DrivePal.Areas.Identity.Pages.Account
 {
@@ -128,6 +130,8 @@ namespace DrivePal.Areas.Identity.Pages.Account
             [StringLength(13, ErrorMessage = "The Phone Number must be exactly 13 characters.")]
             [RegularExpression(@"^\+447\d{9}$", ErrorMessage = "The Phone Number must start with +44 and contain only numbers.")]
             public string PhoneNumber { get; set; }
+
+            public Gender Gender { get; set; }
         }
 
 
@@ -135,12 +139,22 @@ namespace DrivePal.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            var genders = Enum.GetValues(typeof(DrivePal.Models.Gender))
+                             .Cast<Models.Gender>()
+                             .Select(e => new SelectListItem
+                             {
+                                 Value = ((int)e).ToString(), // Storing the enum integer value as the value (optional)
+                                 Text = e.GetDisplayName() // Assuming you use the same extension method to get the display name
+                             })
+                             .ToList();
+            ViewData["GenderOptions"] = new SelectList(genders, "Value", "Text");
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+           
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
@@ -258,6 +272,7 @@ namespace DrivePal.Areas.Identity.Pages.Account
                 learner.DOB = Input.DOB;
                 learner.Email = Input.Email;
                 learner.PhoneNumber = Input.PhoneNumber;
+                learner.Gender= Input.Gender;
 
                 return learner;
             }

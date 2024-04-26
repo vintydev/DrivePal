@@ -161,7 +161,8 @@ namespace DrivePal.Controllers
         {
 
 
-            var report = _context.Reports.Include(r=>r.Review).Include(r=>r.Instructor).Where(r => r.ReportId == id).FirstOrDefault();
+            var report = _context.Reports.Include(r=>r.Review).Include(r=>r.Instructor).Include(r => r.Review.Learner).Where(r => r.ReportId == id).FirstOrDefault();
+            ViewBag.Rating =(int) report.Review.Rating;
 
 
 
